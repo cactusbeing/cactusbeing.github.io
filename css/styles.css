@@ -11213,16 +11213,16 @@ header.masthead .site-heading .h1 {
   color: #0085A1;
 }
 .post-preview > a > .post-title {
-  font-size: 1.875rem;
-  margin-top: 1.875rem;
-  margin-bottom: 0.625rem;
+  font-size: 1.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 .post-preview > a > .post-subtitle {
   font-weight: 300;
-  margin-bottom: 0.625rem;
+  margin-bottom: 0.5rem;
 }
 .post-preview > .post-meta {
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-style: italic;
   margin-top: 0;
   color: #6c757d;
@@ -11232,6 +11232,6 @@ header.masthead .site-heading .h1 {
 }
 @media (min-width: 992px) {
   .post-preview > a > .post-title {
-    font-size: 2.25rem;
+    font-size: 2rem;
   }
 }
