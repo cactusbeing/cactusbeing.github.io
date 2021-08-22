@@ -11287,3 +11287,11 @@ header.masthead .site-heading .h1 {
 .card:hover .label {
   opacity: 1;
 }
+
+#loading  
+{  
+    position:fixed;  
+    top:40%;  
+    left:45%;  
+    z-index:999;  
+}  
