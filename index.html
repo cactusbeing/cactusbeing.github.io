@@ -19,6 +19,17 @@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
     <script src="js/jquery-1.6.1.min.js"></script>
+    <style>
+        .carousel-item {
+            height: 75vh;
+            min-height: 350px;
+            background: no-repeat center center scroll;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+    </style>
 </head>
 
 <body>
@@ -53,49 +64,82 @@
         </div>
     </nav>
     <!-- Page Header-->
-    <header class="masthead" style="background-image: url('assets/img/home-bg.jpg')">
-        <div class="container position-relative px-4 px-lg-5">
+    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+                aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+                aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+                aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active" style="background-image: url('assets/img/home-bg.jpg')">
+                <div class="carousel-caption">
+                    <h1>Welcome</h1>
+                    <span class="subheading">「把燈提高一點，可以照亮更多人。」<br>Helen Keller</span>
+                </div>
+            </div>
+            <div class="carousel-item"
+                style="background-image: url('https://i.imgur.com/9fRrYwq.jpg')">
+                <div class="carousel-caption">
+                    <h1></h1>
+                    <span class="subheading"></span>
+                </div>
+            </div>
+            <div class="carousel-item"
+                style="background-image: url('https://i.imgur.com/3hW6ph1.jpg')">
+                <div class="carousel-caption">
+                    <h1></h1>
+                    <span class="subheading"></span>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <!-- Main Content-->
+    <section class="py-5">
+        <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
-                    <div class="site-heading">
-                        <h1>Welcome</h1>
-                        <span class="subheading">「把燈提高一點，可以照亮更多人。」<br>Helen Keller</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-    <!-- Main Content-->
-    <div class="container px-4 px-lg-5">
-        <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-md-10 col-lg-8 col-xl-7">
-                <h2> <img src="assets/pencil.png" width="3.5%" height="3.5%"> 熱門文章</h2>
-                <!-- Post preview-->
-                <div id="hotpost">
+                    <h2> <img src="assets/pencil.png" width="3.5%" height="3.5%"> 熱門文章</h2>
+                    <!-- Post preview-->
+                    <div id="hotpost">
 
+                    </div>
+                    <!-- <div class="post-preview">
+                        <a href="是平權還是特權？是為你好，還是二次傷害？.html">
+                            <h2 class="post-title">是平權還是特權？是為你好，還是二次傷害？</h2>
+                            <h3 class="post-subtitle">積極差別待遇不是特權，可是……什麼是「合理的」積極差別待遇?</h3>
+                        </a>
+                        <p class="post-meta">
+                            Posted by
+                            <a href="https://medium.com/@cactusbeing"> 準純 </a>
+                            on July 30, 2021
+                        </p>
+                    </div> -->
+                    <!-- Pager-->
+                    <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase"
+                            href="post.html">More Posts →</a></div>
+                    <!-- Divider-->
+                    <hr class="my-4" />
+                    <h2><img src="assets/paper.png" width="3.5%" height="3.5%"> 站內搜尋</h2>
+                    <script async src="https://cse.google.com/cse.js?cx=7ca65734473e2a7d1"></script>
+                    <div class="gcse-search"></div>
                 </div>
-                <!-- <div class="post-preview">
-                    <a href="是平權還是特權？是為你好，還是二次傷害？.html">
-                        <h2 class="post-title">是平權還是特權？是為你好，還是二次傷害？</h2>
-                        <h3 class="post-subtitle">積極差別待遇不是特權，可是……什麼是「合理的」積極差別待遇?</h3>
-                    </a>
-                    <p class="post-meta">
-                        Posted by
-                        <a href="https://medium.com/@cactusbeing"> 準純 </a>
-                        on July 30, 2021
-                    </p>
-                </div> -->
-                <!-- Pager-->
-                <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase"
-                        href="post.html">More Posts →</a></div>
-                <!-- Divider-->
-                <hr class="my-4" />
-                <h2><img src="assets/paper.png" width="3.5%" height="3.5%"> 站內搜尋</h2>
-                <script async src="https://cse.google.com/cse.js?cx=7ca65734473e2a7d1"></script>
-                <div class="gcse-search"></div>
             </div>
         </div>
-    </div>
+    </section>
+
     <!-- Footer-->
     <footer class="border-top">
         <div class="container px-4 px-lg-5">
