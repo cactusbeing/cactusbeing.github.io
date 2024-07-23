@@ -1694,6 +1694,37 @@ progress {
     caption-side: top;
 }
 
+.table-custom {
+    margin-top: 20px;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.table-custom thead th {
+    background-color: #f8f9fa;
+    color: #333;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.table-custom th {
+    text-align: center;
+}
+
+.table-custom tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.table-custom tbody td {
+    text-align: center;
+}
+
+.table-custom thead th input {
+    margin-left: 8px;
+    cursor: pointer;
+}
+
 .table-sm> :not(caption)>*>* {
     padding: 0.25rem 0.25rem;
 }
@@ -3846,11 +3877,48 @@ textarea.form-control-lg {
     width: 100%;
 }
 
-.tab-content>.tab-pane {
+.tabs {
+    display: flex;
+    margin: 0 0 0 0;
+}
+
+.tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: rgba(105, 119, 96, 0.8);
+    border-radius: 10px 10px 0 0;
+    margin-left: 0px;
+    margin-right: 3px;
+    transition: background-color 0.3s ease;
+}
+
+.add-page {
+    padding: 10px 8px;
+    cursor: pointer;
+    background-color: rgba(105, 119, 96, 0.8);
+    border-radius: 10px 10px 0 0;
+    border-bottom: 0;
+    margin-left: 0px;
+    margin-right: 3px;
+    transition: background-color 0.3s ease;
+}
+
+.add-page:hover,
+.tab:hover,
+.tab.active {
+    background-color: #c7f9c1;
+    color: #537400;
+    border-left: 2px solid rgb(0, 100, 12);
+    border-right: 2px solid rgb(0, 100, 12);
+    border-top: 2px solid rgb(0, 100, 12);
+    border-bottom: 0;
+}
+
+.tab-content {
     display: none;
 }
 
-.tab-content>.active {
+.tab-content.active {
     display: block;
 }
 
@@ -10484,6 +10552,19 @@ header.masthead .post-heading .meta a {
     }
 }
 
+.section {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.section:hover {
+    transform: scale(1.02);
+}
+
 .section-heading {
     font-size: 2.25rem;
     font-weight: 700;
@@ -10586,6 +10667,33 @@ header.masthead .post-heading .meta a {
 
 .card:hover .label {
     opacity: 1;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+.form-group input {
+    margin-right: 10px;
+}
+
+.table th, .table td {
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
+
+.timer {
+    position: fixed;
+    top: 10px;
+    right: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+    display: none;
 }
 
 /* Loading */

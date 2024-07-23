@@ -4,10 +4,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="google-site-verification" content="bO-ek-YGrKzQJ6TUE8ShrXF1P8HWVpUI4hVV6xqFqVo" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>仙人掌星人 | 首頁</title>
+    <title>仙人掌星人 | 工具</title>
     <link rel="icon" type="image/x-icon" href="assets/icon.png" />
     <!-- Font Awesome icons (free version)-->
     <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
@@ -19,16 +18,18 @@
         rel="stylesheet" type="text/css" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <script src="js/jquery-1.6.1.min.js"></script>
+    <!-- hover -->
     <style>
-        .carousel-item {
-            height: 75vh;
-            min-height: 350px;
-            background: no-repeat center center scroll;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
+        .blockeffect {
+            transform: scale(1, 1);
+            transition: all 0.5s ease-out;
+        }
+
+        .blockeffect:hover {
+            transform: scale(1.05, 1.05);
         }
     </style>
 </head>
@@ -47,7 +48,8 @@
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
         <div class="container px-4 px-lg-5">
-            <a class="navbar-brand" href="index.html"> <img src="assets/icon.png" width="15%" height="15%"> 仙人掌星人</a>
+            <a class="navbar-brand" href="index.html"> <img src="assets/icon.png" width="15%" height="15%">
+                仙人掌星人</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 Menu
@@ -60,88 +62,53 @@
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="教材.html">教材</a></li>
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="tool.html">工具</a></li>
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="post.html">文章</a></li>
-                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="contact.html">聯繫</a></li>
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="contact.html">聯繫</a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
     <!-- Page Header-->
-    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
-                aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
-                aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
-                aria-label="Slide 3"></button>
-        </div>
-        <div class="carousel-inner">
-            <div class="carousel-item active" style="background-image: url('assets/img/home-bg.jpg')">
-                <div class="carousel-caption">
-                    <h1>Welcome</h1>
-                    <span class="subheading">「把燈提高一點，可以照亮更多人。」<br>Helen Keller</span>
-                </div>
-            </div>
-            <div class="carousel-item"
-                style="background-image: url('https://images.pexels.com/photos/261806/pexels-photo-261806.jpeg')">
-                <div class="carousel-caption">
-                    <h1></h1>
-                    <span class="subheading"></span>
-                </div>
-            </div>
-            <div class="carousel-item"
-                style="background-image: url('https://images.pexels.com/photos/5268301/pexels-photo-5268301.jpeg')">
-                <div class="carousel-caption">
-                    <h1></h1>
-                    <span class="subheading"></span>
-                </div>
-            </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
-            data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
-            data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-    <!-- Main Content-->
-    <section class="py-5">
-        <div class="container px-4 px-lg-5">
+    <header class="masthead" style="background-image: url('assets/img/tool-background.jpg')">
+        <div class="container position-relative px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
-                    <h2> <img src="assets/pencil.png" width="3.5%" height="3.5%"> 熱門文章</h2>
-                    <!-- Post preview-->
-                    <div id="hotpost">
-
+                    <div class="page-heading">
+                        <h1><b>實用工具</b></h1>
                     </div>
-                    <!-- <div class="post-preview">
-                        <a href="是平權還是特權？是為你好，還是二次傷害？.html">
-                            <h2 class="post-title">是平權還是特權？是為你好，還是二次傷害？</h2>
-                            <h3 class="post-subtitle">積極差別待遇不是特權，可是……什麼是「合理的」積極差別待遇?</h3>
-                        </a>
-                        <p class="post-meta">
-                            Posted by
-                            <a href="https://medium.com/@cactusbeing"> 準純 </a>
-                            on July 30, 2021
-                        </p>
-                    </div> -->
-                    <!-- Pager-->
-                    <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase"
-                            href="post.html">More Posts →</a></div>
-                    <!-- Divider-->
-                    <hr class="my-4" />
-                    <h2><img src="assets/paper.png" width="3.5%" height="3.5%"> 站內搜尋</h2>
-                    <script async src="https://cse.google.com/cse.js?cx=7ca65734473e2a7d1"></script>
-                    <div class="gcse-search"></div>
                 </div>
             </div>
         </div>
-    </section>
-
+    </header>
+    <!-- Content-->
+    <div class="title">
+        <h2 class="text-center"><b>工具分類</b></h2>
+    </div>
+    <div class="w3-container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div style="cursor: pointer;" onclick="window.location='coming.html';"
+                class="w3-card-4 col-sm-4 col-md-3 w3-margin blockeffect" style="width:100%">
+                <img src="assets/img/work.jpg" alt="Alps" style="width:100%; padding-top: 1rem;">
+                <div class="w3-container w3-center">
+                    <p><b>ABA-行為功能評量</b></p>
+                </div>
+            </div>
+            <div style="cursor: pointer;" onclick="window.location='coming.html';"
+                class="w3-card-4 col-sm-4 col-md-3 w3-margin blockeffect" style="width:100%">
+                <img src="assets/img/work.jpg" alt="Alps" style="width:100%; padding-top: 1rem;">
+                <div class="w3-container w3-center">
+                    <p><b>PBS-正向行為支持計畫</b></p>
+                </div>
+            </div>
+            <div style="cursor: pointer;" onclick="window.location='behavior-tool.html';"
+                class="w3-card-4 col-sm-4 col-md-3 w3-margin blockeffect" style="width:100%">
+                <img src="assets/img/work.jpg" alt="Alps" style="width:100%; padding-top: 1rem;">
+                <div class="w3-container w3-center">
+                    <p><b>行為記錄工具</b></p>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Footer-->
     <footer class="border-top">
         <div class="container px-4 px-lg-5">
@@ -173,7 +140,9 @@
                             </a>
                         </li>
                     </ul>
-                    <div class="small text-center text-muted fst-italic">Copyright &copy; Cactusbeing Website 2021</div>
+                    <div class="small text-center text-muted fst-italic">Copyright &copy; Cactusbeing Website
+                        2021
+                    </div>
                 </div>
             </div>
         </div>
@@ -182,14 +151,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
     <script src="js/scripts.js"></script>
-    <!-- Post Preview -->
-    <script src="js/getpostlist.js"></script>
     <!-- Loading -->
     <script>
         $(document).ready(function () {
             setTimeout(function () {
                 $(".loading-wrapper").fadeOut(500);
-            }, 2000);
+            }, 1500);
         });
     </script>
 </body>
