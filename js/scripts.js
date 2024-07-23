@@ -7,9 +7,9 @@ window.addEventListener('DOMContentLoaded', () => {
     let scrollPos = 0;
     const mainNav = document.getElementById('mainNav');
     const headerHeight = mainNav.clientHeight;
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
         const currentTop = document.body.getBoundingClientRect().top * -1;
-        if ( currentTop < scrollPos) {
+        if (currentTop < scrollPos) {
             // Scrolling Up
             if (currentTop > 0 && mainNav.classList.contains('is-fixed')) {
                 mainNav.classList.add('is-visible');
@@ -26,6 +26,23 @@ window.addEventListener('DOMContentLoaded', () => {
         }
         scrollPos = currentTop;
     });
+
+    const navbarHTML = `
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto py-4 py-lg-0">
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="index.html">首頁</a></li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="about.html">關於</a></li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="教材.html">教材</a></li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="tool.html">工具</a></li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="post.html">文章</a></li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="contact.html">聯繫</a></li>
+            </ul>
+        </div>
+    `;
+
+    // Select the placeholder element
+    const navbarPlaceholder = document.getElementById('navbarPlaceholder');
+
+    // Insert the HTML into the placeholder
+    navbarPlaceholder.innerHTML = navbarHTML;
 })
-
-
