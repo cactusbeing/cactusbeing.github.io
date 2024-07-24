@@ -28,7 +28,7 @@ function addNewPage() {
     }
 
     tab.onclick = () => showTab(curPageId);
-    
+
     const pageSection = document.createElement('div');
     pageSection.classList.add('tab-content');
     pageSection.id = `page-${curPageId}`;
@@ -43,11 +43,11 @@ function addNewPage() {
             </div>
         </div>
         <button class="btn btn-secondary mb-3" onclick="recordBehavior(${curPageId})" id="recordBehavior-${curPageId}" disabled>記下行為發生時間</button>
+        <button class="btn btn-success mb-3 hidden" onclick="downloadTable(${curPageId})" id="downloadButton-${curPageId}">下載表格(Excel檔)</button>
         <div>
             <h3 class="text-center mb-3" id="title-${curPageId}">表格</h3>
             <div id="recordingSection-${curPageId}">
-                <button class="btn btn-success mb-3 hidden" onclick="downloadTable(${curPageId})" id="downloadButton-${curPageId}">下載表格(Excel檔)</button>
-                <table class="table table-custom" id="recordTable-${curPageId}">
+                <table class="table table-custom table-responsive" id="recordTable-${curPageId}">
                     <thead class="table-light">
                         <tr>
                             <th>日期</th>
@@ -123,7 +123,7 @@ function initChart(pageId) {
                 y: {
                     title: {
                         display: true,
-                        text: '時間 (秒)'
+                        text: '流逝時間 (秒)'
                     },
                     beginAtZero: true
                 }
@@ -153,6 +153,7 @@ function startRecording(pageId) {
     toggleInputs(pageId, true);
     startTimer(pageId);
     updateSummary(pageId);
+    updateTable(pageId);
 }
 
 function clearTable(pageId) {
@@ -163,13 +164,22 @@ function clearTable(pageId) {
 }
 
 function toggleInputs(pageId, disabled) {
-    document.getElementById(`class`).disabled = disabled;
-    document.getElementById(`name`).disabled = disabled;
-    document.getElementById(`studentId`).disabled = disabled;
     document.getElementById(`targetBehavior-${pageId}`).disabled = disabled;
     document.getElementById(`startButton-${pageId}`).disabled = disabled;
     document.getElementById(`stopButton-${pageId}`).disabled = !disabled;
     document.getElementById(`recordBehavior-${pageId}`).disabled = !disabled;
+
+    // enable basic data inputs when all pages are stopped
+    if (disabled == false) {
+        for (let pid in recording) {
+            if (recording[pid]) // some pages still running
+                return;
+        }
+    }
+
+    document.getElementById(`class`).disabled = disabled;
+    document.getElementById(`name`).disabled = disabled;
+    document.getElementById(`studentId`).disabled = disabled;
 }
 
 function stopRecording(pageId) {
@@ -179,11 +189,11 @@ function stopRecording(pageId) {
     toggleInputs(pageId, false);
     document.getElementById(`downloadButton-${pageId}`).classList.remove('hidden');
     const summary = document.getElementById(`summary-${pageId}`);
-    
+
     let rsize = records[pageId].length;
     if (rsize > 0) {
         let startTime = records[pageId][0].time;
-        let endTime = records[pageId][rsize-1].time;
+        let endTime = records[pageId][rsize - 1].time;
         summary.innerHTML += `
             <br\>開始時間: ${startTime.toLocaleDateString('zh-TW')} ${startTime.toLocaleTimeString('en-US', timeOptions)}
             <br\>結束時間: ${endTime.toLocaleDateString('zh-TW')} ${endTime.toLocaleTimeString('en-US', timeOptions)}
@@ -220,13 +230,13 @@ function updateChart(pageId) {
     const behaviorChart = charts[pageId];
     behaviorChart.data.labels = records[pageId].map((_, index) => index + 1);
     behaviorChart.data.datasets[0].data = records[pageId].map(record => {
-        return Math.floor(Math.random() * 30) + 1;
+        return (record.time - records[pageId][0].time) / 1000;
     });
 
     behaviorChart.update();
 }
 
-function sortTable(columnIndex, autoSort=false) {
+function sortTable(columnIndex, autoSort = false) {
     var table = document.getElementById("recordTable-top");
     var rows = table.rows;
     var switching = true;
@@ -238,7 +248,7 @@ function sortTable(columnIndex, autoSort=false) {
             var x = rows[i].getElementsByTagName("td")[columnIndex];
             var y = rows[i + 1].getElementsByTagName("td")[columnIndex];
             console.log(x.innerHTML, y.innerHTML);
-            
+
             if (autoSort) {
                 if (parseFloat(x.innerHTML) < parseFloat(y.innerHTML)) {
                     shouldSwitch = true;
@@ -306,29 +316,43 @@ function updateTable(pageId) {
 }
 
 function downloadTable(pageId) {
+    const behaviorName = document.getElementById(`targetBehavior-${pageId}`).value;
     const table = document.getElementById(`recordTable-${pageId}`);
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth() + 1;
     const day = currentDate.getDate();
     const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    const name = document.getElementById('name').value;
+    const studentId = document.getElementById('studentId').value;
 
     let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
-    csvContent += "日期: " + formattedDate + "\n";
-    csvContent += "時間,姓名,學號,標的行為,備註\n";
-    
+    csvContent += "日期," + formattedDate + "\n\n";
+
     const headers = [];
+    let skippedKeyword = new Set(['日期']);
+    let skippedIdx = new Set();
+    let currIdx = 0;
     for (const th of table.querySelectorAll('thead th')) {
+        if (skippedKeyword.has(th.innerText)) {
+            skippedIdx.add(currIdx++);
+            continue;
+        }
         headers.push(th.innerText);
+        currIdx++;
     }
     csvContent += headers.join(',') + '\n';
-    
+
     for (const row of table.querySelectorAll('tbody tr')) {
         const cells = [];
+        currIdx = 0;
         for (const cell of row.querySelectorAll('td')) {
+            if (skippedIdx.has(currIdx++))
+                continue;
+
             const textarea = cell.querySelector('textarea');
             const input = cell.querySelector('input');
-            
+
             if (textarea) {
                 cells.push('"' + textarea.value.replace(/"/g, '""').replace(/\n/g, '\\n') + '"');
             } else if (input) {
@@ -339,11 +363,14 @@ function downloadTable(pageId) {
         }
         csvContent += cells.join(',') + '\n';
     }
-    
+
+    csvContent += '\n';
+    csvContent += `平均每次間隔,${avgInterval[pageId].toFixed(2)}\n總次數,${records[pageId].length}`;
+
     let encodedUri = encodeURI(csvContent);
     let link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `行為記錄_${records[pageId][0].behavior}.csv`);
+    link.setAttribute("download", `行為記錄_${behaviorName}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
