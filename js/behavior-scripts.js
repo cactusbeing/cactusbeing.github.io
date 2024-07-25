@@ -1,4 +1,4 @@
-// scripts.js
+// behavior-scripts.js
 
 let prePageId = 0;
 let sortDir = [true, true, true];

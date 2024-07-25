@@ -1,0 +1,26 @@
+.card .icon {
+    font-size: 3rem;
+    color: #BAE0BD;
+}
+
+.card-text {
+    color: gray;
+}
+
+.card {
+    transition: all 0.5s;
+}
+
+.card:hover {
+    background-color: #BAE0BD;
+    color: #21004D;
+}
+
+.card:hover .icon,
+.card:hover .card-text {
+    color: #21004D;
+}
+
+.card-title {
+    margin-bottom: 0;
+}

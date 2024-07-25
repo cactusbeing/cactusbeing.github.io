@@ -3885,7 +3885,7 @@ textarea.form-control-lg {
 .tab {
     padding: 10px 20px;
     cursor: pointer;
-    background-color: rgba(105, 119, 96, 0.8);
+    background-color: rgba(238, 238, 238, 0.8);
     border-radius: 10px 10px 0 0;
     margin-left: 0px;
     margin-right: 3px;
@@ -3895,7 +3895,7 @@ textarea.form-control-lg {
 .add-page {
     padding: 10px 8px;
     cursor: pointer;
-    background-color: rgba(105, 119, 96, 0.8);
+    background-color: rgba(238, 238, 238, 0.8);
     border-radius: 10px 10px 0 0;
     border-bottom: 0;
     margin-left: 0px;
@@ -3906,11 +3906,11 @@ textarea.form-control-lg {
 .add-page:hover,
 .tab:hover,
 .tab.active {
-    background-color: #c7f9c1;
+    background-color: #daffd6;
     color: #537400;
-    border-left: 2px solid rgb(0, 100, 12);
-    border-right: 2px solid rgb(0, 100, 12);
-    border-top: 2px solid rgb(0, 100, 12);
+    border-left: 2px solid rgba(0, 0, 0, 0.125);
+    border-right: 2px solid rgba(0, 0, 0, 0.125);
+    border-top: 2px solid rgba(0, 0, 0, 0.125);
     border-bottom: 0;
 }
 
@@ -6415,6 +6415,12 @@ textarea.form-control-lg {
         top: 0;
         z-index: 1020;
     }
+}
+
+.heading-2 {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-top: 15px;
 }
 
 .hstack {
