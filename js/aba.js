@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     tabTitles.forEach((title, index) => {
         const tabButton = document.createElement('button');
-        tabButton.className = 'w3-bar-item w3-button tab-link';
+        tabButton.className = 'w3-bar-item w3-hover-purple w3-button w3-border tab-link';
         tabButton.textContent = title;
         tabButton.dataset.tab = `tab-${index}`;
         tabsContainer.appendChild(tabButton);
@@ -243,5 +243,5 @@ function updateCards() {
 }
 
 function downloadFile() {
-    
+
 }
