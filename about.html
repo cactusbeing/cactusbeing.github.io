@@ -1,141 +1,151 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
+    <meta name="description" content="特教百寶袋 - 關於作者與教學理念" />
     <meta name="author" content="" />
-    <title>特教百寶袋 | 關於</title>
+    <title>特教百寶袋 | 關於我</title>
     <link rel="icon" type="image/x-icon" href="assets/icon.png" />
-    <!-- Font Awesome icons (free version)-->
     <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
-    <!-- Google fonts-->
-    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet"
-        type="text/css" />
-    <link
-        href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
-        rel="stylesheet" type="text/css" />
-    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
     <link href="css/styles.css" rel="stylesheet" />
     <script src="js/jquery-1.6.1.min.js"></script>
+    <style>
+        .about-card {
+            border: none;
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+            background-color: #f8f9fa;
+        }
+        .about-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .icon-circle {
+            width: 60px;
+            height: 60px;
+            background-color: #e4c1f9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        .timeline-item {
+            border-left: 3px solid #e4c1f9;
+            padding-left: 20px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -11px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background-color: #e4c1f9;
+            border-radius: 50%;
+        }
+    </style>
 </head>
 
 <body>
-    <!-- Loading -->
-    <div class="loading-wrapper">
-        <div class="loading spinner">
-            <div class="rect1"></div>
-            <div class="rect2"></div>
-            <div class="rect3"></div>
-            <div class="rect4"></div>
-            <div class="rect5"></div>
-        </div>
-    </div>
-    <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
         <div class="container px-4 px-lg-5">
-            <a class="navbar-brand" href="index.html"> <img src="assets/icon.png" width="15%" height="15%"> 特教百寶袋</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand" href="index.html"> <img src="assets/icon.png" width="15%" height="15%" alt="Logo"> 特教百寶袋</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 Menu
                 <i class="fas fa-bars"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive"></div>
         </div>
     </nav>
-    <!-- Page Header-->
+
     <header class="masthead" style="background-image: url('assets/img/about-bg.jpg')">
         <div class="container position-relative px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <div class="page-heading">
                         <h1>關於我</h1>
-                        <span>特教百寶袋，積極關注教育議題，重視學習者受教育之權力與福祉。歡迎教育工作者、學生、家長蒞臨。</span>
+                        <span class="subheading">中等特殊教育教育工作者 / 學習科學領域研究者</span>
                     </div>
                 </div>
             </div>
         </div>
     </header>
-    <!-- Main Content-->
-    <main class="mb-4">
+
+    <main class="mb-5">
         <div class="container px-4 px-lg-5">
-            <div class="row gx-4 gx-lg-5 justify-content-center">
-                <div class="col-md-10 col-lg-8 col-xl-7">
-                    <h3><i class="fa fa-graduation-cap" aria-hidden="true"></i> 學歷</h3>
-                    <ul>
-                        <li>國立彰化師範大學 特殊教育學系</li>
-                        <li>國立彰化師範大學 復健諮商學分學程</li>
-                        <li>國立彰化師範大學&nbsp;中⽂寫作增能微學程</li>
-                    </ul>
-                    <h3><i class="fa fa-certificate" aria-hidden="true"></i> 證書</h3>
-                    <ul>
-                        <li>特殊教育-身障組 教師證 (中等)</li>
-                        <li><strong><span style="color: #993300;">國文</span></strong>補救教學合格師資證書</li>
-                        <li><span style="color: #ff6600;"><strong>英文</strong></span>補救教學合格師資證書</li>
-                        <li><span style="color: #808000;"><strong>數學</strong></span>補救教學合格師資證書</li>
-                        <li>TQC企業人才技能合格實用級</li>
-                        <li>幼兒園教保活動主題統整課程規劃乙級</li>
-                    </ul>
-                    <h3><i class="fa fa-cogs" aria-hidden="true"></i> 特質</h3>
-                    <ul>
-                        <li><strong><span style="color: #333399;">科學精神：</span></strong>嚴謹、洞察、實證本位</li>
-                        <li><span style="color: #333399;"><strong>人道精神：</strong><span
-                                    style="color: #000000;">體貼、傾聽、增能賦權</span></span></li>
-                    </ul>
-                    <h3><i class="fas fa-pencil-alt"></i> 教育理念</h3>
-                    <ol>
-                        <li><span style="color: #333399;"><span style="color: #000000;">校園<span
-                                        style="color: #666699;"><strong>零拒絕</strong></span></span></span></li>
-                        <li><span style="color: #333399;"><span style="color: #000000;">特需<span
-                                        style="color: #666699;"><strong>被重視</strong></span></span></span></li>
-                        <li><span style="color: #333399;"><span style="color: #000000;">教學<span
-                                        style="color: #666699;"><strong>差異化</strong></span></span></span></li>
-                        <li><span style="color: #333399;"><span style="color: #000000;">環境<span
-                                        style="color: #666699;"><strong>無障礙</strong></span></span></span></li>
-                    </ol>
-                    <h3><i class="fa fa-trophy" aria-hidden="true"></i> 發表及得獎經歷</h3>
-                    <ul>
-                        <li><span
-                                style="color: #008000;"><strong>科技部大專生研究計畫：</strong></span>輕度智能障礙青年<strong>生活適應議題</strong>之探究
-                        </li>
-                        <li>110級 特四甲智育獎</li>
-                        <li>107年 師培獎學金</li>
-                        <li>金融創意教案競賽<strong><span style="color: #ff0000;">甲等獎</span></strong></li>
-                        <li><span style="color: #000000;">彰化縣守護天使獎</span></li>
-                    </ul>
-                    <h3><i class="fa fa-id-card" aria-hidden="true"></i> 教學經歷</h3>
-                    <ul>
-                        <li>信義國中小&mdash;普通班跨領域教學</li>
-                        <li>萬興國中&mdash;普通班職業教育宣導</li>
-                        <li>萬興國中&mdash;普通班PFP計畫</li>
-                        <li>彰興國中&mdash;資源班國文教學</li>
-                        <li>啟聰學校&mdash;過去式英文文法教學</li>
-                        <li>啟聰學校&mdash;世界歷史教學</li>
-                        <li>台中特教學校&mdash;PBS方案計畫</li>
-                        <li>實驗學校&mdash;特殊需求領域教學</li>
-                    </ul>
-                    <h3><i class="fa fa-users" aria-hidden="true"></i> 服務與研習</h3>
-                    <ul>
-                        <li>遠哲科學營視障班</li>
-                        <li>遠哲科學營聽障班</li>
-                        <li>家扶中心義賣服務</li>
-                        <li>弱勢學生課業輔導</li>
-                        <li>特殊學生入班輔導</li>
-                        <li>特殊教育之國際研討會</li>
-                        <li>台灣學習障礙學會年會</li>
-                        <li>善意溝通自殺防治研習</li>
-                        <li>Sci-Flipper 教育黑客松</li>
-                    </ul>
-                    <h3><i class="fas fa-comment-alt"></i> 自我期許</h3>
-                    <p style="padding-left: 15px;">
-                        除了愛心、耐心、永不灰心外，<br /><strong>特教百寶袋</strong>擁有的是特殊教育的專業知能及豐富多域的教學經歷。<br /><strong>特教百寶袋</strong>的專業不僅不會消失，更能不斷進修，與時俱進！
+            
+            <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
+                <div class="col-md-10 col-lg-10 col-xl-8 text-center">
+                    <h2 class="fw-bold mb-4">Hello, 我是特教百寶袋的創作者</h2>
+                    <p class="lead text-muted">
+                        致力於推動融合教育，深信每個孩子都有專屬的學習步調與無限潛能。結合特殊教育實務與學習科學，期盼能為教學現場帶來更多元、有效的支持策略。
                     </p>
                 </div>
             </div>
+
+            <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
+                <div class="col-md-4 mb-4">
+                    <div class="card about-card h-100 p-4 text-center">
+                        <div class="d-flex justify-content-center">
+                            <div class="icon-circle"><i class="fas fa-heart"></i></div>
+                        </div>
+                        <h4 class="fw-bold">教學理念</h4>
+                        <p class="text-muted">提倡非暴力溝通（NVC）與正向行為支持（PBS），以同理心與支持性的態度陪伴特殊需求學生，建立安全信任的學習環境。</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card about-card h-100 p-4 text-center">
+                        <div class="d-flex justify-content-center">
+                            <div class="icon-circle"><i class="fas fa-puzzle-piece"></i></div>
+                        </div>
+                        <h4 class="fw-bold">融合教育策略</h4>
+                        <p class="text-muted">善用通用設計學習（UDL）原則，研發適性化的教材與教具，讓不同特質的學生都能在普通班級中找到參與學習的方法。</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card about-card h-100 p-4 text-center">
+                        <div class="d-flex justify-content-center">
+                            <div class="icon-circle"><i class="fas fa-tools"></i></div>
+                        </div>
+                        <h4 class="fw-bold">實務技能研發</h4>
+                        <p class="text-muted">專注於特教教材及工具開發，減輕特教老師行政壓力及提升特殊需求學生的獨立生活與轉銜能力。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <h3 class="fw-bold mb-4"><i class="fas fa-chalkboard-teacher me-2" style="color: #e4c1f9;"></i> 實務經驗亮點</h3>
+                    
+                    <div class="timeline-item">
+                        <h5 class="fw-bold">行為功能評量 (FBA) 與行為介入</h5>
+                        <p class="text-muted mb-0">具備實際進行行為觀察、資料收集與分析之能力，並能針對學生特質擬定個別化的正向行為支持計畫。</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h5 class="fw-bold">跨領域適性化課程設計</h5>
+                        <p class="text-muted mb-0">擁有國文、英文、數學及職業教育等多學科的試教與教材編撰經驗，將複雜知識拆解為易於吸收的學習步驟。</p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <h5 class="fw-bold">教育科技與 AI 輔助教學</h5>
+                        <p class="text-muted mb-0">導入科技工具輔助學習，目前正致力於探討如何運用 AI 聊天機器人協助學生進行情緒覺察與溝通演練。</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </main>
-    <!-- Footer-->
+
     <footer class="border-top">
         <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
@@ -166,23 +176,18 @@
                             </a>
                         </li>
                     </ul>
-                    <div class="small text-center text-muted fst-italic">Copyright &copy; Cactusbeing Website 2021</div>
+                    <div class="small text-center text-muted fst-italic">Copyright &copy; Cactusbeing Website 2026</div>
                 </div>
             </div>
         </div>
     </footer>
-    <!-- Bootstrap core JS-->
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
     <script src="js/scripts.js"></script>
-    <!-- Loading -->
     <script>
-        $(document).ready(function () {
-            setTimeout(function () {
-                $(".loading-wrapper").fadeOut(500);
-            }, 1000);
+        $(window).on('load', function() {
+            $(".loading-wrapper").fadeOut(500);
         });
     </script>
 </body>
-
 </html>
