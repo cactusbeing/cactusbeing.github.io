@@ -30,20 +30,51 @@
             -o-background-size: cover;
             background-size: cover;
         }
+        .section-title {
+            font-weight: 800;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+        }
+        .modern-card {
+            transition: all 0.3s ease;
+            border-radius: 20px;
+            border: 1px solid rgba(0,0,0,0.05);
+            background: #ffffff;
+            text-decoration: none;
+            display: block;
+        }
+        .modern-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.08) !important;
+        }
+        .modern-card h4 {
+            color: #343a40;
+            font-weight: 700;
+        }
+        .icon-box {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.2rem;
+        }
+        .bg-soft-purple { background-color: #f3e8ff; color: #8b5cf6; }
+        .bg-soft-blue { background-color: #e0f2fe; color: #0ea5e9; }
+        .bg-soft-green { background-color: #dcfce7; color: #22c55e; }
+        .bg-soft-orange { background-color: #ffedd5; color: #f97316; }
+        
+        .search-container {
+            background-color: #f8f9fa;
+            border-radius: 20px;
+            padding: 2rem;
+        }
     </style>
 </head>
 
 <body>
-    <!-- Loading -->
-    <div class="loading-wrapper">
-        <div class="loading spinner">
-            <div class="rect1"></div>
-            <div class="rect2"></div>
-            <div class="rect3"></div>
-            <div class="rect4"></div>
-            <div class="rect5"></div>
-        </div>
-    </div>
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
         <div class="container px-4 px-lg-5">
@@ -102,38 +133,116 @@
         </button>
     </div>
     <!-- Main Content-->
-    <section class="py-5">
+    <main class="mb-5 py-4">
         <div class="container px-4 px-lg-5">
-            <div class="row gx-4 gx-lg-5 justify-content-center">
+            
+            <div class="row justify-content-center mb-5">
                 <div class="col-md-10 col-lg-8 col-xl-7">
-                    <h2> <img src="assets/pencil.png" width="3.5%" height="3.5%"> 熱門文章</h2>
-                    <!-- Post preview-->
-                    <div id="hotpost">
-
+                    <h2 class="section-title text-center">
+                        <img src="assets/pencil.png" width="35px" class="me-2 pb-1"> 最新文章
+                    </h2>
+                    <div id="hotpost"></div>
+                    
+                    <div class="text-center mt-4">
+                        <a class="btn btn-outline-dark rounded-pill px-4 py-2" href="post.html">查看所有文章 →</a>
                     </div>
-                    <!-- <div class="post-preview">
-                        <a href="是平權還是特權？是為你好，還是二次傷害？.html">
-                            <h2 class="post-title">是平權還是特權？是為你好，還是二次傷害？</h2>
-                            <h3 class="post-subtitle">積極差別待遇不是特權，可是……什麼是「合理的」積極差別待遇?</h3>
-                        </a>
-                        <p class="post-meta">
-                            Posted by
-                            <a href="https://medium.com/@cactusbeing"> 仙人掌星人 </a>
-                            on July 30, 2021
-                        </p>
-                    </div> -->
-                    <!-- Pager-->
-                    <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase"
-                            href="post.html">More Posts →</a></div>
-                    <!-- Divider-->
-                    <hr class="my-4" />
-                    <h2><img src="assets/paper.png" width="3.5%" height="3.5%"> 站內搜尋</h2>
-                    <script async src="https://cse.google.com/cse.js?cx=7ca65734473e2a7d1"></script>
-                    <div class="gcse-search"></div>
                 </div>
             </div>
+
+            <hr class="my-5 opacity-25" />
+
+            <div class="row justify-content-center mb-5">
+                <div class="col-12 text-center">
+                    <h2 class="section-title">
+                        <i class="fas fa-book-open me-2" style="color: #8b5cf6;"></i> 站內精選教材
+                    </h2>
+                    <p class="text-muted mb-4">涵蓋實務操作與生活應用的專屬特教資源</p>
+                </div>
+                
+                <div class="col-md-5 col-lg-4 mb-4">
+                    <a href="職業教育slide.html" class="card modern-card shadow-sm h-100 p-4 text-center">
+                        <div class="card-body p-0">
+                            <div class="icon-circle icon-box bg-soft-green mx-auto">
+                                <i class="fas fa-seedling"></i>
+                            </div>
+                            <h4 class="card-title mb-3">職業教育</h4>
+                            <p class="card-text text-muted mb-0">收錄手工皂製作、園藝栽培、色彩學等實務操作課程大綱與教材。</p>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="col-md-5 col-lg-4 mb-4">
+                    <a href="數學slide.html" class="card modern-card shadow-sm h-100 p-4 text-center">
+                        <div class="card-body p-0">
+                            <div class="icon-circle icon-box bg-soft-blue mx-auto">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            <h4 class="card-title mb-3">生活數學</h4>
+                            <p class="card-text text-muted mb-0">包含採購預算組合、認識幣值計算與生活比例應用等實用教案。</p>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-12 text-center mt-3">
+                    <a class="btn btn-outline-dark rounded-pill px-4 py-2" href="教材.html">探索更多教材資源 →</a>
+                </div>
+            </div>
+
+            <hr class="my-5 opacity-25" />
+
+            <div class="row justify-content-center mb-5">
+                <div class="col-12 text-center">
+                    <h2 class="section-title">
+                        <i class="fas fa-toolbox me-2" style="color: #f97316;"></i> 專業評量與記錄工具
+                    </h2>
+                    <p class="text-muted mb-4">協助教育工作者更有效率地進行行為觀察與分析</p>
+                </div>
+
+                <div class="col-md-5 col-lg-4 mb-4">
+                    <a href="aba-tool.html" class="card modern-card shadow-sm h-100 p-4 text-center">
+                        <div class="card-body p-0">
+                            <div class="icon-circle icon-box bg-soft-purple mx-auto">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h4 class="card-title mb-3">FBA 行為功能評量</h4>
+                            <p class="card-text text-muted mb-0">系統化分析特殊需求學生行為背後的功能與目的，擬定介入策略。</p>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-5 col-lg-4 mb-4">
+                    <a href="behavior-tool.html" class="card modern-card shadow-sm h-100 p-4 text-center">
+                        <div class="card-body p-0">
+                            <div class="icon-circle icon-box bg-soft-orange mx-auto">
+                                <i class="fas fa-clipboard-check"></i>
+                            </div>
+                            <h4 class="card-title mb-3">行為記錄工具</h4>
+                            <p class="card-text text-muted mb-0">快速且精準地記錄與追蹤目標行為發生的頻率、時間點與前因後果。</p>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-12 text-center mt-3">
+                    <a class="btn btn-outline-dark rounded-pill px-4 py-2" href="tool.html">前往工具專區 →</a>
+                </div>
+            </div>
+
+            <hr class="my-5 opacity-25" />
+
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="search-container text-center shadow-sm">
+                        <h3 class="fw-bold mb-4">
+                            <img src="assets/paper.png" width="30px" class="me-2 pb-1"> 尋找特定資源？
+                        </h3>
+                        <script async src="https://cse.google.com/cse.js?cx=7ca65734473e2a7d1"></script>
+                        <div class="gcse-search"></div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-    </section>
+    </main>
 
     <!-- Footer-->
     <footer class="border-top">
