@@ -1,0 +1,47 @@
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import { readdirSync, cpSync, existsSync } from 'node:fs';
+import { resolve } from 'node:path';
+
+const inputs = readdirSync('.').filter((file) => file.endsWith('.html'));
+let siteBase = '/';
+let buildOutput = 'dist';
+if (existsSync('awareness/index.html')) inputs.push('awareness/index.html');
+if (existsSync('campus/index.html')) inputs.push('campus/index.html');
+
+export default defineConfig({
+  base: process.env.VITE_BASE_PATH || '/',
+  plugins: [
+    vue(),
+    {
+      name: 'site-html-base-paths',
+      configResolved(config) {
+        siteBase = config.base;
+      },
+      transformIndexHtml: {
+        order: 'post',
+        handler(html) {
+          const base = siteBase;
+          if (base === '/') return html;
+          return html.replace(
+            /\b(href|src|poster|action)=(['"])(\/(?!\/)[^'"]*)\2/g,
+            (match, attr, quote, path) =>
+              path.startsWith(base) ? match : `${attr}=${quote}${base}${path.slice(1)}${quote}`,
+          );
+        },
+      },
+    },
+    {
+      name: 'preserve-public-assets',
+      configResolved(config) {
+        buildOutput = config.build.outDir;
+      },
+      closeBundle() {
+        for (const path of ['assets', 'files', 'css', 'js', 'CNAME', 'robots.txt', 'sitemap.xml']) {
+          if (existsSync(path)) cpSync(path, resolve(buildOutput, path), { recursive: true });
+        }
+      },
+    },
+  ],
+  build: { assetsDir: 'bundles', rollupOptions: { input: inputs.map((file) => resolve(file)) } },
+});
