@@ -38,6 +38,6 @@ npm run preview
 VITE_BASE_PATH=/repository-name/ npm run build
 ```
 
-Pages 的來源需設為 **GitHub Actions**。工作流程會建置網站；只有手動執行工作流程並勾選 `deploy` 才會部署。子路徑可在手動執行時設定 `base_path`。本機提交不會推送或觸發部署。
+Pages 的來源需設為 **GitHub Actions**。推送到 `main` 後，工作流程會自動建置並部署到 GitHub Pages；也可手動執行並勾選 `deploy`。子路徑可在手動執行時設定 `base_path`。本機提交不會推送或觸發部署。
 
 技能包、本機測試工具、畫面證據及工作紀錄已加入 `.gitignore`，不包含在網站提交或部署輸出中。
