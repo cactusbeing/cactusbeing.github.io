@@ -1,58 +1,32 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import ArticleFeed from '../articles/ArticleFeed.vue';
 import BlogLayout from '../../shared/components/BlogLayout.vue';
-import BaseButton from '../../shared/components/BaseButton.vue';
 import SiteIcon from '../../shared/components/SiteIcon.vue';
 import { resources } from '../../content/resources';
 import { siteUrl } from '../../shared/site-path';
-const googleSearch = ref(false);
-const googleState = ref<'idle' | 'loading' | 'ready' | 'error'>('idle');
-function enableGoogle() {
-  if (googleState.value === 'loading' || googleState.value === 'ready') return;
-  googleSearch.value = true;
-  googleState.value = 'loading';
-  const script = document.createElement('script');
-  script.src = 'https://cse.google.com/cse.js?cx=7ca65734473e2a7d1';
-  script.async = true;
-  script.onload = () => {
-    googleState.value = 'ready';
-  };
-  script.onerror = () => {
-    googleState.value = 'error';
-    googleSearch.value = false;
-    script.remove();
-  };
-  document.head.append(script);
-}
 </script>
 <template>
   <BlogLayout>
     <ArticleFeed home>
       <template #discovery>
         <section class="campus-invitation" aria-labelledby="campus-invitation-title">
-          <div>
+          <img
+            class="campus-backdrop"
+            :src="siteUrl('/assets/decor/campus-invitation.png')"
+            width="1568"
+            height="523"
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+            decoding="async"
+          />
+          <div class="campus-copy">
             <h2 id="campus-invitation-title">同一座校園，每次相遇多一點理解。</h2>
             <p>
               從進校門到放學，完成八個隨機微事件，實際找老師、回報與返回現場。二十四次選擇全數通過，才能平安放學、收下本日回饋。
             </p>
             <a href="/campus/">走進校園 RPG <SiteIcon name="arrow" :size="18" /></a>
           </div>
-          <svg
-            class="campus-emblem"
-            width="104"
-            height="104"
-            viewBox="0 0 80 80"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            aria-hidden="true"
-          >
-            <path
-              d="M12 64V30l28-16 28 16v34H12ZM32 64V44h16v20M20 37h6m28 0h6M20 49h6m28 0h6M40 14V4m0 0h18v10H40"
-            />
-            <circle cx="40" cy="30" r="5" />
-          </svg>
         </section>
         <section class="home-resources" aria-labelledby="home-resources-title">
           <div class="resource-introduction">
@@ -119,36 +93,60 @@ function enableGoogle() {
         </section>
       </template>
     </ArticleFeed>
-    <section class="google-search" aria-labelledby="google-search-title">
-      <h2 id="google-search-title">
-        <img src="/assets/paper.png" width="26" height="26" alt="" />尋找特定資源？
-      </h2>
-      <p>也可以使用原有 Google 站內搜尋，啟用後將連線至 Google 搜尋服務。</p>
-      <BaseButton v-if="!googleSearch" variant="secondary" @click="enableGoogle">{{
-        googleState === 'error' ? '重新啟用 Google 站內搜尋' : '使用原有 Google 站內搜尋'
-      }}</BaseButton>
-      <p v-if="googleState === 'loading'" role="status">正在載入 Google 搜尋…</p>
-      <p v-if="googleState === 'error'" role="status">
-        Google 搜尋未能載入，請重試，或使用上方的站內搜尋。
-      </p>
-      <div v-if="googleSearch" class="gcse-search"></div>
-    </section>
   </BlogLayout>
 </template>
 <style scoped>
 .campus-invitation {
+  position: relative;
+  isolation: isolate;
   display: flex;
   align-items: center;
-  gap: 24px;
+  min-height: 320px;
   padding: 28px 24px;
-  background: var(--color-primary-soft);
+  overflow: hidden;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
+}
+.campus-backdrop {
+  position: absolute;
+  z-index: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  pointer-events: none;
+}
+.campus-invitation::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgb(255 255 255 / 97%) 0%,
+      rgb(255 255 255 / 94%) 32%,
+      rgb(255 255 255 / 70%) 47%,
+      transparent 66%
+    ),
+    linear-gradient(180deg, rgb(255 255 255 / 60%), transparent 30%);
+  pointer-events: none;
+}
+.campus-copy {
+  position: relative;
+  z-index: 2;
+  width: 48%;
+  max-width: 360px;
 }
 .campus-invitation h2 {
   line-height: 1.65;
+  text-wrap: balance;
 }
 .campus-invitation p {
-  color: var(--color-text-muted);
+  color: var(--color-text);
   font-size: 0.9375rem;
   line-height: 1.85;
   margin: 8px 0 12px;
@@ -158,21 +156,39 @@ function enableGoogle() {
   align-items: center;
   gap: 12px;
   min-height: 44px;
+  padding: 10px 16px;
+  border-radius: var(--radius-control);
+  background: var(--color-primary);
+  color: var(--color-surface);
   font-size: 0.9375rem;
   font-weight: 650;
+  text-decoration: none;
 }
-.campus-emblem {
-  flex-shrink: 0;
-  color: var(--color-primary);
+.campus-invitation a:hover {
+  background: var(--color-primary-hover);
+  color: var(--color-surface);
 }
 @media (max-width: 600px) {
   .campus-invitation {
-    padding: 20px;
-    gap: 12px;
+    min-height: 0;
+    padding: 24px 20px 180px;
   }
-  .campus-emblem {
-    width: 54px;
-    height: 54px;
+  .campus-copy {
+    width: 100%;
+    max-width: none;
+  }
+  .campus-backdrop {
+    width: auto;
+    height: 180px;
+  }
+  .campus-invitation::after {
+    background: linear-gradient(
+      180deg,
+      white 0%,
+      rgb(255 255 255 / 98%) 52%,
+      rgb(255 255 255 / 65%) 62%,
+      transparent 76%
+    );
   }
 }
 .home-resources,
@@ -309,23 +325,6 @@ h3 {
   color: var(--color-primary);
   flex-shrink: 0;
   margin-top: 3px;
-}
-.google-search {
-  margin: 20px 0 0;
-  padding: 24px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
-  background: var(--color-surface);
-}
-.google-search h2 {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 1.25rem;
-}
-.google-search p {
-  font-size: 0.875rem;
-  color: var(--color-text-muted);
 }
 @media (max-width: 767px) {
   .home-resources,
