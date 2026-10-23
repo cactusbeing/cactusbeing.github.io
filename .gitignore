@@ -1,0 +1,35 @@
+node_modules/
+dist/
+.playwright/
+playwright-report/
+test-results/
+.DS_Store
+*.local
+
+# Local agent skills, hooks, design records and editor state
+/.agents/
+/.codex/
+/.impeccable/
+/.github/agents/
+/.github/hooks/
+/.github/skills/
+/cactusbeing-design-skill/
+/skills-lock.json
+*.swp
+/DESIGN.md
+/DESIGN_COMPARISON.md
+/PRODUCT.md
+/REFACTOR_PLAN.md
+/STYLE_FUSION_BRIEF.md
+
+# Local QA tools and evidence are kept on this computer, outside the website commit.
+/tests/
+/playwright.config.ts
+/vitest.config.ts
+/eslint.config.js
+/.prettierrc.json
+/scripts/*
+!/scripts/verify-build.mjs
+/docs/*
+!/docs/legacy-baseline.json
+!/docs/article-baseline.json

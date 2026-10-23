@@ -1,0 +1,2353 @@
+{
+  "pages": [
+    {
+      "file": "aba-tool.html",
+      "title": "特教百寶袋 | 工具",
+      "references": [
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://use.fontawesome.com/releases/v5.15.3/js/all.js"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "css/styles.css"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "css/aba.css"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://www.w3schools.com/w3css/4/w3.css"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/jquery-1.6.1.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.5.0/jszip.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/pizzip@3.1.1/dist/pizzip.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdnjs.cloudflare.com/ajax/libs/jszip-utils/0.1.0/jszip-utils.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/docxtemplater@3.21.0/build/docxtemplater.js"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "index.html"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/chart.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/marked/marked.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/aba.js"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://www.instagram.com/cactusbeingorz"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/scripts.js"
+        }
+      ]
+    },
+    {
+      "file": "about.html",
+      "title": "特教百寶袋 | 關於我",
+      "references": [
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://use.fontawesome.com/releases/v5.15.3/js/all.js"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "css/styles.css"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/jquery-1.6.1.min.js"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "index.html"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://www.instagram.com/cactusbeingorz"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/scripts.js"
+        }
+      ]
+    },
+    {
+      "file": "behavior-tool.html",
+      "title": "特教百寶袋 | 工具",
+      "references": [
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://use.fontawesome.com/releases/v5.15.3/js/all.js"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "css/styles.css"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://www.w3schools.com/w3css/4/w3.css"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/jquery-1.6.1.min.js"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "index.html"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/chart.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/behavior-scripts.js"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://www.instagram.com/cactusbeingorz"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/scripts.js"
+        }
+      ]
+    },
+    {
+      "file": "coming.html",
+      "title": "特教百寶袋 | Coming Soon",
+      "references": [
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://use.fontawesome.com/releases/v5.15.3/js/all.js"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "css/styles.css"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/jquery-1.6.1.min.js"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "index.html"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://www.instagram.com/cactusbeingorz"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/scripts.js"
+        }
+      ]
+    },
+    {
+      "file": "contact.html",
+      "title": "特教百寶袋 | 聯繫",
+      "references": [
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://use.fontawesome.com/releases/v5.15.3/js/all.js"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "css/styles.css"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/jquery-1.6.1.min.js"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "index.html"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "iframe",
+          "attribute": "src",
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSfO-tDeMQnnEj19Nai0ASSL46SayDBQscz7lzz_1XMBJnDjmQ/viewform?embedded=true"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://www.instagram.com/cactusbeingorz"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/scripts.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.startbootstrap.com/sb-forms-latest.js"
+        }
+      ]
+    },
+    {
+      "file": "index.html",
+      "title": "特教百寶袋 | 首頁",
+      "references": [
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://use.fontawesome.com/releases/v5.15.3/js/all.js"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "css/styles.css"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/jquery-1.6.1.min.js"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "index.html"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "behavior-tool.html"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/pencil.png"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "post.html"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "職業教育slide.html"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "數學slide.html"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "教材.html"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "aba-tool.html"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "behavior-tool.html"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "tool.html"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/paper.png"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cse.google.com/cse.js?cx=7ca65734473e2a7d1"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://www.instagram.com/cactusbeingorz"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/scripts.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/getpostlist.js"
+        }
+      ]
+    },
+    {
+      "file": "post-old.html",
+      "title": "特教百寶袋 | 文章",
+      "references": [
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://use.fontawesome.com/releases/v5.15.3/js/all.js"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "css/styles.css"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/jquery-1.6.1.min.js"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "index.html"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "index.html"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "about.html"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "教材.html"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "post.html"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "contact.html"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/pencil.png"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "是平權還是特權？是為你好，還是二次傷害？.html"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://medium.com/@cactusbeing"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "有多少人覺得：理組腦、不被情緒左右、賺很多錢，三者兼具才是成功？.html"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://medium.com/@cactusbeing"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "情緒行為障礙各類型疾患&介入方法.html"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://medium.com/@cactusbeing"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "淺談情緒行為障礙.html"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://medium.com/@cactusbeing"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "淺談語言障礙.html"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://medium.com/@cactusbeing"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "家長大哉問 - 親師合作一起解決問題！.html"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://medium.com/@cactusbeing"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "融合教育是什麼？準備新制教師資格考必看！.html"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://medium.com/@cactusbeing"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://www.instagram.com/cactusbeingorz"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/scripts.js"
+        }
+      ]
+    },
+    {
+      "file": "post.html",
+      "title": "特教百寶袋 | 文章",
+      "references": [
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://use.fontawesome.com/releases/v5.15.3/js/all.js"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "css/styles.css"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/jquery-1.6.1.min.js"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "index.html"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/pencil.png"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://www.instagram.com/cactusbeingorz"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/scripts.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/getpostlist.js"
+        }
+      ]
+    },
+    {
+      "file": "tool.html",
+      "title": "特教百寶袋 | 工具",
+      "references": [
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://use.fontawesome.com/releases/v5.15.3/js/all.js"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "css/styles.css"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://www.w3schools.com/w3css/4/w3.css"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/jquery-1.6.1.min.js"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "index.html"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/img/work.jpg"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/img/work.jpg"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/img/work.jpg"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://www.instagram.com/cactusbeingorz"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/scripts.js"
+        }
+      ]
+    },
+    {
+      "file": "家長大哉問 - 親師合作一起解決問題！.html",
+      "title": "特教百寶袋 | 家長大哉問 - 親師合作一起解決問題！",
+      "references": [
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://use.fontawesome.com/releases/v5.15.3/js/all.js"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "css/styles.css"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/jquery-1.6.1.min.js"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "index.html"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://medium.com/@cactusbeing"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://search.books.com.tw/search/query/key/%E7%8E%8B%E6%84%8F%E4%B8%AD/adv_author/1/"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://www.books.com.tw/products/0010647831"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://www.instagram.com/cactusbeingorz"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/scripts.js"
+        }
+      ]
+    },
+    {
+      "file": "情緒行為障礙各類型疾患&介入方法.html",
+      "title": "特教百寶袋 | 情緒行為障礙各類型疾患&介入方法",
+      "references": [
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://use.fontawesome.com/releases/v5.15.3/js/all.js"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "css/styles.css"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/jquery-1.6.1.min.js"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "index.html"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://medium.com/@cactusbeing"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "http://www.mohwpaper.tw/adv3/maz24/utx06.asp"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://www.instagram.com/cactusbeingorz"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/scripts.js"
+        }
+      ]
+    },
+    {
+      "file": "教材.html",
+      "title": "特教百寶袋 | 教材",
+      "references": [
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://use.fontawesome.com/releases/v5.15.3/js/all.js"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "css/styles.css"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://www.w3schools.com/w3css/4/w3.css"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/jquery-1.6.1.min.js"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "index.html"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/img/pexels-mh-j-5720724.jpg"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/img/work.jpg"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/img/math.jpg"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/img/life.jpg"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/img/yan-krukov-8618062.jpg"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/img/learn.jpg"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/img/social.jpg"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/img/english.jpg"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/img/chinese.jpg"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://www.instagram.com/cactusbeingorz"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/scripts.js"
+        }
+      ]
+    },
+    {
+      "file": "數學slide.html",
+      "title": "特教百寶袋 | 數學教材",
+      "references": [
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://use.fontawesome.com/releases/v5.15.3/js/all.js"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "css/styles.css"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/jquery-1.6.1.min.js"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "index.html"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/pencil.png"
+        },
+        {
+          "tag": "iframe",
+          "attribute": "src",
+          "url": "files/特教班數學-採購與預算組合配對.pdf"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/pencil.png"
+        },
+        {
+          "tag": "iframe",
+          "attribute": "src",
+          "url": "files/特教班數學-數值大小與比例的應用.pdf"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/pencil.png"
+        },
+        {
+          "tag": "iframe",
+          "attribute": "src",
+          "url": "files/特教班數學-數值大小與比例的應用.pdf"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://www.instagram.com/cactusbeingorz"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/scripts.js"
+        }
+      ]
+    },
+    {
+      "file": "是平權還是特權？是為你好，還是二次傷害？.html",
+      "title": "特教百寶袋 | 是平權還是特權？是為你好，還是二次傷害？",
+      "references": [
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://use.fontawesome.com/releases/v5.15.3/js/all.js"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "css/styles.css"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/jquery-1.6.1.min.js"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "index.html"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://medium.com/@cactusbeing"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://www.instagram.com/cactusbeingorz"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/scripts.js"
+        }
+      ]
+    },
+    {
+      "file": "有多少人覺得：理組腦、不被情緒左右、賺很多錢，三者兼具才是成功？.html",
+      "title": "特教百寶袋 | 有多少人覺得：理組腦、不被情緒左右、賺很多錢，三者兼具才是成功？",
+      "references": [
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://use.fontawesome.com/releases/v5.15.3/js/all.js"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "css/styles.css"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/jquery-1.6.1.min.js"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "index.html"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://medium.com/@cactusbeing"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/img/post/pexels-koolshooters-7327772.jpg"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://www.instagram.com/cactusbeingorz"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/scripts.js"
+        }
+      ]
+    },
+    {
+      "file": "淺談情緒行為障礙.html",
+      "title": "特教百寶袋 | 淺談情緒行為障礙",
+      "references": [
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://use.fontawesome.com/releases/v5.15.3/js/all.js"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "css/styles.css"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/jquery-1.6.1.min.js"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "index.html"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://medium.com/@cactusbeing"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=H0080065"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://www.instagram.com/cactusbeingorz"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/scripts.js"
+        }
+      ]
+    },
+    {
+      "file": "淺談語言障礙.html",
+      "title": "特教百寶袋 | 淺談語言障礙",
+      "references": [
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://use.fontawesome.com/releases/v5.15.3/js/all.js"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "css/styles.css"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/jquery-1.6.1.min.js"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "index.html"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://medium.com/@cactusbeing"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "http://blog.ncue.edu.tw/weipailu/doc/38606"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=H0080065"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "http://www.kenkon.com.tw/health.php?act=view&id=85"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "http://163.32.59.168/2/org/Spedu/03.pdf"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://www.instagram.com/cactusbeingorz"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/scripts.js"
+        }
+      ]
+    },
+    {
+      "file": "特教宣導slide.html",
+      "title": "特教百寶袋 | 特教宣導教材",
+      "references": [
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://use.fontawesome.com/releases/v5.15.3/js/all.js"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "css/styles.css"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/jquery-1.6.1.min.js"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "index.html"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/pencil.png"
+        },
+        {
+          "tag": "iframe",
+          "attribute": "src",
+          "url": "files/特教宣導海報(智障、視障、聽障、語障、肢障、腦麻).pdf"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/pencil.png"
+        },
+        {
+          "tag": "iframe",
+          "attribute": "src",
+          "url": "files/聽障宣導簡報.pdf"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://www.instagram.com/cactusbeingorz"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/scripts.js"
+        }
+      ]
+    },
+    {
+      "file": "生活管理slide.html",
+      "title": "特教百寶袋 | 生活管理教材",
+      "references": [
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://use.fontawesome.com/releases/v5.15.3/js/all.js"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "css/styles.css"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/jquery-1.6.1.min.js"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "index.html"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/pencil.png"
+        },
+        {
+          "tag": "iframe",
+          "attribute": "src",
+          "url": "files/生活管理-《雜物整理基礎課》.pdf"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://www.instagram.com/cactusbeingorz"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/scripts.js"
+        }
+      ]
+    },
+    {
+      "file": "職業教育slide.html",
+      "title": "特教百寶袋 | 職業教育教材",
+      "references": [
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://use.fontawesome.com/releases/v5.15.3/js/all.js"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "css/styles.css"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/jquery-1.6.1.min.js"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "index.html"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/pencil.png"
+        },
+        {
+          "tag": "iframe",
+          "attribute": "src",
+          "url": "files/色彩學X花藝 課程大綱簡報.pdf"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/pencil.png"
+        },
+        {
+          "tag": "iframe",
+          "attribute": "src",
+          "url": "files/職業教育-手工皂基礎.pdf"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/pencil.png"
+        },
+        {
+          "tag": "iframe",
+          "attribute": "src",
+          "url": "files/職業教育-芳香精油手工皂製作方法.pdf"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/pencil.png"
+        },
+        {
+          "tag": "iframe",
+          "attribute": "src",
+          "url": "files/職業教育-甜點樣態手工皂製作方法.pdf"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/pencil.png"
+        },
+        {
+          "tag": "iframe",
+          "attribute": "src",
+          "url": "files/職業教育-礦物皂製作方法.pdf"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/pencil.png"
+        },
+        {
+          "tag": "iframe",
+          "attribute": "src",
+          "url": "files/職業教育-基礎園藝課程.pdf"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://www.instagram.com/cactusbeingorz"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/scripts.js"
+        }
+      ]
+    },
+    {
+      "file": "融合教育是什麼？準備新制教師資格考必看！.html",
+      "title": "特教百寶袋 | 融合教育是什麼？準備新制教師資格考必看！",
+      "references": [
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://use.fontawesome.com/releases/v5.15.3/js/all.js"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "css/styles.css"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/jquery-1.6.1.min.js"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "index.html"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://medium.com/@cactusbeing"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=H0080065"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://www.instagram.com/cactusbeingorz"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/scripts.js"
+        }
+      ]
+    },
+    {
+      "file": "關係教育slide.html",
+      "title": "特教百寶袋 | 關係教育教材",
+      "references": [
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://use.fontawesome.com/releases/v5.15.3/js/all.js"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        },
+        {
+          "tag": "link",
+          "attribute": "href",
+          "url": "css/styles.css"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/jquery-1.6.1.min.js"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "index.html"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/icon.png"
+        },
+        {
+          "tag": "img",
+          "attribute": "src",
+          "url": "assets/pencil.png"
+        },
+        {
+          "tag": "iframe",
+          "attribute": "src",
+          "url": "files/關係教育手冊-「隱性虐待」(家庭、學校、職場).pdf"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "https://www.instagram.com/cactusbeingorz"
+        },
+        {
+          "tag": "a",
+          "attribute": "href",
+          "url": "#!"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        },
+        {
+          "tag": "script",
+          "attribute": "src",
+          "url": "js/scripts.js"
+        }
+      ]
+    }
+  ],
+  "files": [
+    {
+      "file": "assets/Blocks-1s-223px.gif",
+      "bytes": 51645,
+      "sha256": "2d2e0f0ef0d433069824e24bf0c24a7909005c3281e73467249352150f3f6dcb"
+    },
+    {
+      "file": "assets/icon.png",
+      "bytes": 1718,
+      "sha256": "9ac351eda3347718057f52e9e130c7c7254982ae39f18da6afdb11836c26bf11"
+    },
+    {
+      "file": "assets/img/about-bg.jpg",
+      "bytes": 2547880,
+      "sha256": "7bf373a8440436f74778bbfd6caf9bc91a65411b5822b4b4d1b3216fb930ef7f"
+    },
+    {
+      "file": "assets/img/chinese.jpg",
+      "bytes": 138464,
+      "sha256": "7cf8aca5ea23a4422526b28ea9847447b5215111c1850aff3e90510cf3ea6762"
+    },
+    {
+      "file": "assets/img/contact-bg.jpg",
+      "bytes": 852680,
+      "sha256": "9153ad1787b47c5ed278363b941b419e1f58502ac54c5ed0fa655de5ed5b2b47"
+    },
+    {
+      "file": "assets/img/english-british-england-language-education-concept.jpg",
+      "bytes": 1802987,
+      "sha256": "7603ba4912f582e0d5a15d681b4498c55a1b36ad8a13febcb80ec4e86957a1c6"
+    },
+    {
+      "file": "assets/img/english.jpg",
+      "bytes": 3536215,
+      "sha256": "7c8a3226f9f901ba2a9f87229eb5354b56c04774d02d3870b4d9e899084fdeb9"
+    },
+    {
+      "file": "assets/img/home-bg.jpg",
+      "bytes": 1078744,
+      "sha256": "969a09e5d8c958a5403d780cec6545e6b882aedac8a560e8487ffa66de56bd69"
+    },
+    {
+      "file": "assets/img/learn.jpg",
+      "bytes": 4391086,
+      "sha256": "c7050dd191678724b0f9d908ae3ed54d9416f9c15544206a5cbef04ec1cc907f"
+    },
+    {
+      "file": "assets/img/library.jpg",
+      "bytes": 729943,
+      "sha256": "b0f30980acf0d76a39d3158964f6938335408957df3016ab2edd23f1c79733f3"
+    },
+    {
+      "file": "assets/img/life.jpg",
+      "bytes": 1061936,
+      "sha256": "7a81a2176463675d5be558c886f786a0ee6cff3bc6f9ec45f791975a1ed6b7c1"
+    },
+    {
+      "file": "assets/img/math.jpg",
+      "bytes": 1117894,
+      "sha256": "ad2d65d1fb36efe6dd2f48d02df5bab985a34dcfa550c72722c7583047218c29"
+    },
+    {
+      "file": "assets/img/pbs.jpg",
+      "bytes": 57264,
+      "sha256": "8bc855a4e1b673f8d45ad6b4cf194375c598a004719731ec16b6d798809be355"
+    },
+    {
+      "file": "assets/img/pexels-mh-j-5720724.jpg",
+      "bytes": 956211,
+      "sha256": "4cf1a29d7939a6e7ccb662a18da3f46b6e6100a038341e9169cc15501d0b0234"
+    },
+    {
+      "file": "assets/img/pixeltrue-healthy-eating-1.png",
+      "bytes": 137338,
+      "sha256": "3f41fb5e17fbdc5f3f933cc43042c692547d37ff9b280e5853d3565053cfe329"
+    },
+    {
+      "file": "assets/img/post/1_8tND7qpGcktV9-bC9GKt4A.jpeg",
+      "bytes": 169833,
+      "sha256": "f024eb0e4fea27db6dc384e7399c3a53c844525ccb6087ae7fb8f5d86c79adf7"
+    },
+    {
+      "file": "assets/img/post/1_nyOjrQlB1om3-gSyWFR1Ag.jpeg",
+      "bytes": 722358,
+      "sha256": "af19ea62ffa0e2fc105ae4a6a317d9b6e7f85953d3ffc09e6299861b0f2a17f9"
+    },
+    {
+      "file": "assets/img/post/gerd altmann.jpeg",
+      "bytes": 281194,
+      "sha256": "caf70b51d26da99e06fce64547c4b79e8b32aaaf495b4fd1c0fb6b7bdf1f3fcd"
+    },
+    {
+      "file": "assets/img/post/pexels-koolshooters-7327772.jpg",
+      "bytes": 4221743,
+      "sha256": "3268586d78a82e61e153af3e3519928e7390004ca944659e05c568b31c781577"
+    },
+    {
+      "file": "assets/img/post/融合教育.jpeg",
+      "bytes": 99018,
+      "sha256": "86c65f2266bcdd7eb395f1cf7f0686a15ab243dd0238c9650325d586a84f75c5"
+    },
+    {
+      "file": "assets/img/post-bg.jpg",
+      "bytes": 1590787,
+      "sha256": "ea651bb98e952447246e19173483edea633ed158584d7188fa1bb30bd921dbd6"
+    },
+    {
+      "file": "assets/img/postbrain-bg.jpg",
+      "bytes": 1708545,
+      "sha256": "587726776e449ee8b73c758d4cbe7fae64f92e7edb5209bc0d1af1c47d67543f"
+    },
+    {
+      "file": "assets/img/social.jpg",
+      "bytes": 869436,
+      "sha256": "2c8b9c8b45f868286e440d781db35b4cd353d47a15fb6de0a04014724c36bf50"
+    },
+    {
+      "file": "assets/img/tool-background.jpg",
+      "bytes": 2286402,
+      "sha256": "88a5f06ab19de95c1db110edcbfe88930ee21f660d85ce3ef2757aca4e18c7cf"
+    },
+    {
+      "file": "assets/img/work.jpg",
+      "bytes": 1877601,
+      "sha256": "872bf790ea4c64c0ad0ed7f6f8ed5c9d1752124e23ee5b2ef82dc8b7e3163838"
+    },
+    {
+      "file": "assets/img/yan-krukov-8618062.jpg",
+      "bytes": 1719682,
+      "sha256": "61a310c3c7da3c91fac902f8ddd6898d23d80823082d9415f947a3bf94f90cd8"
+    },
+    {
+      "file": "assets/paper.png",
+      "bytes": 12787,
+      "sha256": "5469aa74bdc35a8ff26e00a449649f51d7e1fab9443bd78b6997d149ecc7f17e"
+    },
+    {
+      "file": "assets/pencil.png",
+      "bytes": 1412,
+      "sha256": "54ae26efde2e293cd4e6ee276d43ca76e28ded9dc58d14900e6ff77a7a814e40"
+    },
+    {
+      "file": "files/特教宣導海報(智障、視障、聽障、語障、肢障、腦麻).pdf",
+      "bytes": 26540853,
+      "sha256": "4c0edb55a4a84770f26399d3d95b1e4541d1c0feaed2fbaf8c0d479171941b34"
+    },
+    {
+      "file": "files/特教班數學-採購與預算組合配對.pdf",
+      "bytes": 7471522,
+      "sha256": "be836b36e74afca21a0c0860b04481c3261039e7bc40001f886f69946c98eff7"
+    },
+    {
+      "file": "files/特教班數學-數值大小與比例的應用.pdf",
+      "bytes": 4471450,
+      "sha256": "78aef53a42404e46f81a49ecaaee9de40dc84410f87109116a2cd83ae8c404bf"
+    },
+    {
+      "file": "files/特教班數學-認識並使用不同面值的硬幣和紙鈔.pdf",
+      "bytes": 2873712,
+      "sha256": "015ab05dd9852fb0f67d90e9ecdf8e635e14471fd65eaec332e208edc82672ff"
+    },
+    {
+      "file": "files/生活管理-《雜物整理基礎課》.pdf",
+      "bytes": 4266488,
+      "sha256": "197b33c7edccf1ad71f5ee3f48bfac746d495f7a373f9bf619e864d590b6c349"
+    },
+    {
+      "file": "files/職業教育-基礎園藝課程.pdf",
+      "bytes": 1335239,
+      "sha256": "a910187f7a9302106250bc1c1ac13c6f943feedf263e873cf4afd674e1463c0c"
+    },
+    {
+      "file": "files/職業教育-手工皂基礎.pdf",
+      "bytes": 926175,
+      "sha256": "680f02cb498262558186b076e73bbb45e4132d2197bf8a9ee603b2e1080c2270"
+    },
+    {
+      "file": "files/職業教育-甜點樣態手工皂製作方法.pdf",
+      "bytes": 786900,
+      "sha256": "0fe9858122c85c983262cac2a8e04b621a978799c2262c90b9908c4948de14ca"
+    },
+    {
+      "file": "files/職業教育-礦物皂製作方法.pdf",
+      "bytes": 887634,
+      "sha256": "b1f8e6b447188f5aa66f61e8827a8f6d926fbbcc02b8d42cb017c261decd2af4"
+    },
+    {
+      "file": "files/職業教育-芳香精油手工皂製作方法.pdf",
+      "bytes": 1062396,
+      "sha256": "8ffc6b8176819218e90795acbf905ab9a08c92780ab68f3655e18165e71e35ce"
+    },
+    {
+      "file": "files/聽障宣導簡報.pdf",
+      "bytes": 31865844,
+      "sha256": "6bf178cb5dd4398bf37caece984868134a539de7a67b8a42394fc347671cf98a"
+    },
+    {
+      "file": "files/色彩學X花藝 課程大綱簡報.pdf",
+      "bytes": 698413,
+      "sha256": "e70c0100fcceda08e2588eba51f558d157efb620fd9e02ce652726b8d553cb8e"
+    },
+    {
+      "file": "files/關係教育手冊-「隱性虐待」(家庭、學校、職場).pdf",
+      "bytes": 36120073,
+      "sha256": "9b099692becf3902aaaffaf0941d6cf40cb821b8ee8ca048f944738da346e874"
+    },
+    {
+      "file": "js/aba.js",
+      "bytes": 22681,
+      "sha256": "e3e6f5886d455ffb3728599b7aab1a40e46474f722f1625d9eab298500a91135"
+    },
+    {
+      "file": "js/behavior-scripts.js",
+      "bytes": 15423,
+      "sha256": "8455e76a6ed39dfafd8a689b4b1fd4701987076bb8854b930f0a307e020c06d2"
+    },
+    {
+      "file": "js/getpostlist.js",
+      "bytes": 2759,
+      "sha256": "70562cd557a512fe14d05ecdbdf6c0ca0d3ca4ac9390a6fa4f1bee9d744e67e0"
+    },
+    {
+      "file": "js/jquery-1.6.1.min.js",
+      "bytes": 109134,
+      "sha256": "59f6987e2e77605460790303f484a5ca103239e187af4d304aa207d25c7854f8"
+    },
+    {
+      "file": "js/scripts.js",
+      "bytes": 2129,
+      "sha256": "0185ebf753cc04302e34ad73083c192f33179ba4db5272551998c426946c8b52"
+    },
+    {
+      "file": "css/aba.css",
+      "bytes": 492,
+      "sha256": "9ea452fbe28d46cdaa2d510b8c9bf108f8a2cd94b87c84b5ad06345202067b5f"
+    },
+    {
+      "file": "css/styles.css",
+      "bytes": 223809,
+      "sha256": "983095ea87b3ff063e321eaaecf6eef87cf9b4d92d76083b36e6490a1f8142db"
+    }
+  ]
+}
