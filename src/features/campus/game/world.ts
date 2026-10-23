@@ -242,7 +242,7 @@ export function move(
 ): Position {
   const magnitude = Math.hypot(dx, dy);
   if (!magnitude) return position;
-  const distance = Math.min(seconds, 0.05) * 144;
+  const distance = Math.min(seconds, 0.05) * 144 * Math.min(1, magnitude);
   const next = { ...position };
   const x = position.x + (dx / magnitude) * distance;
   if (canStand({ x, y: next.y }, map, actors)) next.x = x;

@@ -3,6 +3,8 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import SiteIcon from '../../shared/components/SiteIcon.vue';
 import IncidentFilm from './IncidentFilm.vue';
 import TeacherCorrection from './TeacherCorrection.vue';
+import VirtualJoystick from './VirtualJoystick.vue';
+import { useGameFullscreen } from './useGameFullscreen';
 import { supportDraft } from './data/supportDraft';
 import {
   choicesFor,
@@ -29,7 +31,11 @@ import {
 } from './game/progress';
 import { canStand, createNpcs, guideTarget, mapNames, portals, START } from './game/world';
 import type { GameBridge } from './game/CampusScene';
+const campusRoot = ref<HTMLElement>();
+const fullscreen = useGameFullscreen(campusRoot);
+const isFullscreen = fullscreen.active;
 const host = ref<HTMLDivElement>(),
+  joystickControl = ref<InstanceType<typeof VirtualJoystick>>(),
   playfield = ref<HTMLElement>(),
   reader = ref<HTMLDialogElement>(),
   readerTitle = ref<HTMLElement>();
@@ -60,13 +66,15 @@ const position = ref({ ...START }),
   inView = ref(true);
 const motion = window.matchMedia('(prefers-reduced-motion: reduce)'),
   reduced = ref(motion.matches);
-let game: { destroy: (removeCanvas: boolean) => void } | undefined;
+let game: import('phaser').Game | undefined;
+let canvasObserver: ResizeObserver | undefined;
 let observer: IntersectionObserver | undefined,
   saveTimer: ReturnType<typeof setTimeout> | undefined;
 let statusTimer = 0,
   disposed = false;
 let previousFocus: HTMLElement | null = null;
 const pressed = new Set<string>();
+let joystickInput = { x: 0, y: 0 };
 const dayStories = computed(() => runStories(progress.value));
 const current = computed(() => dayStories.value.find((s) => s.id === selected.value)!);
 const objective = computed(() => currentStory(progress.value));
@@ -352,12 +360,27 @@ function save() {
 }
 function clearInput() {
   pressed.clear();
+  joystickInput = { x: 0, y: 0 };
+  joystickControl.value?.reset();
   bridge.input.x = 0;
   bridge.input.y = 0;
 }
 function updateInput() {
-  bridge.input.x = Number(pressed.has('right')) - Number(pressed.has('left'));
-  bridge.input.y = Number(pressed.has('down')) - Number(pressed.has('up'));
+  const x = Number(pressed.has('right')) - Number(pressed.has('left'));
+  const y = Number(pressed.has('down')) - Number(pressed.has('up'));
+  const usingKeyboard = x !== 0 || y !== 0;
+  bridge.input.x = blocked.value ? 0 : usingKeyboard ? x : joystickInput.x;
+  bridge.input.y = blocked.value ? 0 : usingKeyboard ? y : joystickInput.y;
+}
+function joystickMove(vector: { x: number; y: number }) {
+  joystickInput = vector;
+  updateInput();
+}
+async function toggleFullscreen() {
+  clearInput();
+  await fullscreen.toggle();
+  await nextTick();
+  if (started.value && !panel.value) playfield.value?.focus({ preventScroll: true });
 }
 const keyDirections: Record<string, string> = {
   ArrowUp: 'up',
@@ -406,16 +429,6 @@ function keyup(event: KeyboardEvent) {
     pressed.delete(direction);
     updateInput();
   }
-}
-function touchDown(event: PointerEvent, direction: string) {
-  if (blocked.value) return;
-  (event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
-  pressed.add(direction);
-  updateInput();
-}
-function touchUp(direction: string) {
-  pressed.delete(direction);
-  updateInput();
 }
 async function start() {
   started.value = true;
@@ -483,6 +496,11 @@ function interact() {
     notice.value = objective.value
       ? `現在是 ${objective.value.time}，請前往${objective.value.location}，靠近${objective.value.name}再按 E。`
       : '所有情境已完成，請回南門放學。';
+}
+function interactPointer(event: PointerEvent) {
+  if (event.button !== 0) return;
+  event.preventDefault();
+  interact();
 }
 function openStory(id: string) {
   if (terminal.value) {
@@ -588,7 +606,16 @@ async function boot() {
   loadError.value = false;
   try {
     const { createCampusGame } = await import('./game/CampusScene');
-    if (!disposed && host.value) game = createCampusGame(host.value, bridge);
+    if (!disposed && host.value) {
+      game = createCampusGame(host.value, bridge);
+      canvasObserver?.disconnect();
+      canvasObserver = new ResizeObserver(([entry]) => {
+        const { width, height } = entry.contentRect;
+        if (game?.isBooted && width > 0 && height > 0)
+          game.scale.resize(Math.round(width), Math.round(height));
+      });
+      canvasObserver.observe(host.value);
+    }
   } catch {
     loadError.value = true;
   }
@@ -620,6 +647,7 @@ onBeforeUnmount(() => {
   disposed = true;
   save();
   if (saveTimer) clearTimeout(saveTimer);
+  canvasObserver?.disconnect();
   game?.destroy(true);
   observer?.disconnect();
   reader.value?.close();
@@ -629,15 +657,15 @@ onBeforeUnmount(() => {
   window.removeEventListener('pagehide', save);
   motion.removeEventListener('change', motionChange);
 });
-const directions = [
-  { id: 'up', label: '向上移動', path: 'm6 14 6-6 6 6' },
-  { id: 'left', label: '向左移動', path: 'm14 6-6 6 6 6' },
-  { id: 'down', label: '向下移動', path: 'm6 10 6 6 6-6' },
-  { id: 'right', label: '向右移動', path: 'm10 6 6 6-6 6' },
-];
 </script>
 <template>
-  <section class="campus-app" aria-labelledby="campus-title">
+  <section
+    ref="campusRoot"
+    class="campus-app"
+    :class="{ 'is-fullscreen': isFullscreen, 'is-playing': started }"
+    :data-fullscreen="fullscreen.mode.value || ''"
+    aria-labelledby="campus-title"
+  >
     <div class="campus-heading">
       <div>
         <h1 id="campus-title">同一座校園<span>從進校門，到放學的一天。</span></h1>
@@ -671,6 +699,33 @@ const directions = [
           ></span
         >
         <div class="game-tools">
+          <button
+            :aria-label="isFullscreen ? '退出全螢幕' : '全螢幕遊戲'"
+            :aria-pressed="isFullscreen"
+            :disabled="fullscreen.changing.value"
+            :title="isFullscreen ? '退出全螢幕' : '全螢幕遊戲'"
+            @click="toggleFullscreen"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                :d="
+                  isFullscreen
+                    ? 'M3 9h6V3M15 3v6h6M21 15h-6v6M9 21v-6H3'
+                    : 'M9 3H3v6M15 3h6v6M21 15v6h-6M9 21H3v-6'
+                "
+              />
+            </svg>
+          </button>
           <button aria-label="探索手冊" @click="panel = 'journal'">
             <SiteIcon name="book" :size="18" /><span>探索手冊</span></button
           ><button aria-label="操作說明" @click="panel = 'help'">
@@ -717,8 +772,9 @@ const directions = [
         class="playfield"
         tabindex="0"
         role="region"
-        aria-label="向陽中學地圖，方向鍵或 WASD 移動，靠近當前目標按 E 或 Enter 互動"
+        aria-label="向陽中學地圖，方向鍵、WASD 或觸控搖桿移動，靠近當前目標按 E 或 Enter 互動"
         :data-ready="ready"
+        :data-started="started"
         :data-map="progress.map"
         :data-transition="transitionLabel"
         :data-guide="guideLabel"
@@ -814,37 +870,14 @@ const directions = [
           <kbd>↑ ↓ ← →</kbd> / WASD 移動・<kbd>E</kbd> 互動・<kbd>Esc</kbd> 暫停
         </p>
         <div class="touch-controls" aria-label="觸控操作">
-          <div class="d-pad">
-            <button
-              v-for="direction in directions"
-              :key="direction.id"
-              :class="direction.id"
-              :aria-label="direction.label"
-              :disabled="blocked"
-              @pointerdown.prevent="touchDown($event, direction.id)"
-              @pointerup="touchUp(direction.id)"
-              @pointercancel="touchUp(direction.id)"
-              @lostpointercapture="touchUp(direction.id)"
-            >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                aria-hidden="true"
-              >
-                <path :d="direction.path" />
-              </svg></button
-            ><span class="d-pad-center" aria-hidden="true"></span>
-          </div>
-          <span class="touch-hint">按住方向鍵移動<br />找到當前目標</span
+          <VirtualJoystick ref="joystickControl" :disabled="blocked" @move="joystickMove" />
+          <span class="touch-hint">拖曳搖桿移動<br />放開立即停止</span
           ><button
             class="touch-interact"
             :disabled="blocked || !canAct"
             :aria-label="actionLabel"
-            @click="interact"
+            @pointerdown="interactPointer"
+            @click="!$event.detail && interact()"
           >
             <SiteIcon name="person" :size="22" /><span v-if="atCurrentNpc"
               >對話<br />{{
@@ -1193,7 +1226,14 @@ const directions = [
             <dt>電腦</dt>
             <dd>點一下地圖，方向鍵或 WASD 移動；E、Enter、空白鍵互動；Esc 暫停。</dd>
             <dt>手機與平板</dt>
-            <dd>按住方向鍵移動，靠近目標後按「互動」。完成所有情境後，回南門按「放學」。</dd>
+            <dd>
+              用左側搖桿拖曳移動，輕推慢走、放開停止；靠近目標後，點右側按鈕對話或進入下一張地圖。完成所有情境後，回南門按「放學」。
+            </dd>
+            <dt>全螢幕</dt>
+            <dd>
+              點工具列的全螢幕圖示，遊戲會填滿畫面；再點一次退出。也可按 Esc
+              退出；瀏覽器未提供原生全螢幕時，會使用滿版遊戲模式。
+            </dd>
             <dt>文字入口</dt>
             <dd>
               手冊中的「開始情境」提供同一個目前階段；只有抵達目前對話對象附近才開放；回報與返回現場也需要實際走到目的地。

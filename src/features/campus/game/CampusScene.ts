@@ -179,7 +179,7 @@ export class CampusScene extends Phaser.Scene {
     this.cameras.main.setZoom(
       width < 650
         ? Math.max(0.95, width / 420)
-        : Math.min(width / WORLD.width, height / WORLD.height),
+        : Math.max(width / WORLD.width, height / WORLD.height),
     );
   }
   private drawRoute(points: readonly Position[]) {
@@ -277,7 +277,14 @@ export class CampusScene extends Phaser.Scene {
         this.stalled = 0;
       }
       if (input.x || input.y)
-        this.facing = input.x < 0 ? 'left' : input.x > 0 ? 'right' : input.y < 0 ? 'up' : 'down';
+        this.facing =
+          Math.abs(input.x) > Math.abs(input.y)
+            ? input.x < 0
+              ? 'left'
+              : 'right'
+            : input.y < 0
+              ? 'up'
+              : 'down';
       if (map === 'campus')
         for (const place of landmarks)
           if (Math.hypot(place.x - this.bridge.position.x, place.y - this.bridge.position.y) < 54)

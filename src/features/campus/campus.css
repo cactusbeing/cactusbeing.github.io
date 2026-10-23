@@ -61,6 +61,7 @@
   gap: 10px;
   font-size: 0.875rem;
   line-height: 1.5;
+  min-width: 0;
 }
 .mission > svg {
   flex-shrink: 0;
@@ -75,6 +76,7 @@
 .game-tools {
   display: flex;
   gap: 5px;
+  flex-shrink: 0;
 }
 .game-tools button {
   display: flex;
@@ -254,6 +256,37 @@
 }
 .touch-controls {
   display: none;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 12px;
+}
+.touch-hint {
+  color: var(--game-muted);
+  font-size: 0.75rem;
+  line-height: 1.9;
+  text-align: center;
+}
+.touch-interact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 80px;
+  height: 80px;
+  padding: 4px;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.8125rem;
+  touch-action: manipulation;
+}
+.touch-interact:disabled {
+  background: #e2e7d5;
+  color: #6a765f;
 }
 .exploration-notice {
   min-height: 30px;
@@ -639,6 +672,19 @@
   margin: 6px 0 0;
   color: var(--game-muted);
 }
+@media (max-width: 700px), (any-pointer: coarse) {
+  .game-bottom {
+    flex-direction: column;
+    padding: 12px 14px 10px;
+    gap: 8px;
+  }
+  .keyboard-hint {
+    display: none;
+  }
+  .touch-controls {
+    display: flex;
+  }
+}
 @media (max-width: 700px) {
   .campus-heading {
     margin-bottom: 18px;
@@ -728,91 +774,6 @@
   .nearby-prompt button {
     font-size: 0.8125rem;
     padding: 8px;
-  }
-  .game-bottom {
-    flex-direction: column;
-    padding: 12px 14px 10px;
-    gap: 8px;
-  }
-  .keyboard-hint {
-    display: none;
-  }
-  .touch-controls {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    gap: 12px;
-  }
-  .d-pad {
-    display: grid;
-    grid-template: repeat(3, 40px) / repeat(3, 44px);
-    gap: 1px;
-    touch-action: none;
-  }
-  .d-pad button {
-    display: grid;
-    place-items: center;
-    min-height: 44px;
-    padding: 0;
-    border: 1px solid #b3bea0;
-    border-radius: 6px;
-    background: #e8edd9;
-    color: #3d5b3f;
-    touch-action: none;
-    user-select: none;
-    -webkit-user-select: none;
-  }
-  .d-pad button:active {
-    background: #cedcbb;
-  }
-  .d-pad button:disabled {
-    opacity: 0.65;
-  }
-  .d-pad .up {
-    grid-area: 1 / 2;
-  }
-  .d-pad .left {
-    grid-area: 2 / 1;
-  }
-  .d-pad .down {
-    grid-area: 3 / 2;
-  }
-  .d-pad .right {
-    grid-area: 2 / 3;
-  }
-  .d-pad-center {
-    grid-area: 2 / 2;
-    margin: 12px;
-    border: 2px solid #c1cbae;
-    border-radius: 50%;
-  }
-  .touch-hint {
-    color: var(--game-muted);
-    font-size: 0.6875rem;
-    line-height: 1.9;
-    text-align: center;
-  }
-  .touch-interact {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    width: 72px;
-    height: 72px;
-    padding: 4px;
-    gap: 2px;
-    flex-shrink: 0;
-    border: 0;
-    border-radius: 50%;
-    background: var(--color-primary);
-    color: white;
-    font-size: 0.8125rem;
-  }
-  .touch-interact:disabled {
-    background: #e2e7d5;
-    color: #6a765f;
   }
   .save-status {
     font-size: 0.6875rem;
@@ -1225,5 +1186,131 @@
   }
   .teacher-speech {
     font-size: 1rem;
+  }
+}
+
+.campus-app.is-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  max-width: none;
+  margin: 0;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+    env(safe-area-inset-left);
+  background: var(--game-paper);
+  overscroll-behavior: none;
+}
+.campus-app::backdrop {
+  background: var(--game-paper);
+}
+.is-fullscreen > .campus-heading,
+.is-fullscreen > .exploration-notice,
+.is-fullscreen > .learning-note {
+  display: none;
+}
+.is-fullscreen .game-shell {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  min-height: 0;
+  border: 0;
+  border-radius: 0;
+  scroll-margin: 0;
+}
+.is-fullscreen .game-toolbar,
+.is-fullscreen .current-task,
+.is-fullscreen .game-bottom {
+  flex-shrink: 0;
+}
+.is-fullscreen .playfield {
+  flex: 1;
+  min-height: 0;
+  height: auto;
+  aspect-ratio: auto;
+}
+.is-fullscreen:not(.is-playing) .game-bottom {
+  display: none;
+}
+
+@media (any-pointer: coarse) and (orientation: landscape) and (max-height: 600px) {
+  .playfield[data-started='true'] {
+    height: max(180px, calc(100dvh - 180px));
+    aspect-ratio: auto;
+  }
+  .is-fullscreen .playfield {
+    height: auto;
+  }
+  .is-fullscreen .current-task {
+    padding: 6px 14px;
+  }
+  .is-fullscreen .current-task strong {
+    font-size: 0.8125rem;
+  }
+  .is-fullscreen .current-task p,
+  .is-fullscreen .event-revisit {
+    display: none;
+  }
+  .is-fullscreen .game-bottom {
+    position: absolute;
+    right: 16px;
+    bottom: 10px;
+    left: 16px;
+    padding: 0;
+    background: transparent;
+    pointer-events: none;
+  }
+  .is-fullscreen .touch-controls {
+    align-items: flex-end;
+  }
+  .is-fullscreen .virtual-joystick {
+    width: 112px;
+    pointer-events: auto;
+  }
+  .is-fullscreen .touch-interact {
+    pointer-events: auto;
+  }
+  .is-fullscreen .touch-hint,
+  .is-fullscreen .save-status {
+    display: none;
+  }
+  .is-fullscreen .nearby-prompt {
+    right: auto;
+    bottom: 12px;
+    left: 50%;
+    width: max-content;
+    max-width: calc(100% - 300px);
+    transform: translateX(-50%);
+  }
+  .is-fullscreen .departure-overlay {
+    padding: 8px;
+  }
+  .is-fullscreen .departure-paper {
+    width: min(620px, 100%);
+    padding: 12px 20px;
+  }
+  .is-fullscreen .departure-paper .school-mark {
+    display: none;
+  }
+  .is-fullscreen .departure-paper h2 {
+    margin-bottom: 6px;
+    font-size: 1.1rem;
+  }
+  .is-fullscreen .departure-paper p {
+    margin-bottom: 8px;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+  .is-fullscreen .departure-paper .challenge-rule {
+    padding: 8px;
+  }
+  .is-fullscreen .departure-note {
+    margin-top: 8px;
   }
 }
