@@ -1,0 +1,11 @@
+import { createApp } from 'vue';
+import SiteHeader from '../shared/components/SiteHeader.vue';
+import SiteFooter from '../shared/components/SiteFooter.vue';
+import '../shared/styles/base.css';
+import '../shared/styles/content.css';
+import { installSiteBasePaths } from '../shared/site-path';
+installSiteBasePaths();
+const header = createApp(SiteHeader);
+header.config.idPrefix = 'site-header';
+header.mount('#site-header');
+createApp(SiteFooter).mount('#site-footer');
