@@ -6,6 +6,7 @@ import { resolve } from 'node:path';
 const inputs = readdirSync('.').filter((file) => file.endsWith('.html'));
 let siteBase = '/';
 let buildOutput = 'dist';
+const googleAnalyticsId = 'G-Q9P1010PSJ';
 if (existsSync('awareness/index.html')) inputs.push('awareness/index.html');
 if (existsSync('campus/index.html')) inputs.push('campus/index.html');
 
@@ -28,6 +29,30 @@ export default defineConfig({
             (match, attr, quote, path) =>
               path.startsWith(base) ? match : `${attr}=${quote}${base}${path.slice(1)}${quote}`,
           );
+        },
+      },
+    },
+    {
+      name: 'site-google-analytics',
+      apply: 'build',
+      transformIndexHtml: {
+        order: 'pre',
+        handler() {
+          return [
+            {
+              tag: 'script',
+              attrs: {
+                async: true,
+                src: `https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`,
+              },
+              injectTo: 'head',
+            },
+            {
+              tag: 'script',
+              children: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${googleAnalyticsId}');`,
+              injectTo: 'head',
+            },
+          ];
         },
       },
     },
