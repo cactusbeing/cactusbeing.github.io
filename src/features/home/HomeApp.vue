@@ -21,11 +21,11 @@ import { siteUrl } from '../../shared/site-path';
             decoding="async"
           />
           <div class="campus-copy">
-            <h2 id="campus-invitation-title">同一座校園，每次相遇多一點理解。</h2>
+            <h2 id="campus-invitation-title">同一座校園，換個視角走進日常。</h2>
             <p>
-              從進校門到放學，完成八個隨機微事件，實際找老師、回報與返回現場。二十四次選擇全數通過，才能平安放學、收下本日回饋。
+              從同學的校園探索，到特教老師的第一天。透過故事、選擇與行動，認識理解、支持與合作的不同模樣。
             </p>
-            <a href="/campus/">走進校園 RPG <SiteIcon name="arrow" :size="18" /></a>
+            <a href="/game/">打開遊戲百寶箱 <SiteIcon name="arrow" :size="18" /></a>
           </div>
         </section>
         <section class="home-resources" aria-labelledby="home-resources-title">

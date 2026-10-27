@@ -7,8 +7,14 @@ const inputs = readdirSync('.').filter((file) => file.endsWith('.html'));
 let siteBase = '/';
 let buildOutput = 'dist';
 const googleAnalyticsId = 'G-Q9P1010PSJ';
-if (existsSync('awareness/index.html')) inputs.push('awareness/index.html');
-if (existsSync('campus/index.html')) inputs.push('campus/index.html');
+for (const entry of [
+  'exam/index.html',
+  'exam/history/index.html',
+  'game/index.html',
+  'game/campus/index.html',
+]) {
+  if (existsSync(entry)) inputs.push(entry);
+}
 
 export default defineConfig({
   base: process.env.VITE_BASE_PATH || '/',

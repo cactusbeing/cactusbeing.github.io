@@ -1,6 +1,6 @@
 # 特教百寶袋
 
-Vue 3、TypeScript、Vite 與 Phaser 的純前端網站。保留既有文章、教材、工具與網址；校園 RPG 位於 `/campus/`，首頁與導航皆有入口。
+Vue 3、TypeScript、Vite 與 Phaser 的純前端網站。保留既有文章、教材與工具；遊戲中心位於 `/game/`，校園遊戲位於 `/game/campus/`。舊 `/campus/` 入口已移除，不設轉址。
 
 ## 本機開發與建置
 

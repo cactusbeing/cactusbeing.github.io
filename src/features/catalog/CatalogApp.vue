@@ -43,12 +43,6 @@ function filename(path: string) {
     ><a href="/教材.html">← 所有教學資源</a>
     <h1 class="section">{{ category.title }}</h1>
     <p class="muted">{{ category.description }}</p>
-    <BaseCard v-if="category.title === '特教宣導'"
-      ><span class="tag">互動示範</span>
-      <h2>換個角度，一起理解</h2>
-      <p>可操作的互動活動骨架。示範題目尚未經教材審核。</p>
-      <BaseButton href="/awareness/">開始示範活動</BaseButton></BaseCard
-    >
     <div class="stack section">
       <BaseCard v-for="file in category.files" :key="file"
         ><span class="tag">PDF 教材</span>

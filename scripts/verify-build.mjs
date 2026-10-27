@@ -32,11 +32,15 @@ console.log('Content: all 7 authored article bodies retain their text in product
 
 const pages = [
   ...baseline.pages.map((page) => page.file),
-  'awareness/index.html',
-  'campus/index.html',
+  'exam/index.html',
+  'exam/history/index.html',
+  'game/index.html',
+  'game/campus/index.html',
   '404.html',
 ];
-const campusHtml = readFileSync(built('campus/index.html'), 'utf8');
+if (existsSync(built('campus/index.html')))
+  throw new Error('Removed campus entry must not be emitted.');
+const campusHtml = readFileSync(built('game/campus/index.html'), 'utf8');
 const deploymentBase = campusHtml.match(/src="([^"]*\/)?bundles\//)?.[1] || '/';
 for (const file of pages) {
   const html = readFileSync(built(file), 'utf8');

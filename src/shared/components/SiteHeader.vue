@@ -11,7 +11,7 @@ const searchOpen = ref(false);
 const current = sitePathname();
 const toggle = ref<HTMLButtonElement>();
 const { query, results } = useSiteSearch();
-const navIcons = ['person', 'leaf', 'person', 'book', 'folder', 'tools'] as const;
+const navIcons = ['person', 'person', 'book', 'folder', 'tools', 'book'] as const;
 function close() {
   if (open.value) {
     open.value = false;
@@ -43,7 +43,11 @@ onBeforeUnmount(() => window.removeEventListener('keydown', shortcut));
           v-for="(item, index) in navigation"
           :key="item.href"
           :href="item.href"
-          :aria-current="current === item.href ? 'page' : undefined"
+          :aria-current="
+            current === item.href || (item.href === '/game/' && current.startsWith('/game/'))
+              ? 'page'
+              : undefined
+          "
           @click="open = false"
           ><SiteIcon :name="navIcons[index]" :size="15" />{{ item.label }}</a
         >
