@@ -4,7 +4,8 @@ import ArticleFeed from '../articles/ArticleFeed.vue';
 import BaseCard from '../../shared/components/BaseCard.vue';
 import BaseButton from '../../shared/components/BaseButton.vue';
 import { resources } from '../../content/resources';
-import { sitePathname, siteUrl } from '../../shared/site-path';
+import { sitePathname } from '../../shared/site-path';
+import { imageSource, imageSrcset } from '../../shared/responsive-images';
 const path = sitePathname();
 const category = resources.find((resource) => resource.href === path);
 const posts = path === '/post.html' || path === '/post-old.html';
@@ -66,7 +67,9 @@ function filename(path: string) {
       <BaseCard v-for="resource in resources" :key="resource.href" :href="resource.href"
         ><img
           class="resource-image"
-          :src="siteUrl(resource.image)"
+          :src="imageSource(resource.image)"
+          :srcset="imageSrcset(resource.image)"
+          sizes="(max-width: 767px) calc(100vw - 80px), 400px"
           width="600"
           height="400"
           alt=""

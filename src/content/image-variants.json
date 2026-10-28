@@ -1,0 +1,222 @@
+{
+  "/assets/img/postbrain-bg.jpg": [
+    {
+      "src": "/assets/optimized/postbrain-bg-480.webp",
+      "width": 480
+    },
+    {
+      "src": "/assets/optimized/postbrain-bg-960.webp",
+      "width": 960
+    }
+  ],
+  "/assets/img/post-bg.jpg": [
+    {
+      "src": "/assets/optimized/post-bg-480.webp",
+      "width": 480
+    },
+    {
+      "src": "/assets/optimized/post-bg-960.webp",
+      "width": 960
+    }
+  ],
+  "/assets/img/pbs.jpg": [
+    {
+      "src": "/assets/optimized/pbs-480.webp",
+      "width": 480
+    },
+    {
+      "src": "/assets/optimized/pbs-960.webp",
+      "width": 960
+    }
+  ],
+  "/assets/img/tool-background.jpg": [
+    {
+      "src": "/assets/optimized/tool-background-480.webp",
+      "width": 480
+    },
+    {
+      "src": "/assets/optimized/tool-background-960.webp",
+      "width": 960
+    }
+  ],
+  "/assets/img/learn.jpg": [
+    {
+      "src": "/assets/optimized/learn-480.webp",
+      "width": 480
+    },
+    {
+      "src": "/assets/optimized/learn-960.webp",
+      "width": 960
+    }
+  ],
+  "/assets/img/about-bg.jpg": [
+    {
+      "src": "/assets/optimized/about-bg-480.webp",
+      "width": 480
+    },
+    {
+      "src": "/assets/optimized/about-bg-960.webp",
+      "width": 960
+    }
+  ],
+  "/assets/img/post/融合教育.jpeg": [
+    {
+      "src": "/assets/optimized/融合教育-480.webp",
+      "width": 480
+    },
+    {
+      "src": "/assets/optimized/融合教育-960.webp",
+      "width": 960
+    }
+  ],
+  "/assets/img/work.jpg": [
+    {
+      "src": "/assets/optimized/work-240.webp",
+      "width": 240
+    },
+    {
+      "src": "/assets/optimized/work-480.webp",
+      "width": 480
+    },
+    {
+      "src": "/assets/optimized/work-960.webp",
+      "width": 960
+    }
+  ],
+  "/assets/img/math.jpg": [
+    {
+      "src": "/assets/optimized/math-240.webp",
+      "width": 240
+    },
+    {
+      "src": "/assets/optimized/math-480.webp",
+      "width": 480
+    },
+    {
+      "src": "/assets/optimized/math-960.webp",
+      "width": 960
+    }
+  ],
+  "/assets/img/pexels-mh-j-5720724.jpg": [
+    {
+      "src": "/assets/optimized/pexels-mh-j-5720724-240.webp",
+      "width": 240
+    },
+    {
+      "src": "/assets/optimized/pexels-mh-j-5720724-480.webp",
+      "width": 480
+    },
+    {
+      "src": "/assets/optimized/pexels-mh-j-5720724-960.webp",
+      "width": 960
+    }
+  ],
+  "/assets/img/life.jpg": [
+    {
+      "src": "/assets/optimized/life-240.webp",
+      "width": 240
+    },
+    {
+      "src": "/assets/optimized/life-480.webp",
+      "width": 480
+    },
+    {
+      "src": "/assets/optimized/life-960.webp",
+      "width": 960
+    }
+  ],
+  "/assets/img/yan-krukov-8618062.jpg": [
+    {
+      "src": "/assets/optimized/yan-krukov-8618062-240.webp",
+      "width": 240
+    },
+    {
+      "src": "/assets/optimized/yan-krukov-8618062-480.webp",
+      "width": 480
+    },
+    {
+      "src": "/assets/optimized/yan-krukov-8618062-960.webp",
+      "width": 960
+    }
+  ],
+  "/assets/img/home-bg.jpg": [
+    {
+      "src": "/assets/optimized/home-bg-640.webp",
+      "width": 640
+    },
+    {
+      "src": "/assets/optimized/home-bg-1024.webp",
+      "width": 1024
+    },
+    {
+      "src": "/assets/optimized/home-bg-1280.webp",
+      "width": 1280
+    },
+    {
+      "src": "/assets/optimized/home-bg-1920.webp",
+      "width": 1920
+    }
+  ],
+  "/assets/decor/campus-invitation.png": [
+    {
+      "src": "/assets/optimized/campus-invitation-800.webp",
+      "width": 800
+    },
+    {
+      "src": "/assets/optimized/campus-invitation-1024.webp",
+      "width": 1024
+    },
+    {
+      "src": "/assets/optimized/campus-invitation-1568.webp",
+      "width": 1568
+    }
+  ],
+  "/assets/decor/banner/cactus-tall.png": [
+    {
+      "src": "/assets/optimized/cactus-tall-200.webp",
+      "width": 200
+    }
+  ],
+  "/assets/decor/banner/cactus-pear.png": [
+    {
+      "src": "/assets/optimized/cactus-pear-200.webp",
+      "width": 200
+    }
+  ],
+  "/assets/decor/banner/succulent.png": [
+    {
+      "src": "/assets/optimized/succulent-200.webp",
+      "width": 200
+    }
+  ],
+  "/assets/decor/banner/books.png": [
+    {
+      "src": "/assets/optimized/books-200.webp",
+      "width": 200
+    }
+  ],
+  "/assets/decor/banner/leaf-spray.png": [
+    {
+      "src": "/assets/optimized/leaf-spray-200.webp",
+      "width": 200
+    }
+  ],
+  "/assets/decor/banner/leaf-eucalyptus.png": [
+    {
+      "src": "/assets/optimized/leaf-eucalyptus-200.webp",
+      "width": 200
+    }
+  ],
+  "/assets/decor/canva-cactus-books.png": [
+    {
+      "src": "/assets/optimized/canva-cactus-books-198.webp",
+      "width": 198
+    }
+  ],
+  "/assets/decor/canva-botanical-sprig.png": [
+    {
+      "src": "/assets/optimized/canva-botanical-sprig-198.webp",
+      "width": 198
+    }
+  ]
+}

@@ -18,6 +18,8 @@ npm run preview
 
 建置會檢查 TypeScript、原有 22 個 HTML 網址、48 個靜態資產雜湊、7 篇文章及頁面連結。輸出目錄為 `dist/`。
 
+首頁、文章列表及教材列表使用 `assets/optimized/` 的 WebP 與回應式圖片；原始圖片網址保留。共用橫幅在 HTML 預載對應尺寸圖片，避免等待 Vue 與 CSS 載入後才開始下載。更新原圖後，安裝 WebP 的 `cwebp` 工具並執行 `npm run optimize:images`，一併提交產生的圖片與 `src/content/image-variants.json`；一般開發與 CI 建置不需要安裝編碼器。
+
 ## 校園 RPG
 
 從進校門到放學，探索校園、教室、操場與教師辦公室。八個情境各有現場回應、成人回報、返回現場三次決定；任一錯誤終止本輪，全數通過並回南門後顯示總結。

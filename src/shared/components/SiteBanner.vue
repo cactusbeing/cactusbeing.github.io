@@ -2,6 +2,7 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import BannerGarden from './BannerGarden.vue';
 import { sitePathname } from '../site-path';
+import { imageSource, imageSrcset } from '../responsive-images';
 
 const path = sitePathname();
 const home = path === '/' || path === '/index.html';
@@ -37,6 +38,18 @@ onUnmounted(() => {
     :data-motion="motionState"
     :aria-label="home ? '特殊教育・資源與陪伴' : '理解、分享與陪伴'"
   >
+    <img
+      class="banner-photo"
+      :src="imageSource('/assets/img/home-bg.jpg')"
+      :srcset="imageSrcset('/assets/img/home-bg.jpg')"
+      sizes="(max-width: 767px) 540px, 100vw"
+      width="3828"
+      height="2552"
+      alt=""
+      aria-hidden="true"
+      fetchpriority="high"
+      decoding="async"
+    />
     <div class="banner-shade"></div>
     <BannerGarden v-if="home" />
     <div class="banner-content">
@@ -88,11 +101,21 @@ onUnmounted(() => {
   position: relative;
   isolation: isolate;
   height: 310px;
-  background: var(--color-surface) url('/assets/img/home-bg.jpg') center 52% / cover;
+  background: var(--color-surface);
   color: var(--color-banner-text);
   display: grid;
   place-items: center;
   overflow: hidden;
+}
+.banner-photo {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 52%;
+  pointer-events: none;
 }
 .banner-shade {
   position: absolute;

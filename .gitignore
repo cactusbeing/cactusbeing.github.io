@@ -31,6 +31,7 @@ test-results/
 /.prettierrc.json
 /scripts/*
 !/scripts/verify-build.mjs
+!/scripts/optimize-images.mjs
 /docs/*
 !/docs/legacy-baseline.json
 !/docs/article-baseline.json

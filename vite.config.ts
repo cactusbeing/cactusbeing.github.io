@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { readdirSync, cpSync, existsSync, readFileSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
+import imageVariants from './src/content/image-variants.json';
 
 const inputs = readdirSync('.').filter((file) => file.endsWith('.html'));
 let siteBase = '/';
@@ -34,6 +35,28 @@ export default defineConfig({
   base: process.env.VITE_BASE_PATH || '/',
   plugins: [
     vue(),
+    {
+      name: 'site-banner-preload',
+      transformIndexHtml: {
+        order: 'post',
+        handler() {
+          const variants = imageVariants['/assets/img/home-bg.jpg'];
+          const url = (path: string) => siteBase + path.slice(1);
+          return [{
+            tag: 'link',
+            attrs: {
+              rel: 'preload',
+              as: 'image',
+              href: url(variants.find(({ width }) => width === 1280)!.src),
+              imagesrcset: variants.map(({ src, width }) => `${url(src)} ${width}w`).join(', '),
+              imagesizes: '(max-width: 767px) 540px, 100vw',
+              fetchpriority: 'high',
+            },
+            injectTo: 'head',
+          }];
+        },
+      },
+    },
     {
       name: 'site-search-indexing',
       transformIndexHtml: {

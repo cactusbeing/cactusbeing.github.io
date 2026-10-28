@@ -3,7 +3,7 @@ import ArticleFeed from '../articles/ArticleFeed.vue';
 import BlogLayout from '../../shared/components/BlogLayout.vue';
 import SiteIcon from '../../shared/components/SiteIcon.vue';
 import { resources } from '../../content/resources';
-import { siteUrl } from '../../shared/site-path';
+import { imageSource, imageSrcset } from '../../shared/responsive-images';
 </script>
 <template>
   <BlogLayout>
@@ -12,7 +12,9 @@ import { siteUrl } from '../../shared/site-path';
         <section class="campus-invitation" aria-labelledby="campus-invitation-title">
           <img
             class="campus-backdrop"
-            :src="siteUrl('/assets/decor/campus-invitation.png')"
+            :src="imageSource('/assets/decor/campus-invitation.png')"
+            :srcset="imageSrcset('/assets/decor/campus-invitation.png')"
+            sizes="(max-width: 600px) 540px, (max-width: 900px) 100vw, 800px"
             width="1568"
             height="523"
             alt=""
@@ -39,7 +41,7 @@ import { siteUrl } from '../../shared/site-path';
             </div>
             <img
               class="resource-decoration"
-              src="/assets/decor/canva-cactus-books.png"
+              :src="imageSource('/assets/decor/canva-cactus-books.png')"
               width="198"
               height="100"
               alt=""
@@ -54,7 +56,12 @@ import { siteUrl } from '../../shared/site-path';
               :href="resource.href"
               class="resource-entry"
             >
-              <img :src="siteUrl(resource.image)" width="500" height="300" alt="" loading="lazy" />
+              <img
+                :src="imageSource(resource.image)"
+                :srcset="imageSrcset(resource.image)"
+                sizes="(max-width: 374px) 72px, (max-width: 767px) 96px, (max-width: 900px) 28vw, 240px"
+                width="500" height="300" alt="" loading="lazy" decoding="async"
+              />
               <div class="resource-heading">
                 <h3>{{ resource.title }}</h3>
                 <span>{{ resource.files.length }} 份 PDF</span>

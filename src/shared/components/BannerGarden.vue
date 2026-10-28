@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { siteUrl } from '../site-path';
+import { imageSource } from '../responsive-images';
 const plants = [
   { id: 'tall-left', asset: 'cactus-tall' },
   { id: 'pear-left', asset: 'cactus-pear' },
@@ -40,7 +40,7 @@ const plants = [
     >
       <img
         class="garden-art"
-        :src="siteUrl(`/assets/decor/banner/${plant.asset}.png`)"
+        :src="imageSource(`/assets/decor/banner/${plant.asset}.png`)"
         alt=""
         width="200"
         height="200"

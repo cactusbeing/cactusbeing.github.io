@@ -3,7 +3,7 @@ import { computed, onBeforeUnmount, ref } from 'vue';
 import { articleCategories, articleEntries } from '../../content/article-details';
 import { useSiteSearch } from '../../shared/composables/useSiteSearch';
 import SiteIcon from '../../shared/components/SiteIcon.vue';
-import { siteUrl } from '../../shared/site-path';
+import { imageSource, imageSrcset } from '../../shared/responsive-images';
 defineProps<{ home?: boolean }>();
 const { query, results } = useSiteSearch();
 function readCategory() {
@@ -106,11 +106,14 @@ onBeforeUnmount(() => window.removeEventListener('popstate', restore));
         <article class="post-card base-card">
           <a :href="article.href" class="post-cover" tabindex="-1" aria-hidden="true"
             ><img
-              :src="siteUrl(article.image)"
+              :src="imageSource(article.image)"
+              :srcset="imageSrcset(article.image)"
+              sizes="(max-width: 767px) 480px, (max-width: 900px) 34vw, (max-width: 1180px) 30vw, 285px"
               alt=""
               width="420"
               height="320"
-              :loading="index < 2 ? 'eager' : 'lazy'" /><span class="cover-shade"></span
+              :loading="index === 0 ? 'eager' : 'lazy'"
+              decoding="async" /><span class="cover-shade"></span
             ><span class="cover-label">CACTUS / NOTES</span
             ><span class="cover-title">{{
               articleCategories.find((category) => category.id === article.category)?.label

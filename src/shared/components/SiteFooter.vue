@@ -1,9 +1,12 @@
+<script setup lang="ts">
+import { imageSource } from '../responsive-images';
+</script>
 <template>
   <footer class="site-footer">
     <div class="container">
       <img
         class="footer-decoration"
-        src="/assets/decor/canva-botanical-sprig.png"
+        :src="imageSource('/assets/decor/canva-botanical-sprig.png')"
         width="198"
         height="100"
         alt=""
