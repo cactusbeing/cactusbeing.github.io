@@ -41,3 +41,11 @@ VITE_BASE_PATH=/repository-name/ npm run build
 Pages 的來源需設為 **GitHub Actions**。推送到 `main` 後，工作流程會自動建置並部署到 GitHub Pages；也可手動執行並勾選 `deploy`。子路徑可在手動執行時設定 `base_path`。本機提交不會推送或觸發部署。
 
 技能包、本機測試工具、畫面證據及工作紀錄已加入 `.gitignore`，不包含在網站提交或部署輸出中。
+
+## Google 搜尋索引
+
+每次建置會自動產生 `dist/sitemap.xml` 與 `dist/robots.txt`，納入公開 HTML 頁面與 `files/` 下的 PDF 教材。首頁與子目錄入口使用目錄網址；`post-old.html` 指向 `post.html` 的 canonical 網址。404、Coming Soon、標記 `noindex` 的作答歷史及重複列表不列入 sitemap。新增根目錄 HTML 或 PDF 後，重新建置即可更新；新的巢狀 HTML 入口仍需加入 Vite 的 `inputs`。
+
+`cactusbeing.github.io` 的 DNS 由 GitHub 管理，請在 [Google Search Console](https://search.google.com/search-console) 新增「網址前置字串」資源 `https://cactusbeing.github.io/`，選擇「HTML 標記」驗證，將該頁提供的完整 `<meta name="google-site-verification" ...>` 加入根目錄 `index.html` 的 `<head>`。DNS TXT 驗證碼不能直接當作 HTML 驗證標記使用。
+
+部署後，先確認首頁原始碼含有該標記，再回 Search Console 按「驗證」。驗證成功後，在「Sitemap」提交 `https://cactusbeing.github.io/sitemap.xml`。驗證標記需持續保留。Sitemap 有助於 Google 發現網址，但不保證每個頁面都會收錄；可用「網頁索引」與「網址審查」查看實際結果。

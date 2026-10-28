@@ -1,12 +1,26 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import { readdirSync, cpSync, existsSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { readdirSync, cpSync, existsSync, readFileSync } from 'node:fs';
+import { relative, resolve } from 'node:path';
 
 const inputs = readdirSync('.').filter((file) => file.endsWith('.html'));
 let siteBase = '/';
 let buildOutput = 'dist';
 const googleAnalyticsId = 'G-Q9P1010PSJ';
+const siteOrigin = 'https://cactusbeing.github.io';
+const excludedFromSearch = new Set(['404.html', 'coming.html']);
+const canonicalFile = (file: string) => (file === 'post-old.html' ? 'post.html' : file);
+const publicUrl = (file: string) =>
+  new URL(
+    siteBase + canonicalFile(file).replace(/(^|\/)index\.html$/, '$1')
+      .split('/').map(encodeURIComponent).join('/'),
+    siteOrigin,
+  ).href;
+const hasNoindex = (html: string) =>
+  [...html.matchAll(/<meta\b[^>]*>/gi)].some(
+    ([tag]) => /\bname=["'](?:robots|googlebot)["']/i.test(tag) &&
+      /\bcontent=["'][^"']*\bnoindex\b/i.test(tag),
+  );
 for (const entry of [
   'exam/index.html',
   'exam/history/index.html',
@@ -20,6 +34,53 @@ export default defineConfig({
   base: process.env.VITE_BASE_PATH || '/',
   plugins: [
     vue(),
+    {
+      name: 'site-search-indexing',
+      transformIndexHtml: {
+        order: 'post',
+        handler(html, context) {
+          const file = relative(process.cwd(), context.filename).split('\\').join('/');
+          if (excludedFromSearch.has(file)) {
+            return {
+              html,
+              tags: [{ tag: 'meta', attrs: { name: 'robots', content: 'noindex' }, injectTo: 'head' }],
+            };
+          }
+          if (hasNoindex(html)) return html;
+          return {
+            html: html.replace(/<link\b(?=[^>]*\brel=["']canonical["'])[^>]*>/gi, ''),
+            tags: [{ tag: 'link', attrs: { rel: 'canonical', href: publicUrl(file) }, injectTo: 'head' }],
+          };
+        },
+      },
+      generateBundle() {
+        const pages = inputs.filter((file) =>
+          !excludedFromSearch.has(file) && canonicalFile(file) === file &&
+          !hasNoindex(readFileSync(file, 'utf8')),
+        );
+        const pdfs = existsSync('files')
+          ? readdirSync('files', { recursive: true, encoding: 'utf8' })
+              .filter((file) => file.toLowerCase().endsWith('.pdf'))
+              .map((file) => `files/${file.split('\\').join('/')}`)
+          : [];
+        const escapeXml = (value: string) => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&apos;');
+        const urls = [...new Set([...pages, ...pdfs].map(publicUrl))].sort();
+        this.emitFile({
+          type: 'asset',
+          fileName: 'sitemap.xml',
+          source: '<?xml version="1.0" encoding="UTF-8"?>\n' +
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+            urls.map((url) => `  <url><loc>${escapeXml(url)}</loc></url>`).join('\n') +
+            '\n</urlset>\n',
+        });
+        this.emitFile({
+          type: 'asset',
+          fileName: 'robots.txt',
+          source: `User-agent: *\nAllow: /\n\nSitemap: ${publicUrl('sitemap.xml')}\n`,
+        });
+      },
+    },
     {
       name: 'site-html-base-paths',
       configResolved(config) {
@@ -68,7 +129,7 @@ export default defineConfig({
         buildOutput = config.build.outDir;
       },
       closeBundle() {
-        for (const path of ['assets', 'files', 'css', 'js', 'CNAME', 'robots.txt', 'sitemap.xml']) {
+        for (const path of ['assets', 'files', 'css', 'js', 'CNAME']) {
           if (existsSync(path)) cpSync(path, resolve(buildOutput, path), { recursive: true });
         }
       },
