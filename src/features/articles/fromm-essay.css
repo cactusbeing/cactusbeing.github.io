@@ -1,0 +1,39 @@
+.fromm-essay { line-height: 1.95; }
+.fromm-essay .essay-back { display: inline-flex; align-items: center; min-height: 44px; font-size: .9rem; }
+.fromm-essay .post-heading { margin-top: 16px; }
+.fromm-essay h1 { margin: 0 0 24px; line-height: 1.5; color: var(--color-primary); font-size: clamp(1.6rem, 3.4vw, 2.5rem); text-wrap: balance; }
+.essay-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; color: var(--color-text-muted); font-size: .875rem; }
+.essay-meta a { display: inline-flex; align-items: center; min-height: 44px; }
+.fromm-essay .essay-deck { margin: 20px 0 0; color: var(--color-text-muted); }
+.essay-intro { font-size: 1.125rem; }
+.essay-contents { margin: 32px 0 48px; padding-block: 24px; border-block: 1px solid var(--color-border); }
+.fromm-essay .essay-contents h2 { margin: 0 0 12px; font-size: 1rem; }
+.essay-contents ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 32px; margin: 0; padding-left: 24px; }
+.essay-contents a { display: inline-flex; align-items: center; min-height: 44px; font-size: .9375rem; }
+.fromm-essay .essay-contents ol li a { text-decoration: none; }
+.fromm-essay > section { margin-top: 48px; }
+.fromm-essay > section > h2 { margin: 0 0 20px; color: var(--color-primary); font-size: clamp(1.25rem, 2.5vw, 1.6rem); line-height: 1.65; text-wrap: pretty; }
+.love-elements { margin: 24px 0 0; }
+.love-elements > div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; padding-block: 16px; border-bottom: 1px solid var(--color-border); }
+.love-elements dt { color: var(--color-primary); font-weight: 700; }
+.love-elements dt span { display: block; font-size: .875rem; font-weight: 400; color: var(--color-text-muted); }
+.love-elements dd { margin: 0; align-self: center; }
+.fromm-essay .essay-emphasis { margin-block: 28px; font-size: 1.2rem; font-weight: 700; color: var(--color-primary); }
+.love-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; padding-block: 24px; border-block: 1px solid var(--color-border); }
+.fromm-essay .love-comparison h3 { margin: 0; font-size: 1.125rem; color: var(--color-primary); }
+.fromm-essay .love-principle { margin: 16px 0; font-size: 1.125rem; font-weight: 700; }
+.love-comparison ul { margin: 0; padding-left: 24px; }
+.love-comparison li + li { margin-top: 8px; }
+.essay-reflection { padding: 24px; margin-block: 32px; background: var(--color-primary-soft); color: var(--color-primary); border-radius: var(--radius-control); }
+.fromm-essay .essay-reflection p { margin: 0; font-weight: 700; font-size: 1.125rem; }
+.fromm-essay .essay-ending { margin: 28px 0 0; font-size: 1.2rem; font-weight: 700; line-height: 2; color: var(--color-primary); }
+.essay-footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--color-border); }
+.essay-tags { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-bottom: 16px; }
+.essay-tags a { display: inline-flex; align-items: center; min-height: 44px; font-size: .875rem; }
+@media (max-width: 600px) {
+  .fromm-essay { padding: 24px 20px; }
+  .essay-intro { font-size: 1.0625rem; }
+  .essay-contents ol, .love-comparison { grid-template-columns: minmax(0, 1fr); }
+  .love-comparison > section + section { padding-top: 24px; border-top: 1px solid var(--color-border); }
+  .essay-reflection { padding: 20px; }
+}

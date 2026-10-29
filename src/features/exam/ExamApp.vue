@@ -41,6 +41,7 @@ const error = ref('');
 const practiceTitle = ref<HTMLElement | null>(null);
 const subjectTitle = ref<HTMLElement | null>(null);
 const resultTitle = ref<HTMLElement | null>(null);
+const yearPicker = ref<HTMLDetailsElement | null>(null);
 const subjectProgress = ref<Record<string, number>>({});
 const currentYear = computed(() => manifest.value.find((item) => item.year === selectedYear.value));
 const questions = computed(() => exam.value?.multiple_choice_questions ?? []);
@@ -113,6 +114,17 @@ async function loadManifest() {
   } finally {
     loading.value = false;
   }
+}
+
+function closeYearPicker() {
+  if (!yearPicker.value) return;
+  yearPicker.value.open = false;
+  yearPicker.value.querySelector('summary')?.focus();
+}
+
+function chooseMobileYear(year: number) {
+  chooseYear(year);
+  closeYearPicker();
 }
 
 function chooseYear(year: number) {
@@ -281,7 +293,20 @@ onMounted(loadManifest);
     <p v-if="loading && !manifest.length" class="load-message" role="status">題庫載入中…</p>
 
     <template v-if="manifest.length">
-      <div class="year-picker" aria-label="選擇考試年度">
+      <details ref="yearPicker" class="mobile-year-picker" @keydown.esc.prevent="closeYearPicker">
+        <summary>
+          <span>考試年度</span>
+          <strong>{{ selectedYear }} 年</strong>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+        </summary>
+        <div class="mobile-year-options" role="group" aria-label="選擇考試年度">
+          <button v-for="item in manifest" :key="item.year" type="button" :aria-pressed="selectedYear === item.year" @click="chooseMobileYear(item.year)">
+            <span>{{ item.year }} 年</span>
+            <span v-if="selectedYear === item.year" class="current-year-label">目前年度</span>
+          </button>
+        </div>
+      </details>
+      <div class="year-picker" role="group" aria-label="選擇考試年度">
         <button
           v-for="item in manifest"
           :key="item.year"
@@ -485,8 +510,9 @@ onMounted(loadManifest);
 .page-heading p, .practice-heading p, .subject-heading p { color: var(--color-text-muted); margin: 0; }
 .page-heading a { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; font-size: .9rem; }
 .page-links { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
+.mobile-year-picker { display: none; }
 .year-picker { display: flex; gap: 10px; border-bottom: 1px solid var(--color-border); margin-bottom: 30px; }
-.year-picker button { min-height: 48px; padding: 8px 22px; border: 0; border-bottom: 3px solid transparent; background: transparent; color: var(--color-text-muted); font-weight: 700; }
+.year-picker button { flex-shrink: 0; min-height: 48px; padding: 8px 22px; border: 0; border-bottom: 3px solid transparent; background: transparent; color: var(--color-text-muted); font-weight: 700; white-space: nowrap; }
 .year-picker button:hover, .year-picker button.active { color: var(--color-primary); border-bottom-color: var(--color-primary); }
 .subject-list { max-width: 860px; }
 .subject-heading { margin-bottom: 18px; }
@@ -583,6 +609,18 @@ progress { width: 100%; height: 8px; accent-color: var(--color-primary); }
 .question-sidebar .privacy-note { margin-bottom: 0; }
 .load-message { padding: 16px; background: var(--color-surface-muted); border-radius: 12px; }
 @media (max-width: 800px) { .practice-layout { grid-template-columns: 1fr; } .question-sidebar { position: static; } .page-heading, .practice-heading { align-items: flex-start; flex-direction: column; gap: 12px; } }
+@media (max-width: 600px) {
+  .year-picker { display: none; }
+  .mobile-year-picker { display: block; margin-bottom: 28px; }
+  .mobile-year-picker summary { display: grid; grid-template-columns: 1fr auto 20px; align-items: center; gap: 12px; min-height: 52px; padding: 10px 14px; border: 1px solid var(--color-control-border); border-radius: var(--radius-control); color: var(--color-primary); background: var(--color-surface); cursor: pointer; list-style: none; }
+  .mobile-year-picker summary::-webkit-details-marker { display: none; }
+  .mobile-year-picker summary > span { color: var(--color-text-muted); font-size: .9rem; }
+  .mobile-year-picker[open] summary svg { transform: rotate(180deg); }
+  .mobile-year-options { display: grid; gap: 4px; padding: 6px; margin-top: 8px; border: 1px solid var(--color-border); border-radius: var(--radius-control); }
+  .mobile-year-options button { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 48px; padding: 10px 12px; border: 0; border-radius: 8px; background: var(--color-surface); color: var(--color-primary); font-weight: 700; text-align: left; }
+  .mobile-year-options button:hover, .mobile-year-options button[aria-pressed='true'] { background: var(--color-primary-soft); }
+  .current-year-label { font-size: .8rem; font-weight: 400; }
+}
 @media (max-width: 560px) { .subject-row { padding: 14px 16px; } .subject-name { font-size: 1rem; } .question-card { padding: 18px; } .question-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } .set-heading { display: block; } .set-heading span { display: block; margin-top: 4px; } }
 @media (max-width: 560px) { .subject-row { align-items: flex-start; flex-direction: column; gap: 10px; } .subject-meta { flex-wrap: wrap; } }
 @media (max-width: 560px) { .result-summary { align-items: flex-start; flex-direction: column; } .result-actions button { width: 100%; } }

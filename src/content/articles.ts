@@ -6,6 +6,12 @@ export interface Article {
 }
 export const articles: Article[] = [
   {
+    title: '如果讓佛洛姆看《直到T恤乾了為止》',
+    href: '/如果讓佛洛姆看《直到T恤乾了為止》.html',
+    date: '2026-10-28',
+    author: '仙人掌星人',
+  },
+  {
     title: '是平權還是特權？是為你好，還是二次傷害？',
     href: '/是平權還是特權？是為你好，還是二次傷害？.html',
     date: '2021-07-30',

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref } from 'vue';
 import { articleCategories, articleEntries } from '../../content/article-details';
-import { useSiteSearch } from '../../shared/composables/useSiteSearch';
+import { matchesSearch, useSiteSearch } from '../../shared/composables/useSiteSearch';
 import SiteIcon from '../../shared/components/SiteIcon.vue';
 import { imageSource, imageSrcset } from '../../shared/responsive-images';
 defineProps<{ home?: boolean }>();
@@ -19,9 +19,7 @@ const visible = computed(() =>
       (category.value === 'all' || article.category === category.value) &&
       (!tag.value || article.tags.includes(tag.value)) &&
       (!month.value || article.date.startsWith(month.value)) &&
-      `${article.title} ${article.description} ${article.tags.join(' ')}`
-        .toLocaleLowerCase()
-        .includes(query.value.trim().toLocaleLowerCase()),
+      matchesSearch(article, query.value),
   ),
 );
 function selectCategory(id: string) {

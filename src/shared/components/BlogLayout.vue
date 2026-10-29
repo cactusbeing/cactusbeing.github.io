@@ -3,6 +3,13 @@ import SiteIcon from './SiteIcon.vue';
 import { articleCategories, articleEntries } from '../../content/article-details';
 import { resources } from '../../content/resources';
 const tags = [...new Set(articleEntries.flatMap((article) => article.tags))];
+const archives = [...new Set(articleEntries.map((article) => article.date.slice(0, 7)))]
+  .sort((a, b) => b.localeCompare(a))
+  .map((month) => ({
+    month,
+    label: `${month.slice(0, 4)} 年 ${Number(month.slice(5))} 月`,
+    count: articleEntries.filter((article) => article.date.startsWith(month)).length,
+  }));
 </script>
 <template>
   <div class="blog-layout">
@@ -55,7 +62,7 @@ const tags = [...new Set(articleEntries.flatMap((article) => article.tags))];
         >
       </section>
       <section class="sidebar-card sidebar-panel">
-        <h2><SiteIcon name="tag" />教學關鍵字</h2>
+        <h2><SiteIcon name="tag" />主題關鍵字</h2>
         <div class="tag-cloud">
           <a
             v-for="(tag, index) in tags"
@@ -98,8 +105,8 @@ const tags = [...new Set(articleEntries.flatMap((article) => article.tags))];
       </section>
       <section class="sidebar-card sidebar-panel">
         <h2><SiteIcon name="calendar" />時光歸檔</h2>
-        <a class="archive-link" href="/post.html?month=2021-07"
-          ><span>2021 年 7 月</span><span>{{ articleEntries.length }} 篇文章</span></a
+        <a v-for="archive in archives" :key="archive.month" class="archive-link" :href="`/post.html?month=${archive.month}`"
+          ><span>{{ archive.label }}</span><span>{{ archive.count }} 篇文章</span></a
         >
       </section>
       <blockquote class="sidebar-card quote-card">

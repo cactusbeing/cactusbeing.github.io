@@ -4,10 +4,17 @@ export const articleCategories = [
   { id: 'inclusion', label: '融合與理解' },
   { id: 'behavior', label: '情緒與行為' },
   { id: 'family', label: '親師合作' },
+  { id: 'relationships', label: '心理與關係' },
 ] as const;
 export type ArticleCategory = Exclude<(typeof articleCategories)[number]['id'], 'all'>;
 const details: { category: ArticleCategory; tags: string[]; image: string; description: string }[] =
   [
+    {
+      category: 'relationships',
+      tags: ['佛洛姆', '愛的藝術', '成熟的愛', '親密關係', '影劇解析'],
+      image: '/assets/img/post-bg.jpg',
+      description: '以《愛的藝術》為視角，從照顧、責任、尊重與了解，回望《直到T恤乾了為止》裡的孤獨、依附與愛。',
+    },
     {
       category: 'inclusion',
       tags: ['融合教育', '平等與尊重'],
@@ -51,4 +58,12 @@ const details: { category: ArticleCategory; tags: string[]; image: string; descr
       description: '家長大哉問，親師合作一起解決問題！',
     },
   ];
-export const articleEntries = articles.map((article, index) => ({ ...article, ...details[index] }));
+export const articleEntries = articles.map((article, index) => {
+  const detail = details[index];
+  return {
+    ...article,
+    ...detail,
+    keywords: [detail.description, ...detail.tags,
+      articleCategories.find((category) => category.id === detail.category)?.label ?? ''].join(' '),
+  };
+});
