@@ -1,10 +1,13 @@
+import { mediumArticles } from './medium-articles';
+
 export interface Article {
   title: string;
   href: string;
   date: string;
   author: string;
+  publishedAt?: string;
 }
-export const articles: Article[] = [
+export const legacyArticles: Article[] = [
   {
     title: '如果讓佛洛姆看《直到T恤乾了為止》',
     href: '/如果讓佛洛姆看《直到T恤乾了為止》.html',
@@ -14,13 +17,13 @@ export const articles: Article[] = [
   {
     title: '是平權還是特權？是為你好，還是二次傷害？',
     href: '/是平權還是特權？是為你好，還是二次傷害？.html',
-    date: '2021-07-30',
+    date: '2021-06-30',
     author: '仙人掌星人',
   },
   {
     title: '有多少人覺得：理組腦、不被情緒左右、賺很多錢，三者兼具才是成功？',
     href: '/有多少人覺得：理組腦、不被情緒左右、賺很多錢，三者兼具才是成功？.html',
-    date: '2021-07-23',
+    date: '2021-06-23',
     author: '仙人掌星人',
   },
   {
@@ -54,3 +57,7 @@ export const articles: Article[] = [
     author: '仙人掌星人',
   },
 ];
+
+export const articles: Article[] = [...legacyArticles, ...mediumArticles].sort((a, b) =>
+  (b.publishedAt || b.date).localeCompare(a.publishedAt || a.date),
+);

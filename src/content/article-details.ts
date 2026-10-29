@@ -1,4 +1,5 @@
-import { articles } from './articles';
+import { legacyArticles } from './articles';
+import { mediumArticles } from './medium-articles';
 export const articleCategories = [
   { id: 'all', label: '全部文章' },
   { id: 'inclusion', label: '融合與理解' },
@@ -58,7 +59,7 @@ const details: { category: ArticleCategory; tags: string[]; image: string; descr
       description: '家長大哉問，親師合作一起解決問題！',
     },
   ];
-export const articleEntries = articles.map((article, index) => {
+const legacyEntries = legacyArticles.map((article, index) => {
   const detail = details[index];
   return {
     ...article,
@@ -67,3 +68,14 @@ export const articleEntries = articles.map((article, index) => {
       articleCategories.find((category) => category.id === detail.category)?.label ?? ''].join(' '),
   };
 });
+
+const importedEntries = mediumArticles.map((article) => ({
+  ...article,
+  tags: [...article.tags] as string[],
+  keywords: [article.description, ...article.tags,
+    articleCategories.find((category) => category.id === article.category)?.label ?? ''].join(' '),
+}));
+
+export const articleEntries = [...legacyEntries, ...importedEntries].sort((a, b) =>
+  (b.publishedAt || b.date).localeCompare(a.publishedAt || a.date),
+);

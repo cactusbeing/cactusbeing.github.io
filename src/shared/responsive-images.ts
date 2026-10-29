@@ -1,7 +1,8 @@
 import manifest from '../content/image-variants.json';
+import mediumManifest from '../content/medium-image-variants.json';
 import { siteUrl } from './site-path';
 
-const images: Record<string, { src: string; width: number }[]> = manifest;
+const images: Record<string, { src: string; width: number }[]> = { ...manifest, ...mediumManifest };
 
 export function imageSource(original: string): string {
   const variants = images[original];

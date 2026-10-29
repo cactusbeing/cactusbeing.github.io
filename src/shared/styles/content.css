@@ -52,6 +52,25 @@
   font-size: 0.85rem;
   color: var(--color-text-muted);
 }
+.reading .medium-article {
+  overflow-wrap: anywhere;
+  line-height: 1.75;
+}
+.reading .medium-article :is(ul, ol) {
+  padding-left: 1.6rem;
+}
+.reading .medium-article img {
+  display: block;
+  margin-inline: auto;
+}
+.reading .medium-article figure {
+  max-width: 100%;
+}
+.reading .medium-article hr {
+  margin-block: 2rem;
+  border: 0;
+  border-top: 1px solid var(--color-border);
+}
 .reading .row {
   display: block;
 }

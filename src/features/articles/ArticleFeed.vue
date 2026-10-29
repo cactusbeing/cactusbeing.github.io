@@ -4,7 +4,8 @@ import { articleCategories, articleEntries } from '../../content/article-details
 import { matchesSearch, useSiteSearch } from '../../shared/composables/useSiteSearch';
 import SiteIcon from '../../shared/components/SiteIcon.vue';
 import { imageSource, imageSrcset } from '../../shared/responsive-images';
-defineProps<{ home?: boolean }>();
+const props = defineProps<{ home?: boolean }>();
+const homeArticleLimit = 3;
 const { query, results } = useSiteSearch();
 function readCategory() {
   const value = new URLSearchParams(location.search).get('category');
@@ -13,7 +14,7 @@ function readCategory() {
 const category = ref(readCategory());
 const tag = ref(new URLSearchParams(location.search).get('tag') || '');
 const month = ref(new URLSearchParams(location.search).get('month') || '');
-const visible = computed(() =>
+const filtered = computed(() =>
   articleEntries.filter(
     (article) =>
       (category.value === 'all' || article.category === category.value) &&
@@ -22,6 +23,10 @@ const visible = computed(() =>
       matchesSearch(article, query.value),
   ),
 );
+const visible = computed(() => props.home ? filtered.value.slice(0, homeArticleLimit) : filtered.value);
+const archiveHref = computed(() => category.value === 'all'
+  ? '/post.html'
+  : `/post.html?category=${encodeURIComponent(category.value)}`);
 function selectCategory(id: string) {
   category.value = id;
   tag.value = '';
@@ -124,7 +129,7 @@ onBeforeUnmount(() => window.removeEventListener('popstate', restore));
                 articleCategories.find((category) => category.id === article.category)?.label
               }}</a
               ><span aria-hidden="true">/</span
-              ><time :datetime="article.date">{{ article.date.replaceAll('-', ' / ') }}</time>
+              ><time :datetime="article.publishedAt || article.date">{{ article.date.replaceAll('-', ' / ') }}</time>
             </div>
             <h2>
               <a :href="article.href">{{ article.title }}</a>
@@ -160,6 +165,10 @@ onBeforeUnmount(() => window.removeEventListener('popstate', restore));
           <h2 class="more-articles-heading">更多文章</h2>
         </template>
       </template>
+      <a v-if="home && filtered.length > visible.length" class="all-articles-link" :href="archiveHref">
+        {{ category === 'all' ? `查看全部 ${articleEntries.length} 篇文章` : `查看此分類的 ${filtered.length} 篇文章` }}
+        <SiteIcon name="arrow" :size="16" />
+      </a>
       <div v-if="!visible.length" class="empty-feed base-card" role="status">
         <SiteIcon name="search" :size="28" />
         <h2>{{ home && results.length ? '沒有符合的文章' : '還沒找到這樣的文章' }}</h2>
@@ -567,6 +576,24 @@ onBeforeUnmount(() => window.removeEventListener('popstate', restore));
   padding-inline: 4px;
   font-size: 1.25rem;
   font-weight: 650;
+}
+.all-articles-link {
+  display: inline-flex;
+  justify-self: center;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 18px;
+  border-radius: var(--radius-control);
+  background: var(--color-primary);
+  color: var(--color-surface);
+  font-size: 0.875rem;
+  font-weight: 650;
+  text-decoration: none;
+}
+.all-articles-link:hover {
+  background: var(--color-primary-hover);
+  color: var(--color-surface);
 }
 @media (max-width: 767px) {
   .home-section-heading h2 {
