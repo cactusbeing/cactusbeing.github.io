@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import SiteIcon from './SiteIcon.vue';
+import SiteNotice from './SiteNotice.vue';
 import { articleCategories, articleEntries } from '../../content/article-details';
 import { resources } from '../../content/resources';
 const tags = [...new Set(articleEntries.flatMap((article) => article.tags))];
@@ -79,20 +80,12 @@ const archives = [...new Set(articleEntries.map((article) => article.date.slice(
         <SiteIcon name="arrow" :size="14"
       /></a>
     </aside>
-    <div class="blog-content"><slot /></div>
+    <div class="blog-content">
+      <SiteNotice class="mobile-notice" />
+      <slot />
+    </div>
     <aside class="right-sidebar" aria-label="網站消息與最新文章">
-      <section class="sidebar-card sidebar-panel notice-card">
-        <h2>
-          <SiteIcon name="megaphone" />小站公告<span class="notice-dot" aria-hidden="true"></span>
-        </h2>
-        <p class="muted"><time datetime="2026-11-01">2026 / 11 / 01</time></p>
-        <p><strong>115 年教檢全類科題庫上架！</strong></p>
-        <p class="muted">
-          從幼兒園、特教身心障礙組與資賦優異組、國民小學到中等學校，各類科考古題都能線上練習。
-        </p>
-        <p class="muted">其他年份的全類科教檢題庫也會陸續上架，歡迎持續關注！</p>
-        <a class="small-link" href="/exam/">開始練習教檢考古題 <SiteIcon name="arrow" :size="13" /></a>
-      </section>
+      <SiteNotice />
       <section class="sidebar-card sidebar-panel">
         <h2><SiteIcon name="clock" />最近文章</h2>
         <ol class="recent-list">
@@ -140,6 +133,7 @@ const archives = [...new Set(articleEntries.map((article) => article.date.slice(
 .blog-content {
   min-width: 0;
 }
+.mobile-notice { display: none; }
 .sidebar-card {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
@@ -301,28 +295,6 @@ const archives = [...new Set(articleEntries.map((article) => article.date.slice(
   color: var(--color-text-muted);
   margin-top: 5px;
 }
-.notice-card {
-  background: var(--color-surface-muted);
-}
-.notice-card p {
-  font-size: 0.74rem;
-  line-height: 1.95;
-}
-.notice-dot {
-  margin-left: auto;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--color-primary);
-}
-.small-link {
-  display: inline-flex;
-  gap: 7px;
-  align-items: center;
-  font-size: 0.75rem;
-  padding-block: 7px;
-  text-decoration: none;
-}
 .recent-list {
   list-style: none;
   padding: 0;
@@ -414,6 +386,10 @@ const archives = [...new Set(articleEntries.map((article) => article.date.slice(
   }
   .right-sidebar {
     display: none;
+  }
+  .mobile-notice {
+    display: block;
+    margin-bottom: 24px;
   }
 }
 @media (max-width: 900px) {
