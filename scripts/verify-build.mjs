@@ -37,6 +37,7 @@ const pages = [
   'exam/history/index.html',
   'game/index.html',
   'game/campus/index.html',
+  'game/money/index.html',
   '404.html',
 ];
 if (existsSync(built('campus/index.html')))

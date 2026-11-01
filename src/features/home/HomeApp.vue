@@ -9,25 +9,19 @@ import { imageSource, imageSrcset } from '../../shared/responsive-images';
   <BlogLayout>
     <ArticleFeed home>
       <template #discovery>
-        <section class="campus-invitation" aria-labelledby="campus-invitation-title">
+        <section class="game-invitation" aria-labelledby="game-invitation-title">
           <img
-            class="campus-backdrop"
-            :src="imageSource('/assets/decor/campus-invitation.png')"
-            :srcset="imageSrcset('/assets/decor/campus-invitation.png')"
+            class="game-invitation-art"
+            :src="imageSource('/assets/decor/games-invitation.webp')"
+            :srcset="imageSrcset('/assets/decor/games-invitation.webp')"
             sizes="(max-width: 600px) 540px, (max-width: 900px) 100vw, 800px"
-            width="1568"
-            height="523"
-            alt=""
-            aria-hidden="true"
-            loading="lazy"
-            decoding="async"
+            width="2172" height="724" alt="" aria-hidden="true"
+            loading="lazy" decoding="async" fetchpriority="low"
           />
-          <div class="campus-copy">
-            <h2 id="campus-invitation-title">同一座校園，換個視角走進日常。</h2>
-            <p>
-              從同學的校園探索，到特教老師的第一天。透過故事、選擇與行動，認識理解、支持與合作的不同模樣。
-            </p>
-            <a href="/game/">打開遊戲百寶箱 <SiteIcon name="arrow" :size="18" /></a>
+          <div class="game-invitation-copy">
+            <h2 id="game-invitation-title">遊戲百寶箱</h2>
+            <p>從校園裡理解差異，到手搖店練習點餐與用錢，讓每次遊戲都成為生活的小練習。</p>
+            <a class="game-invitation-action" href="/game/">打開遊戲百寶箱 <SiteIcon name="arrow" :size="18" /></a>
           </div>
         </section>
         <section class="home-resources" aria-labelledby="home-resources-title">
@@ -103,7 +97,7 @@ import { imageSource, imageSrcset } from '../../shared/responsive-images';
   </BlogLayout>
 </template>
 <style scoped>
-.campus-invitation {
+.game-invitation {
   position: relative;
   isolation: isolate;
   display: flex;
@@ -115,88 +109,81 @@ import { imageSource, imageSrcset } from '../../shared/responsive-images';
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
 }
-.campus-backdrop {
+.game-invitation-art {
   position: absolute;
+  inset: 0;
   z-index: 0;
-  right: 0;
-  bottom: 0;
   display: block;
   width: 100%;
-  max-width: none;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
   pointer-events: none;
 }
-.campus-invitation::after {
+.game-invitation::after {
   content: '';
   position: absolute;
-  z-index: 1;
   inset: 0;
-  background:
-    linear-gradient(
-      90deg,
-      rgb(255 255 255 / 97%) 0%,
-      rgb(255 255 255 / 94%) 32%,
-      rgb(255 255 255 / 70%) 47%,
-      transparent 66%
-    ),
-    linear-gradient(180deg, rgb(255 255 255 / 60%), transparent 30%);
+  z-index: 1;
+  background: linear-gradient(90deg, rgb(255 255 255 / 96%) 0%, rgb(255 255 255 / 88%) 30%, rgb(255 255 255 / 65%) 44%, transparent 64%);
   pointer-events: none;
 }
-.campus-copy {
+.game-invitation-copy {
   position: relative;
   z-index: 2;
-  width: 48%;
-  max-width: 360px;
+  width: 46%;
+  max-width: 340px;
 }
-.campus-invitation h2 {
-  line-height: 1.65;
-  text-wrap: balance;
+.game-invitation h2 {
+  color: var(--color-primary);
+  font-size: 1.5rem;
+  line-height: 1.5;
 }
-.campus-invitation p {
+.game-invitation-copy p {
   color: var(--color-text);
-  font-size: 0.9375rem;
+  font-size: 1rem;
   line-height: 1.85;
-  margin: 8px 0 12px;
+  margin: 12px 0 20px;
 }
-.campus-invitation a {
+.game-invitation-action {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  min-height: 44px;
+  min-height: 48px;
   padding: 10px 16px;
   border-radius: var(--radius-control);
   background: var(--color-primary);
   color: var(--color-surface);
-  font-size: 0.9375rem;
+  font-size: .9375rem;
   font-weight: 650;
   text-decoration: none;
 }
-.campus-invitation a:hover {
+.game-invitation-action:hover {
   background: var(--color-primary-hover);
   color: var(--color-surface);
 }
 @media (max-width: 600px) {
-  .campus-invitation {
+  .game-invitation {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     min-height: 0;
-    padding: 24px 20px 180px;
+    padding: 0;
   }
-  .campus-copy {
-    width: 100%;
-    max-width: none;
-  }
-  .campus-backdrop {
+  .game-invitation-copy {
+    order: 0;
     width: auto;
-    height: 180px;
+    max-width: none;
+    padding: 24px 20px 12px;
   }
-  .campus-invitation::after {
-    background: linear-gradient(
-      180deg,
-      white 0%,
-      rgb(255 255 255 / 98%) 52%,
-      rgb(255 255 255 / 65%) 62%,
-      transparent 76%
-    );
+  .game-invitation-art {
+    position: relative;
+    inset: auto;
+    order: 1;
+    height: 190px;
+    object-position: right center;
   }
+  .game-invitation::after { display: none; }
 }
 .home-resources,
 .home-tools {

@@ -27,6 +27,7 @@ for (const entry of [
   'exam/history/index.html',
   'game/index.html',
   'game/campus/index.html',
+  'game/money/index.html',
 ]) {
   if (existsSync(entry)) inputs.push(entry);
 }

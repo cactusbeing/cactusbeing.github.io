@@ -8,6 +8,7 @@
     "build": "vue-tsc --noEmit && vite build && node scripts/verify-build.mjs",
     "preview": "vite preview --host 127.0.0.1",
     "typecheck": "vue-tsc --noEmit",
+    "test:money": "node --experimental-strip-types scripts/test-money.mjs",
     "optimize:images": "node scripts/optimize-images.mjs"
   },
   "dependencies": {

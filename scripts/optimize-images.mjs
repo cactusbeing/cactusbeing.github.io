@@ -14,6 +14,7 @@ const targets = [
   ...resources.map((name) => ({ file: `assets/img/${name}.jpg`, widths: [240, 480, 960] })),
   { file: 'assets/img/home-bg.jpg', widths: [640, 1024, 1280, 1920] },
   { file: 'assets/decor/campus-invitation.png', widths: [800, 1024, 1568] },
+  { file: 'assets/decor/games-invitation.webp', widths: [800, 1024, 1536], quality: 54 },
   ...['cactus-tall', 'cactus-pear', 'succulent', 'books', 'leaf-spray', 'leaf-eucalyptus']
     .map((name) => ({ file: `assets/decor/banner/${name}.png`, widths: [200], lossless: true })),
   ...['canva-cactus-books', 'canva-botanical-sprig']
@@ -21,11 +22,11 @@ const targets = [
 ];
 mkdirSync('assets/optimized', { recursive: true });
 const manifest = {};
-for (const { file, widths, lossless } of targets) {
+for (const { file, widths, lossless, quality = 80 } of targets) {
   manifest[`/${file}`] = widths.map((width) => {
     const output = `assets/optimized/${basename(file, extname(file))}-${width}.webp`;
     execFileSync('cwebp', [
-      '-quiet', ...(lossless ? ['-lossless'] : ['-q', '80', '-sharp_yuv']),
+      '-quiet', ...(lossless ? ['-lossless'] : ['-q', String(quality), '-sharp_yuv']),
       '-m', '6', '-resize', String(width), '0', file, '-o', output,
     ]);
     return { src: `/${output}`, width };

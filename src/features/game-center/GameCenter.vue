@@ -6,13 +6,23 @@ import SiteIcon from '../../shared/components/SiteIcon.vue';
     <div class="games-heading">
       <div>
         <h1 id="games-title">遊戲百寶箱</h1>
-        <p>走進同一座校園，探索一天中的八個生活情境。</p>
+        <p>從校園裡的相遇，到生活中的小練習，一起慢慢學。</p>
       </div>
       <a href="/">返回特教百寶袋 <SiteIcon name="arrow" :size="16" /></a>
     </div>
     <div class="game-entries">
+      <article class="game-entry money-entry">
+        <a class="entry-picture" href="/game/money/" aria-label="遊玩特教班互動遊戲：認識新台幣"><img src="/assets/money/tea-shop.webp" width="1536" height="1024" alt="百寶茶舖裡，店員準備好飲料，等你一起練習點餐。" loading="lazy" /></a>
+        <div class="entry-copy">
+          <h2>特教班互動遊戲：認識新台幣</h2>
+          <p class="tagline">從一個硬幣，到自己買一杯飲料。</p>
+          <p>看真實錢幣，練習認面額、湊金額與找零。走進百寶茶舖，和店員聊一聊，選飲料、加料，再自己付款。</p>
+          <div class="entry-meta"><span>特教班生活數學</span><span>硬幣＋紙鈔</span><span>不限時・可朗讀</span></div>
+          <a class="entry-play" href="/game/money/">開始認識新台幣 <SiteIcon name="arrow" :size="18" /></a>
+        </div>
+      </article>
       <article class="game-entry campus-entry">
-        <a class="entry-picture" href="/game/campus/" aria-label="遊玩同一座校園"
+        <a class="entry-picture" href="/game/campus/" aria-label="遊玩特教宣導遊戲：同一座校園"
           ><img
             src="/assets/decor/campus-invitation.png"
             width="1568"
@@ -21,7 +31,7 @@ import SiteIcon from '../../shared/components/SiteIcon.vue';
             loading="lazy"
         /></a>
         <div class="entry-copy">
-          <h2>同一座校園</h2>
+          <h2>特教宣導遊戲：同一座校園</h2>
           <p class="tagline">每次相遇，多一點理解。</p>
           <p>
             從進校門到放學，探索教室、操場與辦公室。八個情境、二十四次選擇，練習現場回應、如實回報與後續支持。

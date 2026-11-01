@@ -668,7 +668,7 @@ onBeforeUnmount(() => {
   >
     <div class="campus-heading">
       <div>
-        <h1 id="campus-title">同一座校園<span>從進校門，到放學的一天。</span></h1>
+        <h1 id="campus-title">特教宣導遊戲：同一座校園<span>從進校門，到放學的一天。</span></h1>
         <p>目標：完成八個校園情境、做出二十四次適切選擇，最後回南門放學。</p>
       </div>
       <a href="/game/" class="back-link">遊戲百寶箱 <SiteIcon name="arrow" :size="16" /></a>

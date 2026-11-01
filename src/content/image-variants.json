@@ -218,5 +218,19 @@
       "src": "/assets/optimized/canva-botanical-sprig-198.webp",
       "width": 198
     }
+  ],
+  "/assets/decor/games-invitation.webp": [
+    {
+      "src": "/assets/optimized/games-invitation-800.webp",
+      "width": 800
+    },
+    {
+      "src": "/assets/optimized/games-invitation-1024.webp",
+      "width": 1024
+    },
+    {
+      "src": "/assets/optimized/games-invitation-1536.webp",
+      "width": 1536
+    }
   ]
 }

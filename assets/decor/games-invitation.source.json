@@ -1,0 +1,18 @@
+{
+  "source": "OpenAI image_gen",
+  "original": "exec-2c486f34-bf08-44ef-89c5-12768a587521.png",
+  "width": 2172,
+  "height": 724,
+  "prompt": "Create ONE panoramic illustration for the homepage entrance of a Taiwanese special education learning-game collection. Very wide horizontal landscape, ideally 3:1 aspect ratio. Warm polished hand-painted storybook illustration, bright white and pale sage canvas with forest green, soft cream, muted honey and peach accents, matching a calm botanical education website. ONE continuous coherent environment, NOT a collage, NOT separate panels, NOT cards. Scene: a welcoming small school courtyard seamlessly connects to a little neighborhood bubble tea shop on the RIGHT. In the RIGHT HALF foreground, a small group of three Taiwanese adolescent students, including one girl using a wheelchair, and a gentle young adult teacher practice everyday interaction together: one student chooses a drink at a small counter, another offers a few ordinary coins from an open wallet, a peer and wheelchair user converse naturally nearby; an approachable shop clerk in a sage apron smiles back. Clear human actions and natural anatomically plausible poses, all characters equally active and at ease. A school building, leafy tree and simple tea-shop awning in the background establish both school exploration and daily life learning. A couple of cups and a small wooden tabletop game with plain colored pieces quietly suggest learning through play. Keep props few, shapes legible, elegant editorial children's book quality, gentle painterly shading, original character designs. Reserve the entire LEFT 42 percent as very light warm off-white open sky/wall with only extremely subtle pale leaves near lower edge, no people, no objects, no text; this is real negative space for live HTML copy. All salient figures, wheelchairs, counter, school and shop belong inside the RIGHT 55 percent and the middle vertical 80 percent, with generous breathing room at outer edges. No words, no letters, no labels, no numbers, no logos, no symbols on coins, no UI, no speech bubbles, no watermark. Bright friendly grounded atmosphere; no rainbow, no floating money, no jigsaw puzzle symbolism, no fantasy treasure chest. Deliver a single large wide illustration with unified lighting and composition.",
+  "derivatives": {
+    "master": "games-invitation.webp",
+    "masterQuality": 88,
+    "variants": [
+      800,
+      1024,
+      1536
+    ],
+    "quality": 54,
+    "resize": "Proportional scaling only; no cropping or compositing."
+  }
+}
