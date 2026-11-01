@@ -4,6 +4,11 @@ import { siteUrl } from '../../shared/site-path';
 import SiteIcon from '../../shared/components/SiteIcon.vue';
 import { answeredCount, readResponses, responseStorageKey, saveHistoryEntry } from './progress';
 import type { Choice, Subject, Year } from './progress';
+import { categoriesForYear, subjectCategoryLabel, subjectGroups } from './classification';
+import MathText from './MathText.vue';
+import MathQuestionContent from './MathQuestionContent.vue';
+import { contentImages } from './question-content';
+import type { QuestionBlock } from './question-content';
 
 type Question = {
   id: number;
@@ -17,14 +22,20 @@ type Question = {
   image_height?: number;
   image_alt?: string;
   image_text?: string;
+  body_blocks?: QuestionBlock[];
+  option_columns?: 1 | 2;
 };
 type Exam = {
-  exam_metadata: { subject: string; source_page: string };
+  exam_metadata: {
+    subject: string; source_page: string;
+    parts?: { name: string; points: number }[];
+  };
   multiple_choice_questions: Question[];
 };
 
 const manifest = ref<Year[]>([]);
 const selectedYear = ref<number | null>(null);
+const selectedCategory = ref('all');
 const selectedSubject = ref<Subject | null>(null);
 const exam = ref<Exam | null>(null);
 const responses = ref<Record<number, Choice>>({});
@@ -42,9 +53,17 @@ const practiceTitle = ref<HTMLElement | null>(null);
 const subjectTitle = ref<HTMLElement | null>(null);
 const resultTitle = ref<HTMLElement | null>(null);
 const yearPicker = ref<HTMLDetailsElement | null>(null);
+const categoryPicker = ref<HTMLDetailsElement | null>(null);
 const subjectProgress = ref<Record<string, number>>({});
 const currentYear = computed(() => manifest.value.find((item) => item.year === selectedYear.value));
+const categories = computed(() => categoriesForYear(currentYear.value));
+const selectedCategoryName = computed(() => categories.value.find((category) => category.id === selectedCategory.value)?.name ?? '全部類科');
+const groupedSubjects = computed(() => subjectGroups(currentYear.value, selectedCategory.value));
+const availableSubjectCount = computed(() => groupedSubjects.value.reduce((count, group) => count + group.subjects.length, 0));
 const questions = computed(() => exam.value?.multiple_choice_questions ?? []);
+const totalPoints = computed(() =>
+  exam.value?.exam_metadata.parts?.find((part) => part.name === '選擇題')?.points
+    ?? selectedSubject.value?.points ?? questions.value.length * 2);
 function acceptedAnswers(question: Question): Choice[] {
   return question.accepted_answers?.length ? question.accepted_answers : [question.answer];
 }
@@ -56,6 +75,7 @@ function answerLabel(question: Question): string {
 }
 const answered = computed(() => questions.value.filter((item) => responses.value[item.id]).length);
 const correct = computed(() => questions.value.filter((item) => isCorrect(item, responses.value[item.id])).length);
+const score = computed(() => questions.value.length ? Number((correct.value / questions.value.length * totalPoints.value).toFixed(2)) : 0);
 const wrong = computed(() => answered.value - correct.value);
 const wrongQuestions = computed(() => questions.value.filter((item) => responses.value[item.id] && !isCorrect(item, responses.value[item.id])));
 const visibleQuestions = computed(() =>
@@ -127,8 +147,21 @@ function chooseMobileYear(year: number) {
   closeYearPicker();
 }
 
+function closeCategoryPicker() {
+  if (!categoryPicker.value) return;
+  categoryPicker.value.open = false;
+  categoryPicker.value.querySelector('summary')?.focus();
+}
+
+function chooseCategory(category: string) {
+  selectedCategory.value = category;
+  closeCategoryPicker();
+}
+
 function chooseYear(year: number) {
+  if (categoryPicker.value) categoryPicker.value.open = false;
   selectedYear.value = year;
+  selectedCategory.value = 'all';
   selectedSubject.value = null;
   exam.value = null;
   wrongOnly.value = false;
@@ -200,6 +233,8 @@ async function submitAnswer(question: Question) {
       subjectName: selectedSubject.value.name,
       correct: correct.value,
       total: questions.value.length,
+      score: score.value,
+      maxScore: totalPoints.value,
       completedAt: new Date().toISOString(),
     }) ? '' : '這次成績無法儲存至瀏覽器，請確認瀏覽器儲存空間設定。';
     resultView.value = true;
@@ -220,7 +255,7 @@ async function exportWrongBook() {
   exportError.value = '';
   try {
     const { downloadWrongBook } = await import('./wrong-book-pdf');
-    await downloadWrongBook(selectedYear.value, selectedSubject.value.name, wrongQuestions.value, responses.value, correct.value, questions.value.length);
+    await downloadWrongBook(selectedYear.value, selectedSubject.value.name, wrongQuestions.value, responses.value, correct.value, questions.value.length, totalPoints.value);
   } catch {
     exportError.value = 'PDF 產生失敗，請再試一次。';
   } finally {
@@ -243,6 +278,8 @@ async function copyAiPrompt(question: Question) {
     `題目：${question.question}`,
     ...(question.image_text ? [`附圖文字：${question.image_text}`] : []),
     ...(question.image ? [`原題附圖：${new URL(siteUrl(question.image), location.href).href}`] : []),
+    ...contentImages(question.body_blocks).map((figure) =>
+      `圖表：${new URL(siteUrl(figure.src), location.href).href}`),
     ...(['A', 'B', 'C', 'D'] as const).map((choice) => `${choice}. ${question.options[choice]}`),
     '',
     `我的作答：${ownAnswer ?? '尚未作答'}`,
@@ -282,7 +319,7 @@ onMounted(loadManifest);
     <header class="page-heading">
       <div>
         <h1 id="exam-title">教師資格考試題庫</h1>
-        <p>教檢線上測驗收錄 111 至 115 年教師資格考試選擇題與教檢考古題，包含特教教檢科目。選擇年度與科目練習，完成後查看分數與錯題。</p>
+        <p>教檢考古題線上測驗：115 年涵蓋全類科，111 至 114 年目前收錄特教身心障礙組。選擇年度、類科與科目，練習後查看分數與錯題。</p>
       </div>
       <nav class="page-links" aria-label="測驗頁面連結">
         <a :href="siteUrl('/exam/history/')">作答歷史 <SiteIcon name="arrow" :size="16" /></a>
@@ -320,24 +357,41 @@ onMounted(loadManifest);
       </div>
 
       <div v-if="!selectedSubject || !exam" class="subject-list">
+        <details ref="categoryPicker" class="category-picker" @keydown.esc.prevent="closeCategoryPicker">
+          <summary>
+            <span>應試類科</span>
+            <strong>{{ selectedCategoryName }}</strong>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+          </summary>
+          <div class="category-options" role="group" aria-label="選擇應試類科">
+            <button type="button" :aria-pressed="selectedCategory === 'all'" @click="chooseCategory('all')">全部類科</button>
+            <button v-for="category in categories" :key="category.id" type="button" :aria-pressed="selectedCategory === category.id" @click="chooseCategory(category.id)">{{ category.name }}</button>
+          </div>
+        </details>
         <div class="subject-heading">
           <h2 ref="subjectTitle" tabindex="-1">{{ selectedYear }} 年試題</h2>
-          <p>共 {{ currentYear?.subjects.length }} 科，點選科目開始練習。</p>
+          <p>共 {{ availableSubjectCount }} 份試卷。共用科目只收錄一份，作答進度也會共用。</p>
         </div>
-        <button
-          v-for="subject in currentYear?.subjects"
-          :key="subject.id"
-          type="button"
-          class="subject-row"
-          :disabled="loading"
-          @click="chooseSubject(subject)"
-        >
-          <span class="subject-name">{{ subject.name }}</span>
-          <span class="subject-meta">
-            <span class="progress-badge" :class="{ 'in-progress': progressFor(subject) > 0 && progressFor(subject) < subject.count, completed: progressFor(subject) >= subject.count }">{{ progressLabel(subject) }}</span>
-            <span>{{ subject.count }} 題</span><SiteIcon name="arrow" :size="17" />
-          </span>
-        </button>
+        <section v-for="group in groupedSubjects" :key="group.id" class="subject-group" :aria-labelledby="`subject-group-${group.id}`">
+          <h3 :id="`subject-group-${group.id}`">{{ group.name }}</h3>
+          <button
+            v-for="subject in group.subjects"
+            :key="subject.id"
+            type="button"
+            class="subject-row"
+            :disabled="loading"
+            @click="chooseSubject(subject)"
+          >
+            <span class="subject-label">
+              <span class="subject-name">{{ subject.name }}</span>
+              <span v-if="currentYear" class="subject-category">{{ subjectCategoryLabel(subject, currentYear) }}</span>
+            </span>
+            <span class="subject-meta">
+              <span class="progress-badge" :class="{ 'in-progress': progressFor(subject) > 0 && progressFor(subject) < subject.count, completed: progressFor(subject) >= subject.count }">{{ progressLabel(subject) }}</span>
+              <span>{{ subject.count }} 題</span><SiteIcon name="arrow" :size="17" />
+            </span>
+          </button>
+        </section>
         <p class="privacy-note">作答紀錄只會儲存在目前瀏覽器，不需登入。</p>
       </div>
 
@@ -351,7 +405,7 @@ onMounted(loadManifest);
               <h2 ref="practiceTitle" tabindex="-1">{{ selectedSubject.name }}</h2>
               <p>{{ selectedYear }} 年 · 已作答 {{ answered }} / {{ questions.length }} 題 · 答對 {{ correct }} 題</p>
             </div>
-            <a class="official-link" :href="exam.exam_metadata.source_page" target="_blank" rel="noopener">官方歷屆試題與答案 <SiteIcon name="arrow" :size="16" /></a>
+            <a class="official-link" :href="exam.exam_metadata.source_page" target="_blank" rel="noopener">官方歷屆試題 <SiteIcon name="arrow" :size="16" /></a>
           </div>
 
           <section v-if="resultView" class="result-section" aria-labelledby="result-title">
@@ -360,7 +414,7 @@ onMounted(loadManifest);
                 <h3 id="result-title" ref="resultTitle" tabindex="-1">測驗結果</h3>
                 <p>答對 {{ correct }} 題 · 答錯 {{ wrong }} 題 · 共 {{ questions.length }} 題</p>
               </div>
-              <p class="result-score"><strong>{{ correct * 2 }}</strong><span>／ 50 分</span></p>
+              <p class="result-score"><strong>{{ score }}</strong><span>／ {{ totalPoints }} 分</span></p>
             </div>
             <div class="result-actions">
               <button v-if="wrong" type="button" class="download-button" :disabled="exporting" @click="exportWrongBook">
@@ -383,20 +437,21 @@ onMounted(loadManifest);
                   <summary>閱讀文章</summary>
                   <p>{{ question.context }}</p>
                 </details>
-                <h4>{{ question.question }}</h4>
+                <h4 :class="{ 'math-question-label': question.body_blocks }">{{ question.body_blocks ? `第 ${question.id} 題題目` : question.question }}</h4>
+                <MathQuestionContent v-if="question.body_blocks" :blocks="question.body_blocks" />
                 <figure v-if="question.image" class="question-image">
-                  <a :href="siteUrl(question.image)" target="_blank" rel="noopener" aria-label="放大查看原試題附圖">
+                  <a :href="siteUrl(question.image)" target="_blank" rel="noopener" aria-label="放大題目附圖">
                     <img :src="siteUrl(question.image)" :alt="question.image_alt || '題目附圖'" :width="question.image_width" :height="question.image_height" />
                   </a>
-                  <figcaption>原試題附圖，可點擊放大</figcaption>
+                  <figcaption>題目附圖，可點擊放大</figcaption>
                 </figure>
                 <details v-if="question.image_text" class="table-text" open>
                   <summary>附圖文字版</summary>
                   <p>{{ question.image_text }}</p>
                 </details>
-                <ul class="result-options">
+                <ul class="result-options" :class="{ 'math-options': question.option_columns === 2 }">
                   <li v-for="choice in (['A', 'B', 'C', 'D'] as const)" :key="choice" :class="{ 'is-correct': acceptedAnswers(question).includes(choice), 'is-wrong': choice === responses[question.id] && !isCorrect(question, choice) }">
-                    <strong>{{ choice }}</strong><span>{{ question.options[choice] }}</span>
+                    <strong>{{ choice }}</strong><MathText v-if="question.body_blocks" :text="question.options[choice]" /><span v-else>{{ question.options[choice] }}</span>
                   </li>
                 </ul>
                 <p class="answer-feedback">你的答案：{{ responses[question.id] }}　參考答案：{{ answerLabel(question) }}</p>
@@ -430,18 +485,19 @@ onMounted(loadManifest);
                 </span>
               </div>
               <p v-if="copyNotice?.id === question.id" class="copy-notice" role="status">{{ copyNotice.message }}</p>
-              <h3 :id="`exam-question-${question.id}`" tabindex="-1">{{ question.question }}</h3>
+              <h3 :id="`exam-question-${question.id}`" tabindex="-1" :class="{ 'math-question-label': question.body_blocks }">{{ question.body_blocks ? `第 ${question.id} 題題目` : question.question }}</h3>
+              <MathQuestionContent v-if="question.body_blocks" :blocks="question.body_blocks" />
               <figure v-if="question.image" class="question-image">
-                <a :href="siteUrl(question.image)" target="_blank" rel="noopener" aria-label="放大查看原試題附圖">
+                <a :href="siteUrl(question.image)" target="_blank" rel="noopener" aria-label="放大題目附圖">
                   <img :src="siteUrl(question.image)" :alt="question.image_alt || '題目附圖'" :width="question.image_width" :height="question.image_height" />
                 </a>
-                <figcaption>原試題附圖，可點擊放大</figcaption>
+                <figcaption>題目附圖，可點擊放大</figcaption>
               </figure>
               <details v-if="question.image_text" class="table-text">
                 <summary>閱讀表格文字版</summary>
                 <p>{{ question.image_text }}</p>
               </details>
-              <div class="choices" role="group" :aria-label="`第 ${question.id} 題選項`">
+              <div class="choices" :class="{ 'math-options': question.option_columns === 2 }" role="group" :aria-label="`第 ${question.id} 題選項`">
                 <button
                   v-for="choice in (['A', 'B', 'C', 'D'] as const)"
                   :key="choice"
@@ -457,7 +513,8 @@ onMounted(loadManifest);
                   @click="selectChoice(question, choice)"
                 >
                   <span class="choice-letter">{{ choice }}</span>
-                  <span>{{ question.options[choice] }}</span>
+                  <MathText v-if="question.body_blocks" :text="question.options[choice]" />
+                  <span v-else>{{ question.options[choice] }}</span>
                 </button>
               </div>
               <p v-if="responses[question.id]" class="answer-feedback" role="status">
@@ -515,6 +572,20 @@ onMounted(loadManifest);
 .year-picker button { flex-shrink: 0; min-height: 48px; padding: 8px 22px; border: 0; border-bottom: 3px solid transparent; background: transparent; color: var(--color-text-muted); font-weight: 700; white-space: nowrap; }
 .year-picker button:hover, .year-picker button.active { color: var(--color-primary); border-bottom-color: var(--color-primary); }
 .subject-list { max-width: 860px; }
+.category-picker { max-width: 420px; margin: 0 0 24px; }
+.category-picker summary { display: grid; grid-template-columns: auto 1fr 20px; align-items: center; gap: 12px; min-height: 52px; padding: 10px 14px; border: 1px solid var(--color-control-border); border-radius: var(--radius-control); color: var(--color-primary); background: var(--color-surface); cursor: pointer; list-style: none; }
+.category-picker summary::-webkit-details-marker { display: none; }
+.category-picker summary > span { color: var(--color-text-muted); font-size: .9rem; }
+.category-picker summary > strong { text-align: right; }
+.category-picker[open] summary svg { transform: rotate(180deg); }
+.category-options { display: grid; gap: 4px; padding: 6px; margin-top: 8px; border: 1px solid var(--color-border); border-radius: var(--radius-control); }
+.category-options button { width: 100%; min-height: 48px; padding: 10px 12px; border: 0; border-radius: 8px; background: var(--color-surface); color: var(--color-primary); font: inherit; text-align: left; }
+.category-options button:hover, .category-options button[aria-pressed='true'] { background: var(--color-primary-soft); }
+.category-options button[aria-pressed='true'] { font-weight: 700; }
+.subject-group { margin: 26px 0 30px; }
+.subject-group h3 { margin: 0 0 12px; font-size: 1.05rem; color: var(--color-primary); }
+.subject-label { display: grid; gap: 3px; }
+.subject-category { font-size: .78rem; font-weight: 400; color: var(--color-text-muted); }
 .subject-heading { margin-bottom: 18px; }
 .subject-heading h2 { margin-bottom: 4px; }
 .subject-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; width: 100%; min-height: 76px; padding: 16px 22px; margin-bottom: 10px; text-align: left; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 14px; color: var(--color-text); }
@@ -573,6 +644,11 @@ onMounted(loadManifest);
 .copy-ai-button:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
 .copy-notice { margin: 6px 0 0; color: var(--color-primary); font-size: .8rem; font-weight: 700; text-align: right; }
 .question-card h3 { font-size: 1.18rem; line-height: 1.8; margin: 18px 0 22px; white-space: pre-line; }
+.question-card .math-question-label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.question-card > .math-question-content { margin: 18px 0 22px; font-size: 1.04rem; }
+.choices.math-options, .result-options.math-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.math-options .choice { align-items: center; min-width: 0; }
+.math-options .math-text { min-width: 0; }
 .passage { background: var(--color-surface-muted); border-radius: 12px; padding: 16px 18px; margin-top: 18px; }
 .question-set > .passage { margin: 0 0 20px; }
 .passage summary, .table-text summary { cursor: pointer; color: var(--color-primary); font-weight: 700; }

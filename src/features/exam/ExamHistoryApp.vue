@@ -4,6 +4,7 @@ import { siteUrl } from '../../shared/site-path';
 import SiteIcon from '../../shared/components/SiteIcon.vue';
 import { answeredCount, readHistory, readResponses, saveHistoryEntry } from './progress';
 import type { Choice, ExamHistoryEntry, Subject, Year } from './progress';
+import { subjectCategoryLabel, subjectGroups } from './classification';
 
 type Question = { id: number; answer: Choice; accepted_answers?: Choice[] };
 const years = ref<Year[]>([]);
@@ -39,6 +40,11 @@ function dateLabel(value: string | null): string {
     : new Intl.DateTimeFormat('zh-TW', { dateStyle: 'medium', timeStyle: 'short' }).format(date);
 }
 
+function subjectName(entry: ExamHistoryEntry): string {
+  return years.value.find((year) => year.year === entry.year)?.subjects
+    .find((subject) => subject.id === entry.subjectId)?.name ?? entry.subjectName;
+}
+
 async function importLegacyCompletions() {
   const known = new Set(history.value.map((entry) => `${entry.year}-${entry.subjectId}`));
   for (const { year, subject, count } of subjects.value) {
@@ -47,15 +53,21 @@ async function importLegacyCompletions() {
     try {
       const response = await fetch(siteUrl(subject.data));
       if (!response.ok) continue;
-      const data = (await response.json()) as { multiple_choice_questions: Question[] };
+      const data = (await response.json()) as {
+        exam_metadata?: { parts?: { name: string; points: number }[] };
+        multiple_choice_questions: Question[];
+      };
       if (!Array.isArray(data.multiple_choice_questions)) continue;
       const answers = readResponses(year, subject.id);
       const correct = data.multiple_choice_questions.filter((question) =>
         (question.accepted_answers?.length ? question.accepted_answers : [question.answer])
           .includes(answers[question.id])).length;
+      const maxScore = data.exam_metadata?.parts?.find((part) => part.name === '選擇題')?.points
+        ?? subject.points ?? data.multiple_choice_questions.length * 2;
       if (saveHistoryEntry({
         year, subjectId: subject.id, subjectName: subject.name,
         correct, total: data.multiple_choice_questions.length, completedAt: null,
+        score: correct / data.multiple_choice_questions.length * maxScore, maxScore,
       })) known.add(key);
     } catch {
       // Current progress is still shown if an old result cannot be imported.
@@ -113,10 +125,10 @@ onMounted(loadHistory);
           <li v-for="entry in sortedHistory" :key="entry.id" class="attempt-row">
             <div>
               <span class="attempt-year">{{ entry.year }} 年</span>
-              <strong>{{ entry.subjectName }}</strong>
+              <strong>{{ subjectName(entry) }}</strong>
               <small>{{ dateLabel(entry.completedAt) }}</small>
             </div>
-            <span class="attempt-score">{{ entry.correct * 2 }} / {{ entry.total * 2 }} 分 <small>答對 {{ entry.correct }} / {{ entry.total }} 題</small></span>
+            <span class="attempt-score">{{ entry.score ?? entry.correct * 2 }} / {{ entry.maxScore ?? entry.total * 2 }} 分 <small>答對 {{ entry.correct }} / {{ entry.total }} 題</small></span>
           </li>
         </ol>
       </section>
@@ -128,15 +140,21 @@ onMounted(loadHistory);
         </div>
         <div v-for="year in years" :key="year.year" class="year-section">
           <h3>{{ year.year }} 年</h3>
-          <a v-for="subject in year.subjects" :key="subject.id" class="subject-row" :href="examLink(year.year, subject)">
-            <span class="subject-name">{{ subject.name }}</span>
-            <span class="subject-meta">
-              <span class="status-badge" :class="{ active: (progress[`${year.year}-${subject.id}`] ?? 0) > 0 && (progress[`${year.year}-${subject.id}`] ?? 0) < subject.count, complete: (progress[`${year.year}-${subject.id}`] ?? 0) >= subject.count }">
-                {{ statusLabel(progress[`${year.year}-${subject.id}`] ?? 0, subject.count) }}
+          <div v-for="group in subjectGroups(year)" :key="group.id" class="subject-group">
+            <h4>{{ group.name }}</h4>
+            <a v-for="subject in group.subjects" :key="subject.id" class="subject-row" :href="examLink(year.year, subject)">
+              <span class="subject-label">
+                <span class="subject-name">{{ subject.name }}</span>
+                <span class="subject-category">{{ subjectCategoryLabel(subject, year) }}</span>
               </span>
-              <SiteIcon name="arrow" :size="17" />
-            </span>
-          </a>
+              <span class="subject-meta">
+                <span class="status-badge" :class="{ active: (progress[`${year.year}-${subject.id}`] ?? 0) > 0 && (progress[`${year.year}-${subject.id}`] ?? 0) < subject.count, complete: (progress[`${year.year}-${subject.id}`] ?? 0) >= subject.count }">
+                  {{ statusLabel(progress[`${year.year}-${subject.id}`] ?? 0, subject.count) }}
+                </span>
+                <SiteIcon name="arrow" :size="17" />
+              </span>
+            </a>
+          </div>
         </div>
       </section>
       <p class="privacy-note">作答進度與完成紀錄只保存在目前瀏覽器；清除網站資料後無法恢復。</p>
@@ -171,6 +189,10 @@ onMounted(loadHistory);
 .subject-row { display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 64px; padding: 12px 18px; margin-bottom: 8px; border: 1px solid var(--color-border); border-radius: 12px; background: var(--color-surface); color: var(--color-text); text-decoration: none; }
 .subject-row:hover { border-color: var(--color-primary); background: var(--color-surface-muted); }
 .subject-name { font-weight: 700; }
+.subject-label { display: grid; gap: 3px; }
+.subject-category { color: var(--color-text-muted); font-size: .78rem; }
+.subject-group { margin: 16px 0 24px; }
+.subject-group h4 { margin: 0 0 8px; color: var(--color-text-muted); font-size: .86rem; }
 .subject-meta { display: inline-flex; align-items: center; gap: 10px; color: var(--color-primary); white-space: nowrap; }
 .status-badge { padding: 4px 10px; border-radius: 999px; background: var(--color-surface-muted); color: var(--color-text-muted); font-size: .78rem; font-weight: 700; }
 .status-badge.active { background: #fff4df; color: #80520b; }

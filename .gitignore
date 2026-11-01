@@ -7,6 +7,11 @@ test-results/
 .DS_Store
 *.local
 
+# Exam originals and full-question screenshots are for local review only.
+/assets/exams/**/source/
+/assets/exams/**/originals/
+/assets/exams/**/*.pdf
+
 # Local agent skills, hooks, design records and editor state
 /.agents/
 /.codex/

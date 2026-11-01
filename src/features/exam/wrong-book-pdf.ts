@@ -1,4 +1,5 @@
 import { siteUrl } from '../../shared/site-path';
+import type { QuestionBlock } from './question-content';
 
 type Choice = 'A' | 'B' | 'C' | 'D';
 type WrongQuestion = {
@@ -10,6 +11,8 @@ type WrongQuestion = {
   context?: string;
   image?: string;
   image_text?: string;
+  body_blocks?: QuestionBlock[];
+  option_columns?: 1 | 2;
 };
 
 const WIDTH = 1240;
@@ -17,6 +20,8 @@ const HEIGHT = 1754;
 const LEFT = 86;
 const RIGHT = WIDTH - LEFT;
 const BOTTOM = HEIGHT - 92;
+// Leave the full 52 px first-page title below the 78 px header area.
+const CONTENT_TOP = 140;
 const encoder = new TextEncoder();
 
 function ascii(value: string): Uint8Array {
@@ -75,6 +80,7 @@ export async function downloadWrongBook(
   responses: Record<number, Choice>,
   correct: number,
   total: number,
+  maxScore = total * 2,
 ): Promise<void> {
   if (!questions.length) return;
   const canvas = document.createElement('canvas');
@@ -83,10 +89,11 @@ export async function downloadWrongBook(
   const ctx = canvas.getContext('2d');
   if (!ctx) throw new Error('瀏覽器無法建立 PDF 畫布');
   const pages: Uint8Array[] = [];
-  let y = LEFT;
-  const startPage = () => {
+  let y = CONTENT_TOP;
+  const drawHeader = () => {
+    ctx.save();
     ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, WIDTH, HEIGHT);
+    ctx.fillRect(0, 0, WIDTH, 78);
     ctx.fillStyle = '#2f6348';
     ctx.font = '700 26px sans-serif';
     ctx.fillText(`${year} 年教師資格考試 · ${subject}`, LEFT, 52);
@@ -95,9 +102,15 @@ export async function downloadWrongBook(
     ctx.moveTo(LEFT, 66);
     ctx.lineTo(RIGHT, 66);
     ctx.stroke();
-    y = 102;
+    ctx.restore();
+  };
+  const startPage = () => {
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, WIDTH, HEIGHT);
+    y = CONTENT_TOP;
   };
   const nextPage = async () => {
+    drawHeader();
     pages.push(await jpeg(canvas));
     startPage();
   };
@@ -125,9 +138,22 @@ export async function downloadWrongBook(
   };
   startPage();
   await line('錯題本', '700 52px sans-serif', '#244f3a', 70);
-  await line(`答對 ${correct} / ${total} 題 · ${correct * 2} / 50 分 · 錯題 ${questions.length} 題`, '30px sans-serif', '#365344', 56);
+  await line(`答對 ${correct} / ${total} 題 · ${Number((correct / total * maxScore).toFixed(2))} / ${maxScore} 分 · 錯題 ${questions.length} 題`, '30px sans-serif', '#365344', 56);
   y += 18;
   for (const question of questions) {
+    if (question.body_blocks) {
+      const { renderMathQuestion } = await import('./math-question-pdf');
+      const rendered = await renderMathQuestion(
+        { ...question, body_blocks: question.body_blocks }, responses[question.id], RIGHT - LEFT,
+      );
+      const scale = Math.min((RIGHT - LEFT) / rendered.width, (BOTTOM - CONTENT_TOP) / rendered.height);
+      const width = rendered.width * scale;
+      const height = rendered.height * scale;
+      if (y + height > BOTTOM) await nextPage();
+      ctx.drawImage(rendered, LEFT, y, width, height);
+      y += height + 34;
+      continue;
+    }
     if (y > BOTTOM - 180) await nextPage();
     await line(`第 ${question.id} 題`, '700 32px sans-serif', '#2f6348', 53);
     if (question.context) {
@@ -140,8 +166,9 @@ export async function downloadWrongBook(
       const image = new Image();
       image.src = siteUrl(question.image);
       await image.decode();
-      const imageWidth = Math.min(550, image.naturalWidth);
-      const imageHeight = image.naturalHeight * imageWidth / image.naturalWidth;
+      const imageScale = Math.min(1, (RIGHT - LEFT) / image.naturalWidth, (BOTTOM - CONTENT_TOP) / image.naturalHeight);
+      const imageWidth = image.naturalWidth * imageScale;
+      const imageHeight = image.naturalHeight * imageScale;
       if (y + imageHeight > BOTTOM) await nextPage();
       ctx.drawImage(image, LEFT, y, imageWidth, imageHeight);
       y += imageHeight + 18;
@@ -154,6 +181,7 @@ export async function downloadWrongBook(
     await line(`你的答案：${responses[question.id]}    參考答案：${(question.accepted_answers?.length ? question.accepted_answers : [question.answer]).join(' 或 ')}`, '700 28px sans-serif', '#9b3c32', 48);
     y += 34;
   }
+  drawHeader();
   pages.push(await jpeg(canvas));
   const url = URL.createObjectURL(makePdf(pages));
   const anchor = document.createElement('a');

@@ -1,6 +1,12 @@
 export type Choice = 'A' | 'B' | 'C' | 'D';
-export type Subject = { id: string; name: string; count: number; data: string };
-export type Year = { year: number; subjects: Subject[] };
+export type ExamCategory = { id: string; name: string };
+export type Subject = {
+  id: string; name: string; count: number; data: string;
+  points?: number;
+  categories?: string[];
+  section?: 'common' | 'professional';
+};
+export type Year = { year: number; subjects: Subject[]; categories?: ExamCategory[] };
 export type Responses = Record<number, Choice>;
 export type ExamHistoryEntry = {
   id: string;
@@ -9,6 +15,8 @@ export type ExamHistoryEntry = {
   subjectName: string;
   correct: number;
   total: number;
+  score?: number;
+  maxScore?: number;
   completedAt: string | null;
 };
 
