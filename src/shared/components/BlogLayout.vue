@@ -85,11 +85,13 @@ const archives = [...new Set(articleEntries.map((article) => article.date.slice(
         <h2>
           <SiteIcon name="megaphone" />小站公告<span class="notice-dot" aria-hidden="true"></span>
         </h2>
-        <p>歡迎來到特教百寶袋。</p>
+        <p class="muted"><time datetime="2026-11-01">2026 / 11 / 01</time></p>
+        <p><strong>115 年教檢全類科題庫上架！</strong></p>
         <p class="muted">
-          這裡有教學資源、特教文章，也有幫助觀察與理解行為的小工具。希望能陪伴你的教學日常。
+          從幼兒園、特教身心障礙組與資賦優異組、國民小學到中等學校，各類科考古題都能線上練習。
         </p>
-        <a class="small-link" href="/about.html">認識一下我 <SiteIcon name="arrow" :size="13" /></a>
+        <p class="muted">其他年份的全類科教檢題庫也會陸續上架，歡迎持續關注！</p>
+        <a class="small-link" href="/exam/">開始練習教檢考古題 <SiteIcon name="arrow" :size="13" /></a>
       </section>
       <section class="sidebar-card sidebar-panel">
         <h2><SiteIcon name="clock" />最近文章</h2>
