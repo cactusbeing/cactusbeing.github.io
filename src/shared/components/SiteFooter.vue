@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { imageSource } from '../responsive-images';
+import SiteVisitStats from './SiteVisitStats.vue';
 </script>
 <template>
   <footer class="site-footer">
@@ -22,6 +23,7 @@ import { imageSource } from '../responsive-images';
         ><a href="https://www.instagram.com/cactusbeingorz">Instagram</a
         ><a href="https://medium.com/@cactusbeing">Medium</a>
       </nav>
+      <SiteVisitStats />
       <small
         >© {{ new Date().getFullYear() }} Cactusbeing Website
         <span aria-hidden="true">·</span> 用理解與支持，陪伴每一步。</small
