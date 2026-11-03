@@ -86,6 +86,12 @@ function validateBlocks(blocks) {
       images.push(block.src);
     } else if (block.type === 'box') images.push(...validateBlocks(block.blocks));
     else if (block.type === 'columns') block.columns.forEach((column) => images.push(...validateBlocks(column)));
+    else if (block.type === 'table') {
+      const columns = block.headers?.length || block.rows[0]?.length;
+      if (!columns || !block.rows.length || block.rows.some((row) => row.length !== columns))
+        throw new Error('Invalid exam table dimensions');
+      [...(block.headers ?? []), ...block.rows.flat()].forEach(validateMath);
+    }
     else throw new Error('Unknown exam content block');
   }
   return images;
@@ -118,10 +124,10 @@ for (const year of examIndex.years) {
         throw new Error(`Invalid exam content: ${year.year} ${subject.id} Q${question.id}`);
       const diagrams = question.body_blocks ? validateBlocks(question.body_blocks) : [];
       if (question.body_blocks) Object.values(question.options).forEach(validateMath);
-      if (year.year === 115 && subject.id === 'math' &&
+      if ([114, 115].includes(year.year) && subject.id === 'math' &&
           (!question.body_blocks?.length || question.image || question.original_image ||
-           (question.id <= 6 && diagrams.length)))
-        throw new Error('115 math must use text, LaTeX and figure-only images');
+           (year.year === 115 && question.id <= 6 && diagrams.length)))
+        throw new Error('Math must use text, LaTeX and figure-only images');
       for (const path of [question.image, ...diagrams].filter(Boolean)) {
         if (path.includes('/originals/')) throw new Error(`Unexpected review image: ${path}`);
         if (!existsSync(built(path.replace(/^\//, ''))))

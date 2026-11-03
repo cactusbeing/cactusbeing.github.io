@@ -319,7 +319,7 @@ onMounted(loadManifest);
     <header class="page-heading">
       <div>
         <h1 id="exam-title">教師資格考試題庫</h1>
-        <p>教檢考古題線上測驗：115 年涵蓋全類科，111 至 114 年目前收錄特教身心障礙組。選擇年度、類科與科目，練習後查看分數與錯題。</p>
+        <p>教檢考古題線上測驗：114、115 年涵蓋全類科，111 至 113 年目前收錄特教身心障礙組。選擇年度、類科與科目，練習後查看分數與錯題。</p>
       </div>
       <nav class="page-links" aria-label="測驗頁面連結">
         <a :href="siteUrl('/exam/history/')">作答歷史 <SiteIcon name="arrow" :size="16" /></a>

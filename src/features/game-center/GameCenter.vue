@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import SceneArt from '../chat-relay/components/SceneArt.vue';
-const chatRelayUrl = `${import.meta.env.BASE_URL}game/chat-relay/`;
 import SiteIcon from '../../shared/components/SiteIcon.vue';
 </script>
 <template>
@@ -13,8 +12,8 @@ import SiteIcon from '../../shared/components/SiteIcon.vue';
       <a href="/">返回特教百寶袋 <SiteIcon name="arrow" :size="16" /></a>
     </div>
     <div class="game-entries">
-      <article class="game-entry chat-relay-entry">
-        <a class="entry-picture" :href="chatRelayUrl" aria-label="遊玩社會技巧：聊天傳接球"><SceneArt home /></a>
+      <article class="game-entry chat-relay-entry entry-disabled" aria-disabled="true">
+        <div class="entry-picture"><SceneArt home /></div>
         <div class="entry-copy">
           <h2>社會技巧：聊天傳接球</h2>
           <p class="tagline">接住話題，讓聊天自然繼續。</p>
@@ -28,7 +27,7 @@ import SiteIcon from '../../shared/components/SiteIcon.vue';
             </ul>
           </section>
           <div class="entry-meta"><span>三種難度</span><span>四章教學</span><span>60 組生活情境</span></div>
-          <a class="entry-play" :href="chatRelayUrl">開始聊天傳接球 <SiteIcon name="arrow" :size="18" /></a>
+          <button class="entry-play" type="button" disabled>Coming Soon</button>
         </div>
       </article>
       <article class="game-entry money-entry">
@@ -141,7 +140,12 @@ import SiteIcon from '../../shared/components/SiteIcon.vue';
   height: 100%;
   object-fit: cover;
 }
-.chat-relay-entry .entry-picture{display:flex;align-items:center;background:#e6ecdf}.chat-relay-entry :deep(.scene-art){height:100%;aspect-ratio:1.5;border-radius:0}.chat-relay-entry :deep(.scene-person){bottom:7%;width:30%}
+.chat-relay-entry .entry-picture { display: flex; align-items: center; background: #e6ecdf; }
+.chat-relay-entry :deep(.scene-art) { height: 100%; aspect-ratio: 1.5; border-radius: 0; }
+.chat-relay-entry :deep(.scene-person) { bottom: 7%; width: 30%; }
+.entry-disabled { filter: grayscale(1); opacity: .6; cursor: not-allowed; }
+.entry-disabled .entry-play { border: 0; font: inherit; font-weight: 650; cursor: not-allowed; }
+.entry-disabled .entry-play:hover { background: #2f6348; }
 .campus-entry .entry-picture img {
   object-position: 76% center;
 }

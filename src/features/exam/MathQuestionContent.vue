@@ -28,6 +28,25 @@ function figureStyle(block: Extract<QuestionBlock, { type: 'image' }>) {
       <div v-else-if="block.type === 'columns'" class="stem-columns">
         <MathQuestionContent v-for="(column, columnIndex) in block.columns" :key="columnIndex" :blocks="column" />
       </div>
+      <div v-else-if="block.type === 'table'" class="stem-table-block">
+        <p v-if="block.min_width" class="stem-table-hint">表格可左右滑動查看</p>
+        <div class="stem-table-wrap" tabindex="0" role="region" :aria-label="block.caption || '題目表格'">
+        <table class="stem-table" :style="block.min_width ? { minWidth: block.min_width + 'px' } : undefined">
+          <caption v-if="block.caption">{{ block.caption }}</caption>
+          <thead v-if="block.headers?.length">
+            <tr><th v-for="(header, cellIndex) in block.headers" :key="cellIndex" scope="col"><MathText :text="header" /></th></tr>
+          </thead>
+          <tbody>
+            <tr v-for="(row, rowIndex) in block.rows" :key="rowIndex">
+              <template v-for="(cell, cellIndex) in row" :key="cellIndex">
+                <th v-if="block.row_headers && cellIndex === 0" scope="row"><MathText :text="cell" /></th>
+                <td v-else><MathText :text="cell" /></td>
+              </template>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
     </template>
   </div>
 </template>
@@ -42,4 +61,14 @@ function figureStyle(block: Extract<QuestionBlock, { type: 'image' }>) {
 .stem-box { padding: .65em; margin: .6em 0; border: 1px solid var(--color-control-border, #7b8976); }
 .stem-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 1em; margin: .6em 0; }
 .stem-columns .stem-text { font-size: .96em; }
+.stem-table-wrap { max-width: 100%; overflow-x: auto; margin: .65em 0 .85em; }
+.stem-table { width: 100%; border-collapse: collapse; font: inherit; color: inherit; }
+.stem-table th, .stem-table td { border: 1px solid var(--color-control-border, #7b8976); padding: .4em .55em; white-space: pre-line; vertical-align: top; }
+.stem-table th { font-weight: 600; text-align: center; }
+.stem-table th[scope='row'] { text-align: left; vertical-align: middle; }
+.stem-table caption { text-align: left; margin-bottom: .4em; }
+.stem-table-hint { display: none; }
+@media (max-width: 600px) {
+  .stem-table-hint { display: block; margin: .65em 0 0; font-size: .85rem; color: var(--color-text-muted); }
+}
 </style>

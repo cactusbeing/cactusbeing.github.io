@@ -8,13 +8,15 @@ import { siteUrl } from '../site-path';
     <h2>
       <SiteIcon name="megaphone" />小站公告<span class="notice-dot" aria-hidden="true"></span>
     </h2>
-    <p class="muted notice-date"><time datetime="2026-11-01">2026 / 11 / 01</time></p>
-    <p><strong>115 年教檢全類科題庫上架！</strong></p>
-    <p class="muted">
-      從幼兒園、特教身心障礙組與資賦優異組、國民小學到中等學校，各類科考古題都能線上練習。
-    </p>
-    <p class="muted">其他年份的全類科教檢題庫也會陸續上架，歡迎持續關注！</p>
-    <a class="small-link" :href="siteUrl('/exam/')">開始練習教檢考古題 <SiteIcon name="arrow" :size="13" /></a>
+    <article class="notice-entry">
+      <p class="muted notice-date"><time datetime="2026-11-03">2026 / 11 / 03</time></p>
+      <a class="small-link" :href="siteUrl('/exam/?year=114')"><strong>114 年教檢全類科上架</strong><SiteIcon name="arrow" :size="13" /></a>
+    </article>
+    <article class="notice-entry">
+      <p class="muted notice-date"><time datetime="2026-11-01">2026 / 11 / 01</time></p>
+      <a class="small-link" :href="siteUrl('/exam/?year=115')"><strong>115 年教檢全類科上架</strong><SiteIcon name="arrow" :size="13" /></a>
+    </article>
+    <p class="muted">幼兒園、特教、國小至中等學校皆可練習，其他年份陸續上架。</p>
   </section>
 </template>
 
@@ -35,6 +37,7 @@ import { siteUrl } from '../site-path';
   letter-spacing: 0;
 }
 .notice-card p { font-size: .74rem; line-height: 1.95; }
+.notice-entry + .notice-entry { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--color-border); }
 .notice-dot { margin-left: auto; width: 5px; height: 5px; border-radius: 50%; background: var(--color-primary); }
 .small-link { display: inline-flex; align-items: center; gap: 7px; padding-block: 7px; font-size: .75rem; text-decoration: none; }
 @media (max-width: 1180px) {
