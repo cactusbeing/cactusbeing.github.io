@@ -1,0 +1,3 @@
+export function speechAvailable():boolean {return typeof window!=='undefined'&&'speechSynthesis' in window&&typeof SpeechSynthesisUtterance!=='undefined';}
+export function stopSpeech():void {if(speechAvailable())window.speechSynthesis.cancel();}
+export function speak(text:string):boolean {if(!speechAvailable())return false;try{stopSpeech();const utterance=new SpeechSynthesisUtterance(text);utterance.lang='zh-TW';const voices=window.speechSynthesis.getVoices().filter(v=>v.localService);if(!voices.length)return false;const voice=voices.find(v=>v.lang.toLowerCase()==='zh-tw')??voices.find(v=>v.lang.startsWith('zh'));if(!voice)return false;utterance.voice=voice;utterance.rate=.85;window.speechSynthesis.speak(utterance);return true;}catch{return false;}}

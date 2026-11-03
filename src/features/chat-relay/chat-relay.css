@@ -1,0 +1,1561 @@
+
+.chat-relay {
+  font-family: 'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;
+  color: #32383a;
+  background: #fffaf2;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility
+}
+.chat-relay * {
+  box-sizing: border-box
+}
+.chat-relay button,.chat-relay input,.chat-relay select,.chat-relay textarea {
+  font: inherit
+}
+.chat-relay button,.chat-relay a,.chat-relay input,.chat-relay select,.chat-relay textarea {
+  -webkit-tap-highlight-color: transparent
+}
+.chat-relay button {
+  cursor: pointer
+}
+.chat-relay button:disabled {
+  cursor: default;
+  opacity: .55
+}
+.chat-relay a {
+  color: inherit;
+  text-decoration: none
+}
+.chat-relay svg {
+  display: block
+}
+.chat-relay button:focus-visible,.chat-relay a:focus-visible,.chat-relay input:focus-visible,.chat-relay textarea:focus-visible,.chat-relay select:focus-visible,.chat-relay summary:focus-visible {
+  outline: 3px solid #3c6d9d;
+  outline-offset: 4px
+}
+.chat-relay h1,.chat-relay h2,.chat-relay h3,.chat-relay p {
+  overflow-wrap: anywhere
+}
+.chat-relay h1,.chat-relay h2,.chat-relay h3 {
+  line-height: 1.45
+}
+.chat-relay h1 {
+  font-size: clamp(1.6em,3.2vw,2.2em);
+  font-weight: 750;
+  margin: .2em 0 .55em
+}
+.chat-relay h2 {
+  font-size: 1.25em;
+  margin: 1.25em 0 .5em
+}
+.chat-relay h3 {
+  font-size: 1.05em
+}
+.chat-relay p {
+  line-height: 1.8;
+  margin: .55em 0 1em
+}
+.chat-relay small {
+  font-size: .82em;
+  line-height: 1.65
+}
+.chat-relay {
+  --paper: #fffaf2;
+  --cream: #f8eedf;
+  --sage: #7e9e88;
+  --sage-soft: #e5efe6;
+  --green: #365e47;
+  --lavender-soft: #f1eaf6;
+  --peach: #e8ad91;
+  --ink: #32383a;
+  --muted: #55615d;
+  --outline: #d7d4cd;
+  --focus: #3c6d9d;
+  font-size: var(--relay-font,18px);
+  min-height: 100vh;
+  background: var(--paper)
+}
+.chat-relay button {
+  min-height: 48px;
+  border: 1px solid #aaa99e;
+  background: #fffcf7;
+  border-radius: 12px;
+  padding: .6em 1em;
+  color: var(--ink);
+  font-weight: 600;
+  line-height: 1.6;
+  transition: background-color 180ms,border-color 180ms;
+  white-space: normal
+}
+.chat-relay button:hover:not(:disabled) {
+  background: #eef2e8;
+  border-color: #56745b
+}
+.chat-relay button.primary {
+  background: var(--green);
+  color: #fff;
+  border-color: var(--green);
+  padding: .7em 1.3em
+}
+.chat-relay button.primary:hover:not(:disabled) {
+  background: #294b37
+}
+.chat-relay input:not([type=checkbox]):not([type=radio]),.chat-relay select,.chat-relay textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  padding: .55em .75em;
+  border: 1px solid #8a9485;
+  border-radius: 9px;
+  background: #fffefb;
+  color: var(--ink)
+}
+.chat-relay input[type=checkbox],.chat-relay input[type=radio] {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--green);
+  flex-shrink: 0
+}
+.chat-relay summary {
+  cursor: pointer;
+  padding: 12px 0;
+  line-height: 1.6
+}
+.chat-relay .skip-link {
+  position: fixed;
+  top: -100px;
+  left: 12px;
+  z-index: 30;
+  background: white;
+  padding: 14px
+}
+.chat-relay .skip-link:focus {
+  top: 12px
+}
+.chat-relay .visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0
+}
+.chat-relay .relay-header {
+  max-width: 1360px;
+  margin: auto;
+  padding: 24px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid #e7e2d7
+}
+.chat-relay .relay-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  color: #365e47;
+  font-weight: 750;
+  line-height: 1.4
+}
+.chat-relay .relay-brand>svg {
+  width: 40px;
+  height: 40px
+}
+.chat-relay .relay-brand small {
+  display: block;
+  font-size: .66em;
+  font-weight: 500;
+  letter-spacing: .12em
+}
+.chat-relay .relay-header nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap
+}
+.chat-relay .relay-header nav button {
+  border-color: transparent;
+  background: transparent;
+  font-size: .9em
+}
+.chat-relay .relay-header nav button:hover {
+  background: var(--sage-soft)
+}
+.chat-relay #relay-main {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 32px;
+  outline: none;
+  min-height: 0
+}
+.chat-relay .eyebrow {
+  font-size: .84em;
+  letter-spacing: .1em;
+  color: #5d695c;
+  font-weight: 600;
+  margin: 0 0 12px
+}
+.chat-relay .home-screen {
+  padding: 54px 0 12px
+}
+.chat-relay .home-hero {
+  display: grid;
+  grid-template-columns: .85fr 1.15fr;
+  gap: 30px;
+  align-items: center
+}
+.chat-relay .home-copy {
+  padding: 20px 10px 30px 20px
+}
+.chat-relay .home-copy h1 {
+  position: relative;
+  font-size: clamp(2.6em,5.2vw,4em);
+  font-weight: 800;
+  line-height: 1.27;
+  letter-spacing: .025em;
+  margin: 16px 0 30px;
+  color: #3b5846;
+  max-width: 470px
+}
+.chat-relay .home-copy h1 span {
+  display: block
+}
+.chat-relay .home-copy h1>svg {
+  position: absolute;
+  bottom: -15px;
+  left: 3px;
+  width: 85%;
+  height: 15px
+}
+.chat-relay .home-subtitle {
+  font-size: 1.2em;
+  font-weight: 650;
+  color: #3b5846
+}
+.chat-relay .home-copy>p:not(.eyebrow) {
+  line-height: 1.9
+}
+.chat-relay .home-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px
+}
+.chat-relay .home-actions button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px
+}
+.chat-relay .home-actions span {
+  font-size: 1.15em
+}
+.chat-relay .hero-illustration {
+  position: relative;
+  transform: rotate(-1deg);
+  border-radius: 43% 43% 6% 6%;
+  overflow: hidden;
+  background: #e2e9dc;
+  border: 8px solid #f1ecde
+}
+.chat-relay .illustration-caption {
+  position: absolute;
+  bottom: 20px;
+  text-align: center;
+  left: 10px;
+  right: 10px;
+  font-size: .85em;
+  font-weight: 650;
+  color: #42573f;
+  background: #fffaf2eb;
+  padding: 10px 12px;
+  border-radius: 50% 45% 40% 45%
+}
+.chat-relay .home-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 44px;
+  padding: 25px 8px;
+  border-top: 1px solid #dfddd0;
+  border-bottom: 1px solid #dfddd0
+}
+.chat-relay .welcome-note {
+  display: flex;
+  gap: 18px;
+  align-items: center
+}
+.chat-relay .welcome-note>svg {
+  width: 42px;
+  height: 48px;
+  flex-shrink: 0;
+  color: #72866c
+}
+.chat-relay .welcome-note p {
+  margin: 0;
+  font-size: .95em
+}
+.chat-relay .welcome-note span {
+  color: #55615d;
+  font-size: .92em
+}
+.chat-relay .local-note {
+  color: #55615d;
+  font-size: .85em;
+  margin: 22px 0
+}
+.chat-relay .resume-button {
+  margin-top: 18px;
+  background: var(--sage-soft)!important
+}
+.chat-relay .relay-footer {
+  max-width: 1280px;
+  margin: 20px auto 0;
+  padding: 24px 40px 30px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  font-size: .8em;
+  color: #55615d
+}
+.chat-relay .relay-footer a {
+  color: #365e47;
+  font-weight: 650
+}
+.chat-relay .scene-art {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #e3e7d7
+}
+.chat-relay .scene-background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%
+}
+.chat-relay .scene-person {
+  position: absolute;
+  width: 31%;
+  bottom: 9%;
+  filter: drop-shadow(0 4px 0 #626e4b09)
+}
+.chat-relay .scene-player {
+  left: 12%;
+  transform: rotate(-3deg)
+}
+.chat-relay .scene-npc {
+  right: 12%;
+  transform: rotate(2deg)
+}
+.chat-relay .character-art {
+  width: 100%;
+  height: auto;
+  max-height: 340px
+}
+.chat-relay .home-art {
+  aspect-ratio: 1.12;
+  border-radius: 0
+}
+.chat-relay .home-art .scene-person {
+  width: 33%;
+  bottom: 14%
+}
+.chat-relay .home-art .scene-player {
+  left: 10%
+}
+.chat-relay .home-art .scene-npc {
+  right: 10%
+}
+.chat-relay .relay-ball {
+  position: absolute;
+  top: 25%;
+  left: 40%;
+  width: 21%;
+  transform: rotate(7deg)
+}
+.chat-relay .content-screen {
+  max-width: 950px;
+  margin: auto;
+  padding: 42px 0
+}
+.chat-relay .content-screen[style*="display: none"] {
+  display: none
+}
+.chat-relay .content-screen>h1 {
+  margin-bottom: 24px
+}
+.chat-relay .check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  cursor: pointer
+}
+.chat-relay .field {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin: 16px 0;
+  font-size: .94em;
+  line-height: 1.7
+}
+.chat-relay .sequence-list {
+  padding: 0;
+  list-style-position: inside
+}
+.chat-relay .sequence-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 0;
+  border-bottom: 1px solid #dedbcc
+}
+.chat-relay .sequence-list li span {
+  flex: 1
+}
+.chat-relay .sequence-list button {
+  padding: 5px 12px;
+  flex-shrink: 0
+}
+.chat-relay .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 22px 0
+}
+.chat-relay .session-screen {
+  padding: 24px 0 12px
+}
+.chat-relay .session-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 24px
+}
+.chat-relay .session-top h1 {
+  font-size: 1.6em;
+  margin: 0
+}
+.chat-relay .session-top .eyebrow {
+  margin-bottom: 7px
+}
+.chat-relay .difficulty-label {
+  font-size: .85em;
+  white-space: nowrap;
+  background: var(--sage-soft);
+  padding: 9px 14px;
+  border-radius: 30px
+}
+.chat-relay .session-layout {
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 32px;
+  align-items: start
+}
+.chat-relay .stage {
+  position: sticky;
+  top: 24px
+}
+.chat-relay .stage-context {
+  position: relative;
+  margin: -30px 22px 0;
+  background: #fffaf2f5;
+  border: 1px solid #e3ddcf;
+  border-radius: 13px;
+  padding: 15px 20px
+}
+.chat-relay .stage-context>span {
+  font-size: .85em;
+  letter-spacing: .05em;
+  font-weight: 650;
+  color: #365e47
+}
+.chat-relay .stage-context p {
+  margin: 8px 0 0;
+  font-size: .88em;
+  line-height: 1.8
+}
+.chat-relay .expression-note {
+  color: #55615d;
+  font-size: .8em;
+  text-align: center;
+  margin: 12px 6px
+}
+.chat-relay .dialogue-panel {
+  padding: 8px 0;
+  min-width: 0
+}
+.chat-relay .speaker-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  color: #365e47
+}
+.chat-relay .speech-button {
+  min-height: 44px;
+  font-size: .8em;
+  background: transparent;
+  padding: 5px 10px;
+  border-color: #b8c0b0
+}
+.chat-relay .npc-speech {
+  padding: 22px 24px;
+  background: #fff;
+  border: 1px solid #d9dbce;
+  border-radius: 4px 24px 24px 24px;
+  font-size: 1.2em;
+  line-height: 1.85;
+  margin: 16px 0 24px
+}
+.chat-relay .question-label {
+  color: #55615d;
+  font-size: .9em
+}
+.chat-relay .choice-list {
+  display: grid;
+  gap: 12px
+}
+.chat-relay .choice-card {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 19px;
+  background: #fffdf8;
+  font-size: 1em;
+  min-height: 65px;
+  border: 1.5px solid #b3bba9;
+  font-weight: 550
+}
+.chat-relay .choice-card>svg {
+  width: 44px;
+  height: 44px;
+  color: #5f7f64;
+  flex-shrink: 0
+}
+.chat-relay .choice-card small {
+  display: block;
+  font-weight: 400;
+  color: #55615d;
+  margin-top: 8px
+}
+.chat-relay .picture-choices .choice-card {
+  min-height: 90px;
+  font-size: 1.13em
+}
+.chat-relay .support-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px 0
+}
+.chat-relay .support-actions button {
+  font-size: .83em;
+  padding: 7px 12px;
+  background: transparent;
+  border-color: #c7c8b8
+}
+.chat-relay .hint,.chat-relay .demo,.chat-relay .feedback {
+  padding: 16px 20px;
+  border-radius: 12px;
+  background: var(--sage-soft);
+  margin: 16px 0;
+  line-height: 1.8;
+  color: #354b3b
+}
+.chat-relay .hint p,.chat-relay .demo p,.chat-relay .feedback p {
+  margin: 7px 0 0
+}
+.chat-relay .hint {
+  background: #f5efdf
+}
+.chat-relay .demo {
+  background: var(--lavender-soft);
+  color: #51445b
+}
+.chat-relay .player-speech {
+  margin: 10px 0 18px 24px;
+  background: #e9e5f1;
+  padding: 16px 22px;
+  border-radius: 20px 4px 20px 20px
+}
+.chat-relay .player-speech small {
+  color: #5f5371
+}
+.chat-relay .player-speech p {
+  margin: 4px 0 0
+}
+.chat-relay .npc-reaction {
+  border-left: 3px solid #819d83;
+  padding-left: 20px;
+  margin: 20px 0
+}
+.chat-relay .npc-reaction p {
+  font-size: 1.1em;
+  margin: 8px 0
+}
+.chat-relay .reaction-area {
+  animation: relay-appear 240ms ease-out
+}
+.chat-relay .small-note {
+  font-size: .8em;
+  color: #55615d
+}
+.chat-relay .skill-results {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 28px 0
+}
+.chat-relay .skill-results article {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid #d7d4cd;
+  padding: 16px 0
+}
+.chat-relay .skill-results svg {
+  width: 38px;
+  height: 38px;
+  color: #65806b;
+  flex-shrink: 0
+}
+.chat-relay .skill-results h2 {
+  font-size: 1em;
+  margin: 0
+}
+.chat-relay .skill-results p {
+  margin: 6px 0;
+  font-size: .95em
+}
+.chat-relay .skill-results small {
+  font-size: .76em;
+  color: #55615d
+}
+.chat-relay .result-strength {
+  background: var(--sage-soft);
+  padding: 17px 22px;
+  border-radius: 12px
+}
+.chat-relay .next-practice {
+  border-left: 4px solid #b8a1c3;
+  padding: 4px 24px 10px;
+  margin: 30px 0
+}
+.chat-relay .next-practice h2 {
+  margin-top: 6px
+}
+.chat-relay .review-record {
+  padding: 8px 18px;
+  background: #f8f2e6
+}
+.chat-relay .review-record>div {
+  border-top: 1px solid #dfd9cd
+}
+.chat-relay .review-record p {
+  font-size: .9em;
+  margin: 10px 0
+}
+.chat-relay .lesson-map {
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  margin-top: 30px
+}
+.chat-relay .lesson-map li {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 24px 12px;
+  border-bottom: 1px solid #d7d4cd
+}
+.chat-relay .chapter-number {
+  font-size: 2.4em;
+  color: #76917c;
+  font-weight: 700
+}
+.chat-relay .lesson-map li>div {
+  flex: 1
+}
+.chat-relay .lesson-map h2 {
+  margin: 0
+}
+.chat-relay .lesson-map p {
+  margin: 4px 0;
+  font-size: .9em
+}
+.chat-relay .lesson-map small {
+  color: #55615d
+}
+.chat-relay .lesson-demos>article {
+  border-left: 3px solid #8fa18b;
+  margin: 30px 0;
+  padding: 0 24px
+}
+.chat-relay .lesson-demos h2 {
+  margin: 0 0 14px
+}
+.chat-relay .lesson-demos p {
+  margin: 6px 0
+}
+.chat-relay .lesson-exercise {
+  padding: 28px 0
+}
+.chat-relay .lesson-exercise h2 {
+  font-size: 1.25em;
+  margin: 16px 0 24px
+}
+.chat-relay .lesson-task {
+  padding: 24px;
+  background: var(--sage-soft);
+  border-radius: 18px;
+  margin: 28px 0
+}
+.chat-relay .lesson-task h2 {
+  margin-top: 0
+}
+.chat-relay .text-button {
+  border-color: transparent;
+  padding: 0;
+  background: transparent;
+  font-size: .85em;
+  margin-bottom: 24px
+}
+.chat-relay .storage-notice {
+  max-width: 1200px;
+  margin: 18px auto;
+  background: #f6ecd4;
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-size: .9em
+}
+.chat-relay .relay-dialog {
+  max-width: 560px;
+  width: calc(100% - 32px);
+  border: 1px solid #b9bdad;
+  border-radius: 18px;
+  padding: 28px;
+  background: #fffaf2;
+  color: #32383a;
+  font: inherit
+}
+.chat-relay .relay-dialog::backdrop {
+  background: #303b3255
+}
+.chat-relay .relay-dialog h2 {
+  margin: 0
+}
+.chat-relay details {
+  border-bottom: 1px solid #d7d4cd
+}
+.chat-relay li {
+  line-height: 1.8
+}
+.chat-relay ul {
+  padding-left: 24px
+}
+@keyframes relay-appear {
+from {
+  opacity: .2;
+  transform: translateY(5px)
+}
+to {
+  opacity: 1;
+  transform: translateY(0)
+}
+}
+@media(min-width:1500px) {
+.chat-relay .home-screen {
+  padding-top: 65px
+}
+}
+@media(max-width:899px) {
+.chat-relay .relay-header {
+  padding: 18px 24px
+}
+.chat-relay #relay-main {
+  padding: 0 24px
+}
+.chat-relay .home-screen {
+  padding-top: 28px
+}
+.chat-relay .home-hero {
+  gap: 20px;
+  grid-template-columns: 1fr 1fr
+}
+.chat-relay .home-copy {
+  padding: 12px 0
+}
+.chat-relay .home-copy h1 {
+  font-size: 2.9em
+}
+.chat-relay .home-actions {
+  flex-wrap: wrap
+}
+.chat-relay .home-bottom {
+  align-items: start
+}
+.chat-relay .session-layout {
+  grid-template-columns: 1fr
+}
+.chat-relay .stage {
+  position: relative;
+  top: auto
+}
+.chat-relay .stage>.scene-art {
+  max-height: 360px;
+  aspect-ratio: 2/1
+}
+.chat-relay .stage .scene-person {
+  width: 25%;
+  bottom: 6%
+}
+.chat-relay .stage .scene-player {
+  left: 17%
+}
+.chat-relay .stage .scene-npc {
+  right: 17%
+}
+.chat-relay .stage-context {
+  margin-top: -18px
+}
+.chat-relay .expression-note {
+  display: none
+}
+.chat-relay .dialogue-panel {
+  padding: 0
+}
+.chat-relay .session-top {
+  margin-bottom: 16px
+}
+.chat-relay .dialogue-panel .npc-speech {
+  margin-top: 12px
+}
+.chat-relay .session-layout {
+  gap: 24px
+}
+.chat-relay .session-screen {
+  max-width: 760px;
+  margin: auto
+}
+}
+@media(max-width:599px) {
+.chat-relay {
+  font-size: var(--relay-font,18px)
+}
+.chat-relay .relay-header {
+  padding: 14px 16px;
+  gap: 10px
+}
+.chat-relay .relay-brand {
+  font-size: .85em;
+  gap: 7px
+}
+.chat-relay .relay-brand>svg {
+  width: 30px;
+  height: 32px
+}
+.chat-relay .relay-header nav {
+  gap: 2px
+}
+.chat-relay .relay-header nav button {
+  font-size: .78em;
+  padding: 6px 9px
+}
+.chat-relay .relay-header nav button {
+  min-height: 44px
+}
+.chat-relay #relay-main {
+  padding: 0 18px
+}
+.chat-relay .home-screen {
+  padding-top: 12px
+}
+.chat-relay .home-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 8px
+}
+.chat-relay .home-copy {
+  padding: 14px 2px;
+  width: 100%
+}
+.chat-relay .home-copy .eyebrow {
+  font-size: .75em
+}
+.chat-relay .home-copy h1 {
+  font-size: 2.65em;
+  line-height: 1.15;
+  margin: 14px 0 28px;
+  max-width: 100%
+}
+.chat-relay .home-copy h1 span {
+  display: inline
+}
+.chat-relay .home-copy h1>svg {
+  width: 75%;
+  bottom: -18px
+}
+.chat-relay .home-subtitle {
+  font-size: 1em
+}
+.chat-relay .home-copy>p {
+  font-size: .9em;
+  margin-bottom: 12px
+}
+.chat-relay .home-copy>p br {
+  display: none
+}
+.chat-relay .home-actions {
+  margin-top: 20px;
+  flex-wrap: nowrap;
+  gap: 10px
+}
+.chat-relay .home-actions button {
+  flex: 1;
+  font-size: .92em;
+  padding: 12px 10px;
+  gap: 12px
+}
+.chat-relay .hero-illustration {
+  width: 100%;
+  border-width: 5px;
+  border-radius: 35% 35% 7% 7%;
+  margin-top: 10px;
+  transform: none
+}
+.chat-relay .home-art {
+  aspect-ratio: 1.5
+}
+.chat-relay .home-art .scene-person {
+  width: 31%;
+  bottom: 9%
+}
+.chat-relay .home-art .relay-ball {
+  top: 13%
+}
+.chat-relay .illustration-caption {
+  bottom: 8px;
+  padding: 6px;
+  font-size: .7em
+}
+.chat-relay .home-bottom {
+  flex-direction: column;
+  gap: 22px;
+  margin-top: 25px;
+  padding: 22px 0
+}
+.chat-relay .welcome-note {
+  gap: 12px
+}
+.chat-relay .welcome-note>svg {
+  width: 32px
+}
+.chat-relay .welcome-note p {
+  font-size: .85em
+}
+.chat-relay .local-note {
+  font-size: .76em
+}
+.chat-relay .relay-footer {
+  padding: 20px 18px;
+  font-size: .75em;
+  gap: 8px
+}
+.chat-relay .content-screen {
+  padding: 28px 0
+}
+.chat-relay .check {
+  font-size: .95em
+}
+.chat-relay .session-top {
+  align-items: start;
+  flex-direction: column;
+  gap: 12px
+}
+.chat-relay .session-top h1 {
+  font-size: 1.4em
+}
+.chat-relay .difficulty-label {
+  font-size: .76em
+}
+.chat-relay .stage>.scene-art {
+  aspect-ratio: 1.7;
+  max-height: none
+}
+.chat-relay .stage .scene-person {
+  width: 31%;
+  bottom: 6%
+}
+.chat-relay .stage .scene-player {
+  left: 11%
+}
+.chat-relay .stage .scene-npc {
+  right: 11%
+}
+.chat-relay .stage-context {
+  margin: -10px 8px 0;
+  padding: 11px 14px
+}
+.chat-relay .stage-context p {
+  font-size: .82em;
+  margin-top: 5px
+}
+.chat-relay .stage-context>span {
+  font-size: .76em
+}
+.chat-relay .session-layout {
+  gap: 18px
+}
+.chat-relay .npc-speech {
+  font-size: 1.07em;
+  padding: 18px;
+  margin-bottom: 18px
+}
+.chat-relay .choice-list {
+  gap: 10px
+}
+.chat-relay .choice-card {
+  padding: 13px 14px;
+  min-height: 60px;
+  font-size: .98em
+}
+.chat-relay .choice-card>svg {
+  width: 35px;
+  height: 35px
+}
+.chat-relay .choice-card small {
+  font-size: .8em
+}
+.chat-relay .support-actions {
+  gap: 7px
+}
+.chat-relay .support-actions button {
+  font-size: .77em;
+  padding: 6px 10px
+}
+.chat-relay .hint,.chat-relay .demo,.chat-relay .feedback {
+  padding: 14px 16px;
+  font-size: .92em
+}
+.chat-relay .player-speech {
+  margin-left: 15px;
+  padding: 15px 17px
+}
+.chat-relay .npc-reaction {
+  padding-left: 16px
+}
+.chat-relay .actions {
+  gap: 10px
+}
+.chat-relay .actions button {
+  font-size: .92em
+}
+.chat-relay .skill-results {
+  grid-template-columns: 1fr;
+  gap: 2px
+}
+.chat-relay .skill-results article {
+  padding: 14px 0
+}
+.chat-relay .lesson-map li {
+  flex-wrap: wrap;
+  padding: 24px 0;
+  gap: 15px
+}
+.chat-relay .chapter-number {
+  font-size: 2em
+}
+.chat-relay .lesson-map li>div {
+  min-width: 170px
+}
+.chat-relay .lesson-map button {
+  margin-left: auto
+}
+.chat-relay .lesson-map p {
+  font-size: .85em
+}
+.chat-relay .sequence-list li {
+  gap: 5px;
+  flex-wrap: wrap
+}
+.chat-relay .sequence-list li span {
+  min-width: 100%;
+  font-size: .9em
+}
+.chat-relay .sequence-list li button {
+  margin-top: 6px
+}
+.chat-relay .storage-notice {
+  margin: 12px 18px;
+  font-size: .8em
+}
+.chat-relay .relay-dialog {
+  padding: 22px
+}
+.chat-relay .relay-dialog .actions {
+  margin-bottom: 0
+}
+}
+@media(prefers-reduced-motion:reduce) {
+.chat-relay *,.chat-relay *::before,.chat-relay *::after {
+  animation: none!important;
+  transition: none!important;
+  scroll-behavior: auto!important
+}
+}
+.chat-relay.reduce-motion *,.chat-relay.reduce-motion *::before,.chat-relay.reduce-motion *::after {
+  animation: none!important;
+  transition: none!important;
+  scroll-behavior: auto!important
+}
+
+/* Match the other games: page title outside one embedded game surface. */
+.chat-relay-page .site-banner { height:106px; }
+.chat-relay-page .site-banner .banner-content,
+.chat-relay-page .site-banner .side-note { display:none; }
+.chat-relay-page .site-banner .banner-waves { height:30px; }
+.chat-relay-page #main-content { padding-top:20px; }
+.chat-relay-page-content { max-width:1120px; margin:0 auto 32px; }
+.relay-page-heading { margin-bottom:16px; }
+.relay-back { display:inline-block; margin-bottom:6px; color:var(--color-primary); font-size:.875rem; }
+.relay-page-heading h1 { margin:0; color:var(--color-primary); font-size:clamp(1.6rem,2.5vw,2rem); line-height:1.4; }
+.chat-relay { min-height:0; border:1px solid #d8dccd; border-radius:16px; overflow:hidden; }
+.chat-relay .relay-toolbar { display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:52px; padding:6px 18px; border-bottom:1px solid #e3dfd2; }
+.chat-relay .relay-toolbar-label { font-size:.85em; color:#55615d; }
+.chat-relay .relay-toolbar-actions { display:flex; align-items:center; gap:8px; margin-left:auto; }
+.chat-relay .relay-toolbar button { min-height:40px; padding:5px 10px; border-color:transparent; background:transparent; font-size:.85em; }
+.chat-relay #relay-main { min-height:0; padding:18px 22px; }
+.chat-relay .home-screen { padding:0; }
+.chat-relay .home-copy { padding:0; }
+.chat-relay .home-copy h2 { margin:8px 0 14px; font-size:clamp(1.7em,3vw,2.2em); line-height:1.3; color:#3b5846; }
+.chat-relay .home-copy .eyebrow { margin-bottom:8px; }
+.chat-relay .home-copy>p { margin:0 0 10px; }
+.chat-relay .home-subtitle { font-size:1em; }
+.chat-relay .home-actions { margin-top:18px; }
+.chat-relay .home-actions button { padding:10px 18px; }
+.chat-relay .resume-button { margin-top:12px; font-size:.85em; }
+.chat-relay .hero-illustration { border:0; border-radius:16px; transform:none; }
+.chat-relay .illustration-caption { background:#fffaf2; bottom:12px; padding:7px 10px; }
+.chat-relay .home-bottom { gap:16px; margin-top:18px; padding:12px 0; }
+.chat-relay .welcome-note { gap:12px; }
+.chat-relay .welcome-note p { font-size:.85em; }
+.chat-relay .welcome-note>svg { width:32px; }
+.chat-relay .practice-preferences { margin:12px 0 0; border:0; }
+.chat-relay .practice-preferences summary { padding:8px 0; color:#365e47; font-size:.9em; }
+.chat-relay .practice-preferences p { color:#55615d; font-size:.85em; }
+.chat-relay .preference-fields { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.chat-relay .session-top { margin-bottom:14px; }
+.chat-relay .session-top h1 { font-size:1.35em; }
+.chat-relay .session-layout { border:0; background:transparent; border-radius:0; padding:0; box-shadow:none; gap:22px; }
+.chat-relay .stage > .scene-art { border:0; border-radius:12px; }
+.chat-relay .stage-context { border:0; border-radius:0; background:transparent; margin:0; padding:8px 2px; }
+.chat-relay .stage-context p { margin-top:4px; }
+.chat-relay .npc-speech { border:1px solid #8aa086; box-shadow:none; }
+.chat-relay .dialogue-panel:focus,
+.chat-relay .reaction-area:focus { outline:none; }
+.chat-relay .choice-card { border-width:1px; background:#fffdf4; }
+.chat-relay .npc-reaction { background:#fffdf4; border:1px solid #8aa086; border-radius:4px 14px 14px 14px; padding:12px 16px; }
+.chat-relay .exercise-guide { display:flex; align-items:center; gap:16px; padding:14px 18px; border-radius:14px; background:#e8eddb; margin:12px 0 18px; }
+.chat-relay .exercise-guide .character-art { flex:0 0 72px; width:72px; height:110px; }
+.chat-relay .exercise-guide>div { flex:1; }
+.chat-relay .exercise-guide span { font-size:.8em; color:#44614b; }
+.chat-relay .exercise-guide h2 { margin:5px 0; }
+.chat-relay .lesson-exercise { border:0; border-radius:0; padding:0; background:transparent; margin-top:16px; }
+.chat-relay .lesson-exercise> .eyebrow { margin-top:0; }
+.chat-relay .lesson-exercise .choice-list>button { background:#fffef7; text-align:left; border:1px solid #a6b497; padding:12px 16px; }
+.chat-relay .lesson-task { border:0; background:#e6edda; padding:22px; }
+.chat-relay.is-fullscreen { position:fixed; inset:0; width:100%; height:100dvh; z-index:10001; border:0; border-radius:0; margin:0; display:grid; grid-template-rows:auto minmax(0,1fr); }
+.chat-relay.is-fullscreen #relay-main { width:100%; height:100%; min-height:0; margin:0; overflow:auto; }
+
+@media(min-width:900px) {
+ .chat-relay { height:clamp(420px,calc(100dvh - 230px),720px); display:grid; grid-template-rows:auto minmax(0,1fr); }
+ .chat-relay.is-fullscreen { height:100dvh; }
+ .chat-relay .storage-notice { grid-row:2; margin:0; font-size:.8em; padding:8px 18px; }
+ .chat-relay:has(>.storage-notice) { grid-template-rows:auto auto minmax(0,1fr); }
+ .chat-relay #relay-main { width:100%; height:100%; min-width:0; min-height:0; margin:0; align-self:stretch; justify-self:stretch; overflow:auto; padding:14px 20px; }
+ .chat-relay .home-screen { display:grid; grid-template-rows:minmax(min-content,1fr) auto auto; height:100%; gap:8px; }
+ .chat-relay .home-screen:has(.practice-preferences[open]) { height:auto; min-height:100%; }
+ .chat-relay .home-hero { grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); height:auto; min-height:min-content; gap:28px; max-width:1000px; width:100%; margin:auto; }
+ .chat-relay .hero-illustration { min-height:0; height:clamp(240px,calc(100dvh - 520px),340px); }
+ .chat-relay .hero-illustration .home-art { height:100%; aspect-ratio:auto; }
+ .chat-relay .hero-illustration .home-art .scene-person { height:80%; width:auto; aspect-ratio:8/13; max-width:33%; }
+ .chat-relay .home-bottom { margin:0; }
+ .chat-relay .practice-preferences { margin:0; }
+ .chat-relay .content-screen { max-width:none; width:100%; padding:0; }
+ .chat-relay .content-screen>h1 { font-size:1.4em; margin:0 0 8px; }
+ .chat-relay .content-screen>.eyebrow { margin-bottom:4px; }
+ .chat-relay .content-screen>p { margin:0 0 10px; }
+ .chat-relay .lesson-map-screen { display:flex; flex-direction:column; height:100%; min-height:0; gap:4px; }
+ .chat-relay .lesson-chapter-screen { display:flex; flex-direction:column; height:100%; min-height:0; }
+ .chat-relay .lesson-chapter-screen>.text-button { align-self:flex-start; margin:0 0 4px; min-height:36px; }
+ .chat-relay .lesson-chapter-screen>.lesson-demos { flex:1; min-height:0; }
+ .chat-relay .session-screen { display:grid; grid-template-rows:auto minmax(0,1fr); gap:12px; height:100%; padding:0; }
+ .chat-relay .session-top { margin:0; }
+ .chat-relay .session-top .eyebrow { margin-bottom:3px; }
+ .chat-relay .difficulty-label { padding:6px 10px; }
+ .chat-relay .session-layout { min-height:0; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:stretch; }
+ .chat-relay .stage { position:relative; top:auto; display:flex; flex-direction:column; min-height:0; }
+ .chat-relay .stage>.scene-art { flex:1; min-height:150px; aspect-ratio:auto; }
+ .chat-relay .stage-context p { font-size:.85em; line-height:1.65; margin-bottom:0; }
+ .chat-relay .expression-note { margin:4px 0 0; font-size:.75em; }
+ .chat-relay .dialogue-panel { min-height:0; overflow-y:auto; scrollbar-gutter:stable; padding:2px 4px 4px; }
+ .chat-relay .npc-speech { padding:12px 16px; font-size:1.08em; margin:10px 0 12px; line-height:1.7; }
+ .chat-relay .question-label { margin:0 0 8px; }
+ .chat-relay .choice-list { gap:8px; }
+ .chat-relay .choice-card { padding:10px 14px; min-height:50px; }
+ .chat-relay .picture-choices .choice-card { min-height:65px; }
+ .chat-relay .support-actions { margin:10px 0; }
+ .chat-relay .support-actions button { min-height:40px; }
+ .chat-relay .hint,.chat-relay .demo,.chat-relay .feedback { margin:10px 0; padding:10px 14px; font-size:.9em; }
+ .chat-relay .player-speech { margin:8px 0 12px 18px; padding:10px 14px; }
+ .chat-relay .npc-reaction { margin:10px 0; }
+ .chat-relay .npc-reaction p { font-size:1em; margin:5px 0 0; }
+ .chat-relay .actions { margin:12px 0 0; }
+}
+@media(max-width:899px) {
+ .chat-relay .hero-illustration { max-height:360px; }
+ .chat-relay .hero-illustration .home-art { aspect-ratio:1.5; }
+ .chat-relay .stage { position:relative; top:auto; }
+ .chat-relay .stage>.scene-art { aspect-ratio:1.8; }
+}
+@media(max-width:599px) {
+ .chat-relay-page #main-content { padding:14px 12px 0; }
+ .relay-page-heading { margin-bottom:12px; }
+ .chat-relay #relay-main { padding:14px; }
+ .chat-relay .relay-toolbar { padding:6px 10px; gap:8px; flex-wrap:wrap; }
+ .chat-relay .relay-toolbar-label { font-size:.78em; }
+ .chat-relay .relay-toolbar button { min-height:44px; padding:6px; }
+ .chat-relay .home-copy h2 { font-size:1.8em; }
+ .chat-relay .home-bottom { gap:14px; padding:14px 0; }
+ .chat-relay .preference-fields { grid-template-columns:1fr; gap:0; }
+ .chat-relay .practice-preferences .check { font-size:.9em; }
+ .chat-relay .stage>.scene-art { aspect-ratio:1.45; }
+ .chat-relay .exercise-guide { padding:12px; gap:10px; }
+ .chat-relay .exercise-guide .character-art { flex-basis:58px; width:58px; height:90px; }
+ .chat-relay .exercise-guide h2 { font-size:1.05em; }
+ .chat-relay .exercise-guide span { font-size:.73em; }
+}
+@media(min-width:900px) {
+ .chat-relay .stage .scene-person { height:80%; width:auto; aspect-ratio:8/13; max-width:32%; }
+}
+@media(min-width:900px) {
+ .chat-relay .home-copy h2 { font-size:clamp(1.7em,2.6vw,2em); line-height:1.25; margin:4px 0 10px; }
+ .chat-relay .home-copy>p:not(.eyebrow) { line-height:1.65; margin:0 0 6px; }
+ .chat-relay .home-copy .eyebrow { line-height:1.5; }
+ .chat-relay .home-actions { margin-top:14px; flex-wrap:wrap; }
+ .chat-relay .home-actions button { white-space:nowrap; }
+ .chat-relay .resume-button { min-height:44px; margin-top:8px; }
+}
+
+@media(min-width:900px) and (max-height:800px) {
+ .chat-relay .lesson-map-screen>.eyebrow { display:none; }
+ .chat-relay .lesson-map-screen>p:not(.eyebrow) { line-height:1.5; margin-bottom:4px; }
+}
+
+/* Soft, tactile game controls. Interaction never moves text or changes its size. */
+.chat-relay {
+ --button-edge:#b9c5a9;
+ border-color:#c7d2b8;
+ border-radius:22px;
+ background:#f4f6e9;
+ box-shadow:0 5px 0 #e1e7d5;
+}
+.chat-relay button {
+ position:relative;
+ isolation:isolate;
+ border-color:#a9b79b;
+ border-radius:16px;
+ background:#fffdf4;
+ box-shadow:0 3px 0 var(--button-edge);
+ transition:background-color 150ms ease,border-color 150ms ease,box-shadow 150ms ease;
+}
+.chat-relay button:hover:not(:disabled) {
+ background:#f1f5e7;
+ border-color:#6b865c;
+ box-shadow:0 3px 0 #96ab80;
+}
+.chat-relay button:active:not(:disabled) {
+ background:#e8efdb;
+ box-shadow:inset 0 2px 0 #a9b79b,0 1px 0 var(--button-edge);
+}
+.chat-relay button.primary {
+ background:#365e47;
+ border-color:#2d503a;
+ box-shadow:inset 0 2px 0 #63816a,0 4px 0 #253f2e;
+}
+.chat-relay button.primary:hover:not(:disabled) {
+ background:#2f543f;
+ box-shadow:inset 0 2px 0 #63816a,0 4px 0 #253f2e;
+}
+.chat-relay button.primary:active:not(:disabled) {
+ background:#294b37;
+ box-shadow:inset 0 3px 0 #203e2c,0 1px 0 #253f2e;
+}
+.chat-relay button:disabled { box-shadow:none; }
+.chat-relay .game-icon { flex:0 0 24px; width:24px; height:24px; }
+.chat-relay .relay-toolbar {
+ background:#e8efdc;
+ border-bottom:1px solid #cbd7bb;
+}
+.chat-relay .relay-toolbar-label {
+ display:flex;
+ align-items:center;
+ gap:9px;
+ color:#3e6148;
+ font-weight:750;
+}
+.chat-relay .relay-toolbar-label .game-icon { width:22px; height:22px; flex-basis:22px; }
+.chat-relay .relay-toolbar button {
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ gap:8px;
+ border:1px solid #b7c7a6;
+ border-radius:12px;
+ background:#fffdf4;
+ box-shadow:0 2px 0 #c4d0b5;
+}
+.chat-relay .relay-toolbar button .game-icon { width:18px; height:18px; flex-basis:18px; }
+.chat-relay #relay-main { background:#f5f6ea; }
+.chat-relay .home-screen { position:relative; isolation:isolate; }
+.chat-relay .lobby-scenery {
+ position:absolute;
+ inset:-14px -20px;
+ width:calc(100% + 40px);
+ height:calc(100% + 28px);
+ z-index:-1;
+ pointer-events:none;
+}
+.chat-relay .home-copy h2 { font-weight:800; letter-spacing:.025em; }
+.chat-relay .home-actions { gap:12px; padding-bottom:4px; }
+.chat-relay .home-actions button { justify-content:center; gap:10px; min-height:54px; padding:10px 20px; }
+.chat-relay button.practice-start {
+ background:#f5dfab;
+ color:#4c4e34;
+ border-color:#bda472;
+ box-shadow:inset 0 2px 0 #fff0c8,0 4px 0 #baa171;
+}
+.chat-relay button.practice-start:hover:not(:disabled) { background:#f0d59c; box-shadow:inset 0 2px 0 #fff0c8,0 4px 0 #baa171; }
+.chat-relay button.practice-start:active:not(:disabled) { background:#ead098; box-shadow:inset 0 2px 0 #bda472,0 1px 0 #baa171; }
+.chat-relay .hero-illustration {
+ border:5px solid #fffdf4;
+ border-radius:26px;
+ box-shadow:0 4px 0 #c8d3b6;
+}
+.chat-relay .illustration-caption {
+ bottom:10px;
+ left:12px;
+ right:12px;
+ border-radius:14px;
+ border:1px solid #d8ddc8;
+}
+.chat-relay .resume-button { box-shadow:none; border-style:dashed; }
+.chat-relay .home-bottom { border:0; padding:12px 0; }
+.chat-relay .practice-preferences { border-top:1px solid #d5dec7; }
+.chat-relay .practice-preferences[open] { background:#f5f6ea; }
+.chat-relay .session-top .difficulty-label { border:1px solid #b7c7a6; background:#e7efdc; font-weight:650; }
+.chat-relay .stage>.scene-art { border:4px solid #fffdf4; border-radius:22px; box-shadow:0 3px 0 #c5d1b3; }
+.chat-relay .stage-context { padding-top:12px; }
+.chat-relay .choice-card,
+.chat-relay .lesson-exercise .choice-list>button { border-radius:16px; border-color:#a9b99a; box-shadow:0 3px 0 #c6d2b6; }
+.chat-relay .choice-card>span { min-width:0; }
+.chat-relay .npc-speech { border-radius:6px 20px 20px; border-color:#a0b291; background:#fffdf6; box-shadow:0 3px 0 #d9e0cd; }
+.chat-relay .support-actions button,
+.chat-relay .speech-button,
+.chat-relay .text-button { box-shadow:none; }
+.chat-relay .exercise-guide { border:1px solid #c7d5b6; border-radius:22px; }
+.chat-relay .feedback { border:1px solid #c5d4b9; }
+@media(min-width:900px) {
+ .chat-relay .home-bottom { gap:12px; }
+ .chat-relay .home-copy:has(.resume-button) .home-actions { margin-top:10px; }
+}
+@media(max-width:1100px) and (min-width:900px) {
+ .chat-relay .home-hero { gap:20px; }
+ .chat-relay .home-actions { gap:10px; }
+ .chat-relay .home-actions button { padding:10px 14px; }
+ .chat-relay .welcome-note p { font-size:.8em; }
+}
+@media(max-width:599px) {
+ .chat-relay { border-radius:20px; }
+ .chat-relay .lobby-scenery { inset:-14px; width:calc(100% + 28px); height:calc(100% + 28px); }
+ .chat-relay .home-actions { flex-wrap:wrap; gap:10px; }
+ .chat-relay .home-actions button { flex:1; gap:8px; padding:10px 12px; }
+ .chat-relay .hero-illustration { border-radius:22px; }
+ .chat-relay .illustration-caption { left:6px; right:6px; bottom:8px; padding:6px; font-size:.75em; }
+}
+@media(max-width:359px) {
+ .chat-relay .home-actions button { flex-basis:100%; }
+}
+
+/* Name tags share each actor's positioning, including fullscreen and small scenes. */
+.chat-relay .stage .scene-person {
+ --actor-floor:max(9%,calc(1.125em + 18px));
+ bottom:var(--actor-floor);
+ width:min(32%,209px);
+ height:auto;
+ aspect-ratio:8/13;
+ max-width:none;
+ max-height:min(80%,calc(100% - var(--actor-floor) - 12px));
+}
+.chat-relay .stage .scene-person .character-art { width:100%; height:100%; max-height:none; }
+.chat-relay .scene-nameplate {
+ position:absolute;
+ top:calc(100% - 6px);
+ left:50%;
+ transform:translateX(-50%);
+ min-width:48px;
+ max-width:160px;
+ padding:2px 12px;
+ border:1px solid #9bae8d;
+ border-radius:30px;
+ background:#fffdf2;
+ color:#405b44;
+ text-align:center;
+ font-size:.75em;
+ font-weight:650;
+ line-height:1.5;
+ white-space:nowrap;
+ pointer-events:none;
+}
+
+/* Preferences use the same cream, sage and tactile controls as the game. */
+.chat-relay .practice-preferences { margin:0; padding:0 0 4px; border:0; }
+.chat-relay .practice-preferences summary {
+ display:flex;
+ align-items:center;
+ gap:10px;
+ width:fit-content;
+ max-width:100%;
+ min-height:48px;
+ margin:0;
+ padding:9px 14px;
+ border:1px solid #a9b79b;
+ border-radius:16px;
+ background:#fffdf4;
+ color:#405b44;
+ box-shadow:0 3px 0 #b9c5a9;
+ font-size:.9em;
+ font-weight:650;
+ list-style:none;
+ transition:background-color 150ms ease,box-shadow 150ms ease;
+}
+.chat-relay .practice-preferences summary::-webkit-details-marker { display:none; }
+.chat-relay .practice-preferences summary::marker { content:''; }
+.chat-relay .practice-preferences summary:hover { background:#edf3e2; }
+.chat-relay .practice-preferences summary:active { box-shadow:inset 0 2px 0 #a9b79b,0 1px 0 #b9c5a9; }
+.chat-relay .practice-preferences[open] { background:transparent; }
+.chat-relay .practice-preferences[open] summary { background:#e8efdc; border-color:#71895f; }
+.chat-relay .preference-current { padding:2px 9px; border-radius:20px; background:#e8efdc; font-size:.85em; }
+.chat-relay .preference-expand { position:relative; width:16px; height:16px; margin-left:auto; flex:0 0 16px; }
+.chat-relay .preference-expand::before,
+.chat-relay .preference-expand::after { position:absolute; left:1px; top:7px; width:14px; height:2px; border-radius:2px; background:currentColor; content:''; }
+.chat-relay .preference-expand::after { transform:rotate(90deg); }
+.chat-relay .practice-preferences[open] .preference-expand::after { display:none; }
+.chat-relay .preferences-panel {
+ margin-top:14px;
+ padding:20px;
+ border:1px solid #bccbad;
+ border-radius:22px;
+ background:#fffdf4;
+ box-shadow:0 3px 0 #d4dfc5;
+}
+.chat-relay .preference-fields { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr)); gap:18px; }
+.chat-relay .preference-fields fieldset { min-width:0; margin:0; padding:0; border:0; }
+.chat-relay .preference-fields legend { width:auto; margin:0 0 10px; padding:0; color:#405b44; font-size:.9em; font-weight:750; line-height:1.6; }
+.chat-relay .preference-options { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
+.chat-relay .preference-option { position:relative; display:block; min-width:0; cursor:pointer; }
+.chat-relay .preference-option input {
+ position:absolute;
+ width:1px;
+ height:1px;
+ margin:0;
+ padding:0;
+ overflow:hidden;
+ clip-path:inset(50%);
+ white-space:nowrap;
+}
+.chat-relay .preference-option>span {
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ gap:4px;
+ height:100%;
+ min-height:76px;
+ padding:10px;
+ border:1px solid #a9b79b;
+ border-radius:16px;
+ background:#f5f7eb;
+ color:#405b44;
+ text-align:center;
+ box-shadow:0 3px 0 #c3d0b3;
+ transition:background-color 150ms ease,box-shadow 150ms ease;
+}
+.chat-relay .preference-option strong { font-size:.95em; line-height:1.5; overflow-wrap:anywhere; }
+.chat-relay .preference-option small { font-size:.75em; line-height:1.5; }
+.chat-relay .preference-option:hover>span { background:#e8efdc; }
+.chat-relay .preference-option input:checked+span { background:#365e47; border-color:#2d503a; color:#fff; box-shadow:inset 0 2px 0 #63816a,0 3px 0 #253f2e; }
+.chat-relay .preference-option input:focus-visible+span { outline:3px solid #3c6d9d; outline-offset:4px; }
+.chat-relay .preference-option:active>span { box-shadow:inset 0 2px 0 #a9b79b,0 1px 0 #c3d0b3; }
+.chat-relay .preference-toggles { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,350px),1fr)); gap:10px; margin-top:20px; }
+.chat-relay .preference-toggle { display:flex; align-items:center; justify-content:space-between; gap:16px; min-width:0; min-height:76px; padding:12px 14px; border:1px solid #d2ddc5; border-radius:16px; background:#f5f7eb; cursor:pointer; }
+.chat-relay .preference-toggle>span { min-width:0; }
+.chat-relay .preference-toggle strong { display:block; color:#405b44; font-size:.9em; line-height:1.5; }
+.chat-relay .preference-toggle small { display:block; margin-top:4px; color:#55615d; font-size:.75em; line-height:1.5; }
+.chat-relay .preference-toggle input[type=checkbox] {
+ position:relative;
+ appearance:none;
+ -webkit-appearance:none;
+ width:46px;
+ height:28px;
+ margin:0;
+ flex:0 0 46px;
+ border:2px solid #9aab8a;
+ border-radius:18px;
+ background:#dbe3ce;
+ cursor:pointer;
+}
+.chat-relay .preference-toggle input::before { position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%; background:#fffdf4; box-shadow:0 1px 2px #3a503840; content:''; }
+.chat-relay .preference-toggle input:checked { background:#365e47; border-color:#365e47; }
+.chat-relay .preference-toggle input:checked::before { left:21px; }
+.chat-relay .preference-toggle input:disabled { opacity:.45; cursor:default; }
+.chat-relay .preference-toggle:has(input:disabled) { cursor:default; }
+.chat-relay .practice-preferences .preference-note { margin:16px 0 0; padding-top:14px; border-top:1px solid #dce4d1; font-size:.8em; line-height:1.7; }
+@media(max-width:599px) {
+ .chat-relay .practice-preferences summary { gap:8px; padding:9px 12px; font-size:.85em; }
+ .chat-relay .preference-current { padding:2px 7px; }
+ .chat-relay .preferences-panel { padding:14px; }
+ .chat-relay .preference-options { gap:8px; }
+ .chat-relay .preference-option>span { padding:9px 5px; }
+ .chat-relay .preference-option strong { font-size:.85em; }
+ .chat-relay .preference-option small { font-size:.7em; }
+}
+@media(max-width:359px) {
+ .chat-relay .practice-preferences summary { flex-wrap:wrap; }
+ .chat-relay .preference-current { font-size:.8em; }
+ .chat-relay .preference-options { grid-template-columns:1fr; }
+ .chat-relay .preference-option>span { flex-direction:row; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; min-height:48px; text-align:left; }
+}
+
+/* Keep the current learning step visible after keyboard or touch navigation. */
+.chat-relay .dialogue-panel,
+.chat-relay .reaction-area,
+.chat-relay #lessons-heading,
+.chat-relay .exercise-guide h2,
+.chat-relay .lesson-task h2 { scroll-margin-top:84px; }
+.chat-relay #lessons-heading:focus,
+.chat-relay .exercise-guide h2:focus,
+.chat-relay .lesson-task h2:focus { outline:none; }

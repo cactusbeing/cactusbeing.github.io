@@ -1,6 +1,7 @@
+import { createHash } from 'node:crypto';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import { readdirSync, cpSync, existsSync, readFileSync } from 'node:fs';
+import { readdirSync, cpSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
 import imageVariants from './src/content/image-variants.json';
 
@@ -28,6 +29,7 @@ for (const entry of [
   'game/index.html',
   'game/campus/index.html',
   'game/money/index.html',
+  'game/chat-relay/index.html',
 ]) {
   if (existsSync(entry)) inputs.push(entry);
 }
@@ -145,6 +147,48 @@ export default defineConfig({
             },
           ];
         },
+      },
+    },
+    {
+      name: 'chat-relay-offline',
+      apply: 'build',
+      writeBundle(_options, bundle) {
+        const entry = Object.values(bundle).find((item) => item.type === 'chunk' &&
+          item.isEntry && item.facadeModuleId?.endsWith('/game/chat-relay/index.html'));
+        if (!entry || entry.type !== 'chunk') throw new Error('Missing chat relay bundle entry');
+        const files = new Set(['game/chat-relay/index.html']);
+        const visit = (name: string) => {
+          if (files.has(name)) return;
+          files.add(name);
+          const item = bundle[name];
+          if (item?.type === 'chunk') {
+            [...item.imports, ...item.dynamicImports].forEach(visit);
+            const metadata = Reflect.get(item, 'viteMetadata') as
+              { importedCss?: Set<string>; importedAssets?: Set<string> } | undefined;
+            metadata?.importedCss?.forEach(visit);
+            metadata?.importedAssets?.forEach(visit);
+          }
+        };
+        visit(entry.fileName);
+        const html = readFileSync(resolve(buildOutput, 'game/chat-relay/index.html'), 'utf8');
+        for (const [, path] of html.matchAll(/(?:src|href)=["']([^"']+)["']/g)) {
+          if (path.startsWith(siteBase + 'bundles/')) visit(path.slice(siteBase.length));
+        }
+        const fingerprint = createHash('sha256');
+        [...files].sort().forEach((file) => fingerprint.update(readFileSync(resolve(buildOutput, file))));
+        const revision = fingerprint.digest('hex').slice(0, 16);
+        const urls = [...files].map((file) => siteBase + file);
+        urls.push(siteBase + 'game/chat-relay/');
+        const worker = `const PREFIX='cactus-chat-relay-'+encodeURIComponent(self.registration.scope)+'-';
+const CACHE=PREFIX+'${revision}';
+const URLS=${JSON.stringify(urls)};
+self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(URLS)).then(()=>self.skipWaiting())));
+self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith(PREFIX)&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
+self.addEventListener('fetch',e=>{const u=new URL(e.request.url);if(e.request.method!=='GET'||u.origin!==self.location.origin||!URLS.includes(u.pathname))return;e.respondWith(caches.open(CACHE).then(async c=>{const old=await c.match(u.pathname);if(e.request.mode==='navigate'){try{return await fetch(e.request);}catch{return old||Response.error();}}return old||fetch(e.request);}));});
+`;
+        writeFileSync(resolve(buildOutput, 'game/chat-relay/sw.js'), worker);
+        writeFileSync(resolve(buildOutput, 'game/chat-relay/offline-manifest.json'),
+          JSON.stringify({ revision, urls }, null, 2) + '\n');
       },
     },
     {

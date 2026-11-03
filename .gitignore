@@ -40,3 +40,8 @@ test-results/
 /docs/*
 !/docs/legacy-baseline.json
 !/docs/article-baseline.json
+
+# Chat relay validation is part of the build and must be present in CI.
+!/scripts/test-chat-relay.mjs
+!/scripts/playtest-chat-relay.mjs
+!/docs/chat-relay-validation.md

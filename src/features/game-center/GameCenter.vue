@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import SceneArt from '../chat-relay/components/SceneArt.vue';
+const chatRelayUrl = `${import.meta.env.BASE_URL}game/chat-relay/`;
 import SiteIcon from '../../shared/components/SiteIcon.vue';
 </script>
 <template>
@@ -11,18 +13,44 @@ import SiteIcon from '../../shared/components/SiteIcon.vue';
       <a href="/">返回特教百寶袋 <SiteIcon name="arrow" :size="16" /></a>
     </div>
     <div class="game-entries">
-      <article class="game-entry money-entry">
-        <a class="entry-picture" href="/game/money/" aria-label="遊玩特教班互動遊戲：認識新台幣"><img src="/assets/money/tea-shop.webp" width="1536" height="1024" alt="百寶茶舖裡，店員準備好飲料，等你一起練習點餐。" loading="lazy" /></a>
+      <article class="game-entry chat-relay-entry">
+        <a class="entry-picture" :href="chatRelayUrl" aria-label="遊玩社會技巧：聊天傳接球"><SceneArt home /></a>
         <div class="entry-copy">
-          <h2>特教班互動遊戲：認識新台幣</h2>
+          <h2>社會技巧：聊天傳接球</h2>
+          <p class="tagline">接住話題，讓聊天自然繼續。</p>
+          <p>走進六種生活場景，練習聆聽、接話、分享與收尾。60 組原創多回合情境，每個選擇都能看見不同回應；也可以安心說「我想先休息」。</p>
+          <section class="entry-learning" aria-labelledby="chat-relay-goals">
+            <h3 id="chat-relay-goals">學習目標</h3>
+            <ul>
+              <li>聽懂對方的話題與感受，選擇相關回應。</li>
+              <li>輪流提問與分享，延續多回合對話。</li>
+              <li>辨識休息與拒絕的訊號，尊重界線並自然收尾。</li>
+            </ul>
+          </section>
+          <div class="entry-meta"><span>三種難度</span><span>四章教學</span><span>60 組生活情境</span></div>
+          <a class="entry-play" :href="chatRelayUrl">開始聊天傳接球 <SiteIcon name="arrow" :size="18" /></a>
+        </div>
+      </article>
+      <article class="game-entry money-entry">
+        <a class="entry-picture" href="/game/money/" aria-label="遊玩生活數學：認識新台幣"><img src="/assets/money/tea-shop.webp" width="1536" height="1024" alt="百寶茶舖裡，店員準備好飲料，等你一起練習點餐。" loading="lazy" /></a>
+        <div class="entry-copy">
+          <h2>生活數學：認識新台幣</h2>
           <p class="tagline">從一個硬幣，到自己買一杯飲料。</p>
           <p>看真實錢幣，練習認面額、湊金額與找零。走進百寶茶舖，和店員聊一聊，選飲料、加料，再自己付款。</p>
-          <div class="entry-meta"><span>特教班生活數學</span><span>硬幣＋紙鈔</span><span>不限時・可朗讀</span></div>
+          <section class="entry-learning" aria-labelledby="money-goals">
+            <h3 id="money-goals">學習目標</h3>
+            <ul>
+              <li>辨認新台幣硬幣與紙鈔的外觀及面額。</li>
+              <li>組合錢幣湊出指定金額，計算應找回的零錢。</li>
+              <li>依購物流程點餐、確認金額並完成付款。</li>
+            </ul>
+          </section>
+          <div class="entry-meta"><span>五種練習</span><span>硬幣＋紙鈔</span><span>點餐與購物</span></div>
           <a class="entry-play" href="/game/money/">開始認識新台幣 <SiteIcon name="arrow" :size="18" /></a>
         </div>
       </article>
       <article class="game-entry campus-entry">
-        <a class="entry-picture" href="/game/campus/" aria-label="遊玩特教宣導遊戲：同一座校園"
+        <a class="entry-picture" href="/game/campus/" aria-label="遊玩特教宣導：同一座校園"
           ><img
             src="/assets/decor/campus-invitation.png"
             width="1568"
@@ -31,13 +59,21 @@ import SiteIcon from '../../shared/components/SiteIcon.vue';
             loading="lazy"
         /></a>
         <div class="entry-copy">
-          <h2>特教宣導遊戲：同一座校園</h2>
+          <h2>特教宣導：同一座校園</h2>
           <p class="tagline">每次相遇，多一點理解。</p>
           <p>
             從進校門到放學，探索教室、操場與辦公室。八個情境、二十四次選擇，練習現場回應、如實回報與後續支持。
           </p>
+          <section class="entry-learning" aria-labelledby="campus-goals">
+            <h3 id="campus-goals">學習目標</h3>
+            <ul>
+              <li>辨識溝通、閱讀、感官與行動上的不同需要。</li>
+              <li>先詢問本人，選擇尊重隱私與自主的支持方式。</li>
+              <li>遇到安全事件適當求助、如實回報並追蹤支持。</li>
+            </ul>
+          </section>
           <div class="entry-meta">
-            <span>校園探索 RPG</span><span>八個生活情境</span><span>接續原有進度</span>
+            <span>校園探索 RPG</span><span>八個生活情境</span><span>二十四次選擇</span>
           </div>
           <a class="entry-play" href="/game/campus/"
             >走進校園的一天 <SiteIcon name="arrow" :size="18"
@@ -46,7 +82,7 @@ import SiteIcon from '../../shared/components/SiteIcon.vue';
       </article>
     </div>
     <p class="games-note">
-      免費・單人・免登入。遊戲進度只保存在目前瀏覽器。
+      選一款遊戲，從感興趣的主題開始練習。
     </p>
   </section>
 </template>
@@ -105,10 +141,12 @@ import SiteIcon from '../../shared/components/SiteIcon.vue';
   height: 100%;
   object-fit: cover;
 }
+.chat-relay-entry .entry-picture{display:flex;align-items:center;background:#e6ecdf}.chat-relay-entry :deep(.scene-art){height:100%;aspect-ratio:1.5;border-radius:0}.chat-relay-entry :deep(.scene-person){bottom:7%;width:30%}
 .campus-entry .entry-picture img {
   object-position: 76% center;
 }
 .entry-copy {
+  min-width: 0;
   padding: 30px 34px;
 }
 .entry-copy h2 {
@@ -126,6 +164,30 @@ import SiteIcon from '../../shared/components/SiteIcon.vue';
   font-size: 0.95rem;
   line-height: 1.85;
   margin: 0 0 16px;
+}
+.entry-learning {
+  margin: 18px 0;
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: var(--color-surface-muted);
+}
+.entry-learning h3 {
+  margin: 0 0 8px;
+  color: var(--color-primary);
+  font-size: 0.9rem;
+  font-weight: 750;
+  line-height: 1.6;
+}
+.entry-learning ul {
+  display: grid;
+  gap: 7px;
+  padding: 0 0 0 1.2em;
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.75;
+}
+.entry-learning li::marker {
+  color: var(--color-primary);
 }
 .entry-meta {
   display: flex;
@@ -177,6 +239,9 @@ import SiteIcon from '../../shared/components/SiteIcon.vue';
   }
   .entry-copy h2 {
     font-size: 1.45rem;
+  }
+  .entry-learning {
+    padding: 14px;
   }
 }
 </style>

@@ -5,11 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "vue-tsc --noEmit && vite build && node scripts/verify-build.mjs",
+    "build": "npm run test:chat-relay && vue-tsc --noEmit && vite build && node scripts/verify-build.mjs",
     "preview": "vite preview --host 127.0.0.1",
     "typecheck": "vue-tsc --noEmit",
     "test:money": "node --experimental-strip-types scripts/test-money.mjs",
-    "optimize:images": "node scripts/optimize-images.mjs"
+    "optimize:images": "node scripts/optimize-images.mjs",
+    "test:chat-relay": "node --experimental-strip-types scripts/test-chat-relay.mjs"
   },
   "dependencies": {
     "html2canvas": "^1.4.1",

@@ -1,6 +1,7 @@
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { createHash } from 'node:crypto';
+import { runInNewContext } from 'node:vm';
 import katex from 'katex';
 const outputDirectory = process.argv[2] || 'dist';
 const built = (file) => resolve(outputDirectory, file);
@@ -38,6 +39,7 @@ const pages = [
   'game/index.html',
   'game/campus/index.html',
   'game/money/index.html',
+  'game/chat-relay/index.html',
   '404.html',
 ];
 if (existsSync(built('campus/index.html')))
@@ -133,3 +135,56 @@ for (const year of examIndex.years) {
   }
 }
 console.log(`Exams: ${examQuestionCount} questions, unique papers, categories and required diagrams verified; no original PDFs or review screenshots published.`);
+
+// The isolated game worker must cache the actual hashed build and only control its own route.
+const offline = JSON.parse(readFileSync(built('game/chat-relay/offline-manifest.json'), 'utf8'));
+const worker = readFileSync(built('game/chat-relay/sw.js'), 'utf8');
+const offlineFiles = offline.urls.filter((url) => !url.endsWith('/')).map((url) => {
+  if (!url.startsWith(deploymentBase)) throw new Error(`Offline URL outside deployment base: ${url}`);
+  return url.slice(deploymentBase.length);
+}).sort();
+const offlineHash = createHash('sha256');
+for (const file of offlineFiles) {
+  if (!existsSync(built(file))) throw new Error(`Missing offline resource: ${file}`);
+  offlineHash.update(readFileSync(built(file)));
+}
+if (offlineHash.digest('hex').slice(0, 16) !== offline.revision || !worker.includes(offline.revision))
+  throw new Error('Stale chat relay offline fingerprint');
+if (!offline.urls.includes(deploymentBase + 'game/chat-relay/')) throw new Error('Missing offline game entry');
+const gameHtml = readFileSync(built('game/chat-relay/index.html'), 'utf8');
+if ((gameHtml.match(/googletagmanager.com\/gtag\/js/g) || []).length !== 1)
+  throw new Error('Chat relay should retain exactly one existing site analytics loader');
+const sitemap = readFileSync(built('sitemap.xml'), 'utf8');
+if (!sitemap.includes('game/chat-relay/')) throw new Error('Chat relay missing from sitemap');
+// Exercise worker installation/activation: another deployment on this origin keeps its cache.
+const workerHandlers = new Map();
+const cacheScope = `https://local.test${deploymentBase}game/chat-relay/`;
+const otherCache = 'cactus-chat-relay-' + encodeURIComponent(`https://local.test${deploymentBase}another-install/game/chat-relay/`) + '-old';
+const deletedCaches = [];
+let installedCache;
+let cachedUrls;
+runInNewContext(worker, {
+  self: {
+    registration: { scope: cacheScope },
+    addEventListener: (name, listener) => workerHandlers.set(name, listener),
+    skipWaiting: () => Promise.resolve(),
+    clients: { claim: () => Promise.resolve() },
+  },
+  caches: {
+    open: async (name) => {
+      installedCache = name;
+      return { addAll: async (urls) => { cachedUrls = [...urls]; } };
+    },
+    keys: async () => [installedCache, installedCache.replace(offline.revision, 'old'), otherCache],
+    delete: async (name) => { deletedCaches.push(name); return true; },
+  },
+});
+let workerOperation;
+workerHandlers.get('install')({ waitUntil: (promise) => { workerOperation = promise; } });
+await workerOperation;
+if (JSON.stringify(cachedUrls) !== JSON.stringify(offline.urls)) throw new Error('Worker does not install the manifest resources');
+workerHandlers.get('activate')({ waitUntil: (promise) => { workerOperation = promise; } });
+await workerOperation;
+if (deletedCaches.length !== 1 || deletedCaches[0] !== installedCache.replace(offline.revision, 'old'))
+  throw new Error('Worker activation must remove only its own previous cache');
+console.log(`Chat relay: entry, SEO, scoped offline cache and ${offlineFiles.length} resource fingerprints verified.`);
