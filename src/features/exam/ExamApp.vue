@@ -31,6 +31,7 @@ const exportError = ref('');
 const historySaveError = ref('');
 const copyNotice = ref<{ id: number; message: string } | null>(null);
 const loading = ref(true);
+const loadingSubjectId = ref<string | null>(null);
 const error = ref('');
 const practiceTitle = ref<HTMLElement | null>(null);
 const subjectTitle = ref<HTMLElement | null>(null);
@@ -110,6 +111,7 @@ function cancelAttemptLoad() {
   attemptLoad.abort();
   attemptLoad = undefined;
   loading.value = false;
+  loadingSubjectId.value = null;
 }
 function beginAttemptLoad() {
   cancelAttemptLoad();
@@ -125,6 +127,7 @@ function finishAttemptLoad(request: AbortController) {
   if (!isCurrentLoad(request)) return;
   attemptLoad = undefined;
   loading.value = false;
+  loadingSubjectId.value = null;
 }
 const timedAttempt = computed(() => activeSeconds.value > 0 || activeMinutes.value > 0);
 const sequential = computed(() => activeSeconds.value > 0 && !finished.value);
@@ -408,6 +411,7 @@ async function chooseSubject(subject: Subject) {
   if (!paperMinutesEdited.value) paperMinutes.value = subject.count;
   if (settingsError.value) return;
   const request = beginAttemptLoad();
+  loadingSubjectId.value = subject.id;
   error.value = '';
   wrongOnly.value = false;
   try {
@@ -851,6 +855,8 @@ onBeforeUnmount(() => {
             :key="subject.id"
             type="button"
             class="subject-row"
+            :class="{ 'is-loading': loadingSubjectId === subject.id }"
+            :aria-busy="loadingSubjectId === subject.id"
             :disabled="loading || Boolean(settingsError)"
             @click="chooseSubject(subject)"
           >
@@ -860,7 +866,8 @@ onBeforeUnmount(() => {
             </span>
             <span class="subject-meta">
               <span class="progress-badge" :class="{ 'in-progress': progressFor(subject) > 0 && progressFor(subject) < subject.count, completed: progressFor(subject) >= subject.count }">{{ progressLabel(subject) }}</span>
-              <span>{{ subject.count }} 題</span><SiteIcon name="arrow" :size="17" />
+              <span v-if="loadingSubjectId === subject.id" role="status">載入中…</span>
+              <template v-else><span>{{ subject.count }} 題</span><SiteIcon name="arrow" :size="17" /></template>
             </span>
           </button>
         </section>
@@ -1137,7 +1144,7 @@ onBeforeUnmount(() => {
 .random-footer { display: grid; gap: 12px; margin-top: var(--setup-gap); padding-top: var(--setup-gap); border-top: 1px solid var(--color-border); }
 .random-start { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 24px; }
 .random-footer .settings-note, .random-footer .export-error { margin: 0; }
-.start-button:disabled, .subject-row:disabled { background: var(--color-disabled-bg); color: var(--color-disabled-text); border-color: var(--color-disabled-border); cursor: not-allowed; }
+.start-button:disabled { background: var(--color-disabled-bg); color: var(--color-disabled-text); border-color: var(--color-disabled-border); cursor: not-allowed; }
 .timer-bar { position: sticky; top: 12px; z-index: 2; display: flex; align-items: center; flex-wrap: wrap; gap: 12px 24px; padding: 12px 16px; margin-bottom: 20px; border: 1px solid var(--color-border); border-radius: 12px; background: var(--color-surface); }
 .timer-bar p { margin: 0; color: var(--color-text-muted); font-size: .85rem; }
 .timer-value { display: flex; align-items: baseline; gap: 10px; color: var(--color-primary); }
@@ -1199,7 +1206,9 @@ onBeforeUnmount(() => {
 .subject-heading { margin-bottom: 18px; }
 .subject-heading h2 { margin-bottom: 4px; }
 .subject-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; width: 100%; min-height: 76px; padding: 16px 22px; margin-bottom: 10px; text-align: left; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 14px; color: var(--color-text); }
-.subject-row:hover { border-color: var(--color-primary); background: var(--color-surface-muted); }
+.subject-row:not(:disabled):hover { border-color: var(--color-primary); background: var(--color-surface-muted); }
+.subject-row:disabled { background: var(--color-surface); border-color: var(--color-border); color: var(--color-text); }
+.subject-row.is-loading { background: var(--color-primary-soft); border-color: var(--color-primary); cursor: progress; }
 .subject-name { font-size: 1.08rem; font-weight: 700; }
 .subject-meta { display: inline-flex; align-items: center; gap: 16px; white-space: nowrap; color: var(--color-primary); font-size: .9rem; }
 .progress-badge { display: inline-flex; align-items: center; min-height: 30px; padding: 3px 10px; border-radius: 999px; background: var(--color-surface-muted); color: var(--color-text-muted); font-size: .78rem; font-weight: 700; }

@@ -71,16 +71,32 @@ function checkCanceledLoad(name, trigger, reject = false) {
       document.querySelector(trigger).click();
       for (let i = 0; i < 160 && !pending.length; i++) await new Promise(resolve => setTimeout(resolve, 25));
       if (!pending.length) throw new Error('No pending paper request');
+      let subjectState;
+      if (trigger === '.subject-row') {
+        const rows = [...document.querySelectorAll('.subject-row')];
+        const normal = document.createElement('span');
+        normal.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--color-surface');
+        subjectState = {
+          loadingRows: rows.filter(row => row.getAttribute('aria-busy') === 'true').length,
+          otherRowsUnchanged: rows.slice(1).every(row => getComputedStyle(row).backgroundColor === normal.style.backgroundColor),
+          message: rows[0].querySelector('[role=status]')?.textContent,
+        };
+      }
       document.querySelector('.mode-back').click();
       await new Promise(resolve => setTimeout(resolve, 30));
       release();
       for (let i = 0; i < 160 && completed.length < pending.length; i++) await new Promise(resolve => setTimeout(resolve, 25));
       await new Promise(resolve => setTimeout(resolve, 100));
-      return { requests: pending.length, aborted: pending.every(signal => signal?.aborted), menu: !!document.querySelector('.practice-menu'),
+      return { subjectState, requests: pending.length, aborted: pending.every(signal => signal?.aborted), menu: !!document.querySelector('.practice-menu'),
         question: !!document.querySelector('.question-set'), timer: !!document.querySelector('.timer-bar,.battle-toolbar'), error: document.querySelector('.load-message[role=alert]')?.textContent };
     } finally { release(); window.fetch = original; }
   }, trigger, reject);
   assert.ok(result.requests > 0 && result.aborted && result.menu && !result.question && !result.timer && !result.error, JSON.stringify(result));
+  if (trigger === '.subject-row') {
+    assert.equal(result.subjectState.loadingRows, 1);
+    assert.equal(result.subjectState.otherRowsUnchanged, true);
+    assert.match(result.subjectState.message, /載入中/);
+  }
   report.checks.push(`${name}: leaving during a delayed ${reject ? 'failed' : 'successful'} load aborts requests and preserves the entrance`);
 }
 function layout(label) {
