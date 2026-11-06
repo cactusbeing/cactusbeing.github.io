@@ -6,10 +6,10 @@ const props = defineProps<{ completed: number[] }>();
 const emit = defineEmits<{ enter: [index: number] }>();
 const descriptionId = useId();
 const stations = [
-  { title: '認識聊天球', place: '教室前', action: '聽聽聊天怎麼開始', npc: 'xiaoyu' },
-  { title: '接住話題', place: '大樹下', action: '聽見內容，也聽見感受', npc: 'aqing' },
-  { title: '把球傳回去', place: '社團小屋', action: '問一點，分享一點', npc: 'lele' },
-  { title: '聊天的收尾', place: '放學公車站', action: '練習道別與留一點空間', npc: 'mia' },
+  { title: '距離與身體界線', place: '教室前', action: '留點空間，想碰先問', npc: 'xiaoyu' },
+  { title: '自然開啟談話', place: '大樹下', action: '看時機，從小事聊起', npc: 'aqing' },
+  { title: '把話題接下去', place: '社團小屋', action: '問一點，分享一點', npc: 'lele' },
+  { title: '訊息與網路交友', place: '放學公車站', action: '看情緒，也保留隱私', npc: 'mia' },
 ];
 const completedCount = computed(() => stations.filter((_, i) => props.completed.includes(i)).length);
 </script>

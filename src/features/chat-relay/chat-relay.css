@@ -1559,3 +1559,136 @@ to {
 .chat-relay #lessons-heading:focus,
 .chat-relay .exercise-guide h2:focus,
 .chat-relay .lesson-task h2:focus { outline:none; }
+
+/* Classroom flow: one clear task, readable speech, and secondary teacher tools. */
+.classroom-relay .home-actions .practice-start {
+ min-height:60px; background:#365e47; border-color:#2d503a; color:#fff;
+ box-shadow:inset 0 2px 0 #63816a,0 4px 0 #253f2e;
+ font-size:1.15em; font-weight:750;
+}
+.classroom-relay .home-actions .practice-start:hover { background:#294d38; }
+.classroom-relay .home-actions .demo-start { background:#fffdf4; font-size:1em; }
+.classroom-relay .home-facts { display:flex; flex-wrap:wrap; gap:8px 22px; margin:0; padding:0; list-style:none; font-size:.8em; color:#52614f; }
+.classroom-relay .home-facts li { margin:0; padding:0; }
+.classroom-relay .teacher-tools summary { box-shadow:none; background:transparent; border-color:transparent; font-size:.8em; }
+.classroom-relay .teacher-note { margin:0 0 14px; line-height:1.8; font-size:.9em; }
+.classroom-relay .teacher-note strong { display:block; color:#365e47; }
+.classroom-relay .teacher-actions { display:flex; flex-wrap:wrap; gap:12px; margin:0 0 22px; }
+.classroom-relay .teacher-actions button { display:flex; gap:8px; align-items:center; font-size:.9em; }
+.classroom-relay .teacher-actions .resume-button { margin:0; }
+.classroom-relay .session-top h2 { margin:0; color:#365e47; font-size:1.12em; line-height:1.4; }
+.classroom-relay .session-progress { display:flex; flex-shrink:0; align-items:center; gap:12px; margin:0; font-size:.8em; color:#52614f; white-space:nowrap; }
+.classroom-relay .session-progress span { border-left:1px solid #bccbad; padding-left:12px; }
+.classroom-relay .speaker-row { min-height:36px; }
+.classroom-relay .speech-button { display:inline-flex; align-items:center; gap:6px; min-height:36px; padding:4px 8px; border-color:transparent; box-shadow:none; }
+.classroom-relay .speech-button svg { width:20px; height:20px; }
+.classroom-relay .npc-speech { font-size:max(24px,1.25em); line-height:1.55; padding:14px 16px; margin:8px 0; }
+.classroom-relay .question-row { display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:40px; margin:0 0 6px; }
+.classroom-relay .question-label { margin:0; font-size:.85em; }
+.classroom-relay .text-button { margin:0; padding:6px 10px; border-color:transparent; background:transparent; box-shadow:none; }
+.classroom-relay .hint-button { min-height:40px; font-size:.8em; }
+.classroom-relay .choice-list { gap:8px; }
+.classroom-relay .choice-card { min-height:56px; padding:10px 12px; gap:10px; font-size:max(20px,1.05em); line-height:1.5; }
+.classroom-relay .picture-choices .choice-card { min-height:64px; font-size:max(20px,1.05em); }
+.classroom-relay .choice-number { display:flex; align-items:center; justify-content:center; width:26px; height:26px; flex:0 0 26px; border:1px solid #b6c6a5; border-radius:50%; background:#edf2e2; color:#49633f; font-size:14px; font-weight:650; }
+.classroom-relay .picture-choices .choice-card>svg { width:36px; height:36px; }
+.classroom-relay .turn-tools { margin:8px 0 0; border:0; background:transparent; font-size:.8em; }
+.classroom-relay .turn-tools summary { width:fit-content; min-height:36px; padding:4px 8px; border:0; color:#52614f; line-height:28px; }
+.classroom-relay .turn-tools button { min-height:44px; margin:6px 8px 4px 0; padding:6px 10px; font-size:1em; }
+.classroom-relay .hint { font-size:.95em; line-height:1.65; }
+.classroom-relay .hint p,.classroom-relay .feedback p { margin:0; }
+.classroom-relay .answered-line { margin:0 0 16px; padding:0 0 12px; border-bottom:1px solid #d4dfc5; font-size:1em; line-height:1.6; color:#52614f; }
+.classroom-relay .answered-line span { display:block; margin-bottom:4px; font-size:.8em; }
+.classroom-relay .npc-reaction { padding:0; border:0; margin:0 0 16px; }
+.classroom-relay .npc-reaction strong { color:#365e47; font-size:.9em; }
+.classroom-relay .npc-reaction p { margin:8px 0 0; padding:14px 16px; border:1px solid #a0b291; border-radius:6px 20px 20px; background:#fffdf6; font-size:max(24px,1.25em); line-height:1.55; }
+.classroom-relay .feedback { margin:12px 0; padding:12px 14px; font-size:max(20px,1.05em); line-height:1.65; }
+.classroom-relay .reaction-area .actions { align-items:center; gap:16px; margin:16px 0 0; }
+.classroom-relay .next-turn { min-height:56px; min-width:140px; font-size:1.1em; }
+.classroom-relay .retry-button { min-height:44px; font-size:.85em; }
+.classroom-relay .keyboard-note { margin:10px 0 0; color:#52614f; font-size:13px; }
+.classroom-relay .demo-screen>h2 { margin:0 0 4px; font-size:1.3em; color:#365e47; }
+.classroom-relay .demo-screen>p { font-size:.9em; }
+.classroom-relay .results-screen { max-width:850px; margin:auto; }
+.classroom-relay .result-welcome { text-align:center; padding:18px 8px 8px; }
+.classroom-relay .result-welcome>svg { display:block; width:64px; height:64px; margin-inline:auto; color:#69855d; }
+.classroom-relay .result-welcome h2 { margin:8px 0 12px; color:#365e47; font-size:1.65em; }
+.classroom-relay .result-encouragement { margin:0 auto; max-width:620px; font-size:1.2em; line-height:1.7; }
+.classroom-relay .result-actions { justify-content:center; align-items:center; margin:22px 0; }
+.classroom-relay .result-actions .primary { min-height:60px; padding:12px 32px; font-size:1.15em; }
+.classroom-relay .result-details { margin-top:24px; border-top:1px solid #ccd8be; background:transparent; }
+.classroom-relay .result-details>summary { padding:14px 4px; font-size:.85em; color:#52614f; }
+.classroom-relay .skill-results h3 { margin:0; font-size:1em; }
+@media(min-width:900px) {
+ .classroom-relay .session-layout { gap:20px; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); }
+ .classroom-relay .home-bottom { padding:8px 0 0; }
+ .classroom-relay .demo-screen { display:flex; flex-direction:column; height:100%; min-height:0; }
+ .classroom-relay .demo-screen>.story-demo { flex:1; min-height:0; height:auto; }
+}
+@media(max-width:899px) {
+ .classroom-relay .session-screen { padding:0; }
+ .classroom-relay .session-top { margin-bottom:12px; }
+ .classroom-relay .session-layout { gap:16px; }
+ .classroom-relay .home-bottom { margin:0; }
+ .classroom-relay .home-facts { gap:8px 16px; }
+ .classroom-relay .stage-context { padding:8px 2px 0; }
+ .classroom-relay .keyboard-note { display:none; }
+}
+@media(max-width:599px) {
+ .classroom-relay .session-top { flex-wrap:wrap; gap:8px; }
+ .classroom-relay .session-top h2 { font-size:1.05em; }
+ .classroom-relay .session-progress { font-size:.78em; }
+ .classroom-relay .stage>.scene-art { aspect-ratio:1.9; }
+ .classroom-relay .stage-context>span { display:none; }
+ .classroom-relay .stage-context p { margin:0; font-size:.85em; }
+ .classroom-relay .npc-speech,.classroom-relay .npc-reaction p { font-size:max(22px,1.2em); }
+ .classroom-relay .choice-card { padding:12px 10px; }
+ .classroom-relay .home-actions { flex-direction:column; align-items:stretch; }
+ .classroom-relay .home-actions button { flex:auto; }
+ .classroom-relay .teacher-tools .preference-current { display:none; }
+ .classroom-relay .result-welcome { padding:12px 0 0; }
+ .classroom-relay .result-encouragement { font-size:1.1em; }
+ .classroom-relay .result-actions { gap:12px; }
+}
+@media(min-width:900px) and (max-height:800px) {
+ .classroom-relay #relay-main { padding-block:12px; }
+ .classroom-relay .session-screen { gap:8px; }
+ .classroom-relay .npc-speech { padding-block:10px; margin-block:6px; }
+ .classroom-relay .question-row { min-height:36px; margin-bottom:4px; }
+ .classroom-relay .hint-button { min-height:36px; }
+}
+@media(min-width:900px) and (max-height:800px) {
+ .classroom-relay .answered-line { margin-bottom:8px; padding-bottom:8px; }
+ .classroom-relay .npc-reaction { margin-bottom:12px; }
+ .classroom-relay .feedback { margin-block:10px; }
+ .classroom-relay .reaction-area .actions { margin-top:12px; }
+}
+
+/* A reply is encouraged explicitly; color supports the words, never replaces them. */
+.classroom-relay .feedback[data-feedback] { border:1px solid #a7c2a0; background:#e8f1e3; color:#2e5038; }
+.classroom-relay .feedback[data-feedback=acceptable] { background:#eef3e5; }
+.classroom-relay .feedback[data-feedback=try_another] { border-color:#cfb774; background:#fff2d7; color:#674d20; }
+.classroom-relay .feedback-title { display:block; margin-bottom:4px; font-size:18px; font-weight:800; }
+.classroom-relay .feedback small { display:block; margin-top:6px; font-size:15px; line-height:1.5; }
+.classroom-relay .answered-line .answered-text { display:inline; margin:0; font-size:1em; }
+.classroom-relay .reply-sticker { flex:0 0 42px; width:42px; height:38px; }
+.classroom-relay .answered-line>.reply-sticker { display:inline-block; width:42px; height:38px; vertical-align:middle; margin-right:8px; }
+.classroom-relay .message-channel { display:flex; flex-wrap:wrap; gap:8px; justify-content:space-between; margin:0 0 8px; padding:6px 12px; border:1px solid #bbcbb3; border-radius:12px; background:#e6eddf; color:#365e47; font-size:.85em; font-weight:700; }
+.classroom-relay .message-channel span { font-size:.9em; font-weight:400; }
+.classroom-relay .teacher-note ul { margin:8px 0; padding-left:24px; }
+.classroom-relay .teacher-note p { margin:8px 0 0; }
+@media(min-width:900px) and (max-height:800px) {
+ .classroom-relay .reaction-area .answered-line { margin-bottom:6px; padding-bottom:4px; }
+ .classroom-relay .reaction-area .npc-reaction { margin-bottom:8px; }
+ .classroom-relay .reaction-area .npc-reaction p { padding-block:10px; }
+ .classroom-relay .reaction-area .feedback { padding:8px 12px; margin-block:8px; }
+ .classroom-relay .reaction-area .actions { margin-top:10px; }
+}
+
+/* Classroom dialogue copy: supporting feedback stays below the NPC's visual weight. */
+.classroom-relay .feedback-tip { margin:10px 0; color:#49624d; font-size:18px; line-height:1.55; }
+.classroom-relay .feedback.natural-feedback { font-size:max(18px,1em); font-weight:400; }
+.classroom-relay .scene-feedback { margin:12px 0; font-size:max(18px,1em); line-height:1.6; }
+.classroom-relay .scene-feedback > p { margin:0; font-weight:600; }
+.classroom-relay .scene-feedback ul { padding-left:1.3em; margin:8px 0; }
+.classroom-relay .scene-feedback li + li { margin-top:6px; }

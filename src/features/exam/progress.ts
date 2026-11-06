@@ -8,6 +8,14 @@ export type Subject = {
 };
 export type Year = { year: number; subjects: Subject[]; categories?: ExamCategory[] };
 export type Responses = Record<number, Choice>;
+export type QuestionOutcome = {
+  year: number;
+  subjectId: string;
+  subjectName: string;
+  questionId: number;
+  correct: boolean;
+  timedOut?: boolean;
+};
 export type ExamHistoryEntry = {
   id: string;
   year: number;
@@ -18,6 +26,10 @@ export type ExamHistoryEntry = {
   score?: number;
   maxScore?: number;
   completedAt: string | null;
+  mode?: 'random' | 'timed' | 'revenge';
+  years?: number[];
+  outcomes?: QuestionOutcome[];
+  elapsedSeconds?: number;
 };
 
 const historyKey = 'cactusbeing-exam-history-v1';
@@ -53,7 +65,10 @@ export function readHistory(): ExamHistoryEntry[] {
       Boolean(entry && typeof entry === 'object' && typeof entry.id === 'string' &&
         Number.isInteger(entry.year) && typeof entry.subjectId === 'string' &&
         typeof entry.subjectName === 'string' && Number.isInteger(entry.correct) &&
-        Number.isInteger(entry.total) && (entry.completedAt === null || typeof entry.completedAt === 'string')),
+        Number.isInteger(entry.total) && entry.total > 0 && entry.correct >= 0 && entry.correct <= entry.total &&
+        (entry.completedAt === null || typeof entry.completedAt === 'string') &&
+        (entry.mode === undefined || entry.mode === 'random' || entry.mode === 'timed' || entry.mode === 'revenge') &&
+        (entry.years === undefined || (Array.isArray(entry.years) && entry.years.every(Number.isInteger)))),
     );
   } catch {
     return [];

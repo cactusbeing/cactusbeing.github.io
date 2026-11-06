@@ -1,9 +1,12 @@
 import { siteUrl } from '../../shared/site-path';
+import { sourceLabel } from './session';
+import type { QuestionSource } from './session';
 import type { QuestionBlock } from './question-content';
 
 type Choice = 'A' | 'B' | 'C' | 'D';
 type WrongQuestion = {
   id: number;
+  source?: QuestionSource;
   answer: Choice;
   accepted_answers?: Choice[];
   question: string;
@@ -81,6 +84,8 @@ export async function downloadWrongBook(
   correct: number,
   total: number,
   maxScore = total * 2,
+  attemptLabel = `${year} 年教師資格考試`,
+  unanswered: Record<number, string> = {},
 ): Promise<void> {
   if (!questions.length) return;
   const canvas = document.createElement('canvas');
@@ -96,7 +101,7 @@ export async function downloadWrongBook(
     ctx.fillRect(0, 0, WIDTH, 78);
     ctx.fillStyle = '#2f6348';
     ctx.font = '700 26px sans-serif';
-    ctx.fillText(`${year} 年教師資格考試 · ${subject}`, LEFT, 52);
+    ctx.fillText(`${attemptLabel} · ${subject}`, LEFT, 52, RIGHT - LEFT);
     ctx.strokeStyle = '#dcebd7';
     ctx.beginPath();
     ctx.moveTo(LEFT, 66);
@@ -114,25 +119,27 @@ export async function downloadWrongBook(
     pages.push(await jpeg(canvas));
     startPage();
   };
-  const line = async (value: string, font: string, color: string, lineHeight: number, indent = 0) => {
+  const wrappedLines = (value: string, font: string, indent = 0): string[] => {
     ctx.font = font;
-    ctx.fillStyle = color;
+    const lines: string[] = [];
     for (const paragraph of value.split('\n')) {
       let current = '';
       for (const character of paragraph) {
         if (ctx.measureText(current + character).width > RIGHT - LEFT - indent && current) {
-          if (y + lineHeight > BOTTOM) await nextPage();
-          ctx.font = font;
-          ctx.fillStyle = color;
-          ctx.fillText(current, LEFT + indent, y);
-          y += lineHeight;
+          lines.push(current);
           current = character;
         } else current += character;
       }
+      lines.push(current);
+    }
+    return lines;
+  };
+  const line = async (value: string, font: string, color: string, lineHeight: number, indent = 0) => {
+    for (const text of wrappedLines(value, font, indent)) {
       if (y + lineHeight > BOTTOM) await nextPage();
       ctx.font = font;
       ctx.fillStyle = color;
-      ctx.fillText(current, LEFT + indent, y);
+      ctx.fillText(text, LEFT + indent, y);
       y += lineHeight;
     }
   };
@@ -141,20 +148,24 @@ export async function downloadWrongBook(
   await line(`答對 ${correct} / ${total} 題 · ${Number((correct / total * maxScore).toFixed(2))} / ${maxScore} 分 · 錯題 ${questions.length} 題`, '30px sans-serif', '#365344', 56);
   y += 18;
   for (const question of questions) {
+    const provenance = question.source ? '來源：' + sourceLabel(question) : '';
+    const provenanceHeight = provenance ? wrappedLines(provenance, '25px sans-serif').length * 42 : 0;
     if (question.body_blocks) {
       const { renderMathQuestion } = await import('./math-question-pdf');
       const rendered = await renderMathQuestion(
-        { ...question, body_blocks: question.body_blocks }, responses[question.id], RIGHT - LEFT,
+        { ...question, body_blocks: question.body_blocks }, responses[question.id] ?? unanswered[question.id] ?? '未提交（0 分）', RIGHT - LEFT,
       );
-      const scale = Math.min((RIGHT - LEFT) / rendered.width, (BOTTOM - CONTENT_TOP) / rendered.height);
+      const scale = Math.min((RIGHT - LEFT) / rendered.width, (BOTTOM - CONTENT_TOP - provenanceHeight) / rendered.height);
       const width = rendered.width * scale;
       const height = rendered.height * scale;
-      if (y + height > BOTTOM) await nextPage();
+      if (y + provenanceHeight + height > BOTTOM) await nextPage();
+      if (provenance) await line(provenance, '25px sans-serif', '#365344', 42);
       ctx.drawImage(rendered, LEFT, y, width, height);
       y += height + 34;
       continue;
     }
-    if (y > BOTTOM - 180) await nextPage();
+    if (y + provenanceHeight > BOTTOM - 180) await nextPage();
+    if (provenance) await line(provenance, '25px sans-serif', '#365344', 42);
     await line(`第 ${question.id} 題`, '700 32px sans-serif', '#2f6348', 53);
     if (question.context) {
       await line('閱讀文章', '700 27px sans-serif', '#365344', 46);
@@ -178,7 +189,7 @@ export async function downloadWrongBook(
       await line(`${choice}. ${question.options[choice]}`, '27px sans-serif', '#24372b', 43, 12);
     }
     y += 8;
-    await line(`你的答案：${responses[question.id]}    參考答案：${(question.accepted_answers?.length ? question.accepted_answers : [question.answer]).join(' 或 ')}`, '700 28px sans-serif', '#9b3c32', 48);
+    await line(`你的答案：${responses[question.id] ?? unanswered[question.id] ?? '未提交（0 分）'}    參考答案：${(question.accepted_answers?.length ? question.accepted_answers : [question.answer]).join(' 或 ')}`, '700 28px sans-serif', '#9b3c32', 48);
     y += 34;
   }
   drawHeader();

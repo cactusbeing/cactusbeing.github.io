@@ -1,5 +1,9 @@
 import type { SceneId, SkillTag } from '../types.ts';
-export const contentVersion = 1;
+export const contentVersion = 3;
+export const learningGoals = {
+ distance: '建立社交距離與身體界線', opening: '開啟談話', continuing: '延續談話',
+ message_emotion: '依情緒選擇訊息與貼圖', online_friendship: '網路交友與個人界線',
+} as const;
 export const scenes: { id: SceneId; name: string; detail: string }[] = [
  {id:'classroom',name:'教室',detail:'窗邊的課桌與今天的小事'}, {id:'hallway',name:'走廊',detail:'下課十分鐘，留一點空間'}, {id:'lunch',name:'午餐',detail:'一道菜，也能開啟一段聊天'}, {id:'playground',name:'操場',detail:'樹蔭下，交換運動與生活'}, {id:'club',name:'社團',detail:'每個人都有喜歡的事'}, {id:'outing',name:'校外生活',detail:'一起看見生活的小發現'},
 ];

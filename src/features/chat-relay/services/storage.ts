@@ -1,6 +1,8 @@
 import type { LocalData, Settings, Session, History, Scenario, Answer } from '../types.ts';
 import { skillTags, scenes } from '../data/manifest.ts';
 import { graphFor } from '../engine/dialogue.ts';
+import { baselineScenarios } from '../data/scenarios/baseline.ts';
+import { previousAnswers } from '../data/previousAnswers.ts';
 export const STORAGE_KEY='cactus:chat-relay:v1:data';
 export const defaultSettings=():Settings=>({difficulty:2,sceneIds:[],skillTags:[],sessionLength:3,readAloud:false,showImmediateFeedback:true,showHints:false,showDemo:true,textSize:18,reducedMotion:false,shuffleChoices:true});
 export const initialData=():LocalData=>({version:1,settings:defaultSettings(),profileId:'本機使用者',histories:{},records:[],achievements:[],lessons:[],dailySelection:{},activeSession:null});
@@ -13,15 +15,25 @@ function safeTree(x:unknown,depth=0):boolean {if(depth>30)return false;if(Array.
 export function validSettings(x:unknown,_bank:readonly Scenario[]):x is Settings {
  return obj(x)&&[1,2,3].includes(x.difficulty as number)&&[3,5,10].includes(x.sessionLength as number)&&[18,22,26].includes(x.textSize as number)&&strings(x.sceneIds,6)&&x.sceneIds.every(id=>scenes.some(s=>s.id===id))&&strings(x.skillTags,7)&&x.skillTags.every(t=>skillTags.includes(t as never))&&['readAloud','showImmediateFeedback','showHints','showDemo','reducedMotion','shuffleChoices'].every(k=>bool(x[k]));
 }
-function validAnswer(x:unknown,scenario:Scenario,difficulty:1|2|3):x is Answer {
+function validAnswer(x:unknown,scenario:Scenario,difficulty:1|2|3,allowPrevious=false):x is Answer {
  if(!obj(x)||!str(x.nodeId)||!str(x.choiceId)||!str(x.text,300)||!str(x.reaction,300)||!Number.isInteger(x.attempt)||Number(x.attempt)<1||!['usedHint','usedDemo','retried'].every(k=>bool(x[k])))return false;
  const n=graphFor(scenario,difficulty).nodes[x.nodeId as string];const c=n?.kind==='decision'?n.choices.find(c=>c.id===x.choiceId):null;
- return !!c&&c.feedbackLevel===x.feedbackLevel&&obj(x.scores)&&JSON.stringify(c.scores)===JSON.stringify(x.scores)&&c.text===x.text&&c.npcReaction.text===x.reaction;
+ if(!c||!obj(x.scores))return false;
+ if(c.feedbackLevel===x.feedbackLevel&&JSON.stringify(c.scores)===JSON.stringify(x.scores)&&c.text===x.text&&c.npcReaction.text===x.reaction)return true;
+ if(!allowPrevious)return false;
+ const old=previousAnswers[`${scenario.id}:${difficulty===1?'easy':'full'}:${x.nodeId}:${x.choiceId}`];
+ return !!old&&old[0]===x.text&&old[1]===x.reaction&&old[2]===x.feedbackLevel&&JSON.stringify(old[3])===JSON.stringify(x.scores);
 }
-export function validSession(x:unknown,bank:readonly Scenario[]):x is Session {
+export function validSession(x:unknown,bank:readonly Scenario[],allowPrevious=false):x is Session {
+ if(validCurrentSession(x,bank,allowPrevious))return true;
+ if(!allowPrevious)return false;
+ const originalBank=bank.map(s=>s.turnPolicy==='natural'?(baselineScenarios.find(old=>old.id===s.id)??s):s);
+ return validCurrentSession(x,originalBank,true);
+}
+function validCurrentSession(x:unknown,bank:readonly Scenario[],allowPrevious=false):x is Session {
  if(!obj(x)||!validSettings(x.settings,bank)||!str(x.id)||!str(x.profileId,30)||!['free','daily','lesson'].includes(x.mode as string)||!finite(x.seed)||!strings(x.scenarioIds,60)||!x.scenarioIds.length||new Set(x.scenarioIds).size!==x.scenarioIds.length||!Number.isInteger(x.index)||Number(x.index)<0||Number(x.index)>=x.scenarioIds.length||!str(x.nodeId)||!['choose','reaction','end'].includes(x.phase as string)||!(x.selectedChoiceId===null||str(x.selectedChoiceId))||!['usedHint','usedDemo','completed'].every(k=>bool(x[k]))||!Number.isInteger(x.attempt)||Number(x.attempt)<1||!str(x.createdAt)||!Number.isFinite(Date.parse(x.createdAt as string))||!Array.isArray(x.records)||x.records.length!==x.scenarioIds.length)return false;
  const settings=x.settings;const scenarioIds=x.scenarioIds;
- for(let i=0;i<x.records.length;i++){const r=x.records[i];const s=bank.find(s=>s.id===scenarioIds[i]);if(!s||!obj(r)||r.scenarioId!==s.id||r.difficulty!==settings.difficulty||!str(r.dateISO)||!Number.isFinite(Date.parse(r.dateISO as string))||!bool(r.completed)||!Array.isArray(r.choices)||r.choices.length>1000||!r.choices.every(a=>validAnswer(a,s,settings.difficulty))||(r.ending!==undefined&&!['extended','brief','respectful_close','repair'].includes(r.ending as string)))return false;}
+ for(let i=0;i<x.records.length;i++){const r=x.records[i];const s=bank.find(s=>s.id===scenarioIds[i]);if(!s||!obj(r)||r.scenarioId!==s.id||r.difficulty!==settings.difficulty||!str(r.dateISO)||!Number.isFinite(Date.parse(r.dateISO as string))||!bool(r.completed)||!Array.isArray(r.choices)||r.choices.length>1000||!r.choices.every(a=>validAnswer(a,s,settings.difficulty,allowPrevious))||(r.ending!==undefined&&!['extended','brief','respectful_close','repair'].includes(r.ending as string)))return false;}
  for(let i=0;i<x.records.length;i++){
  const r=x.records[i] as {choices:Answer[];completed:boolean;ending?:string};
  const scenario=bank.find(s=>s.id===scenarioIds[i])!;
@@ -46,13 +58,15 @@ export function decodeStoredData(text:string,bank:readonly Scenario[]):LocalData
  if(new TextEncoder().encode(text).length>2*1024*1024)throw new Error('本機資料超過可讀取的大小上限。');
  let x:unknown;try{x=JSON.parse(text);}catch{throw new Error('目前的本機紀錄格式無法讀取。');}
  if(!safeTree(x)||!obj(x)||x.version!==1)throw new Error('資料版本不符或含不安全欄位。');
- if(!validSettings(x.settings,bank)||!str(x.profileId,30)||['__proto__','constructor','prototype'].includes(x.profileId as string)||!obj(x.histories)||Object.keys(x.histories).length>100||!Array.isArray(x.records)||x.records.length>100||!strings(x.achievements,20)||!Array.isArray(x.lessons)||x.lessons.some(n=>!Number.isInteger(n)||n<0||n>3)||!obj(x.dailySelection)||!(x.activeSession===null||validSession(x.activeSession,bank)))throw new Error('本機紀錄或未完成題組不符。題庫更新後請重新開始練習。');
+ if(!validSettings(x.settings,bank)||!str(x.profileId,30)||['__proto__','constructor','prototype'].includes(x.profileId as string)||!obj(x.histories)||Object.keys(x.histories).length>100||!Array.isArray(x.records)||x.records.length>100||!strings(x.achievements,20)||!Array.isArray(x.lessons)||x.lessons.some(n=>!Number.isInteger(n)||n<0||n>3)||!obj(x.dailySelection)||!(x.activeSession===null||validSession(x.activeSession,bank,true)))throw new Error('本機紀錄或未完成題組不符。題庫更新後請重新開始練習。');
  for(const h of Object.values(x.histories)){if(!obj(h)||!strings(h.recentScenarioIds)||!obj(h.playCount)||!obj(h.lastPlayed)||Object.entries(h.playCount).some(([id,n])=>!bank.some(s=>s.id===id)||!Number.isInteger(n)||Number(n)<0)||Object.values(h.lastPlayed).some(d=>!str(d)))throw new Error('出題紀錄格式不符。');}
- if(x.records.some(r=>!obj(r)||!validSession(r.session,bank)))throw new Error('學習紀錄格式不符。');
+ if(x.records.some(r=>!obj(r)||!validSession(r.session,bank,true)))throw new Error('學習紀錄格式不符。');
  for(const [date,d] of Object.entries(x.dailySelection)){if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!obj(d)||!finite(d.version)||!strings(d.ids,3)||d.ids.length!==3||new Set(d.ids).size!==3)throw new Error('每日題組格式不符。');}
+ // Preserve old completed records and history verbatim. Do not resume midway through a rewritten story.
+ if(x.activeSession!==null&&!validSession(x.activeSession,bank))x.activeSession=null;
  return x as unknown as LocalData;
 }
 export interface StorageLike {getItem(key:string):string|null;setItem(key:string,value:string):void;removeItem(key:string):void}
-export function loadData(bank:readonly Scenario[],storage?:StorageLike):{data:LocalData;notice:string} {try{const s=storage??globalThis.localStorage;const text=s.getItem(STORAGE_KEY);return {data:text?decodeStoredData(text,bank):initialData(),notice:''};}catch{return {data:initialData(),notice:'目前無法讀取本機紀錄，或題庫已更新。可以繼續練習。'};}}
+export function loadData(bank:readonly Scenario[],storage?:StorageLike):{data:LocalData;notice:string} {try{const s=storage??globalThis.localStorage;const text=s.getItem(STORAGE_KEY);const data=text?decodeStoredData(text,bank):initialData();const updated=!!text&&JSON.parse(text).activeSession!==null&&data.activeSession===null;return {data,notice:updated?'對話內容已更新，這組未完成練習請重新開始。偏好、出題紀錄和已完成紀錄都保留了。':''};}catch{return {data:initialData(),notice:'目前無法讀取本機紀錄，或題庫已更新。可以繼續練習。'};}}
 export function saveData(data:LocalData,storage?:StorageLike):boolean {try{data.records=data.records.slice(-100);while(data.records.length&&new TextEncoder().encode(JSON.stringify(data)).length>1900000)data.records.shift();const dates=Object.keys(data.dailySelection).sort();for(const key of dates.slice(0,-30))delete data.dailySelection[key];(storage??globalThis.localStorage).setItem(STORAGE_KEY,JSON.stringify(data));return true;}catch{return false;}}
 export function historyFor(data:LocalData):History {if(!Object.hasOwn(data.histories,data.profileId))Object.defineProperty(data.histories,data.profileId,{value:{recentScenarioIds:[],playCount:{},lastPlayed:{}},writable:true,enumerable:true,configurable:true});return data.histories[data.profileId];}

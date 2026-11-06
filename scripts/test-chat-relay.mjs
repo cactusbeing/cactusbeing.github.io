@@ -1,10 +1,4 @@
 import assert from 'node:assert/strict';
-import { classroomScenarios } from '../src/features/chat-relay/data/scenarios/classroom.ts';
-import { hallwayScenarios } from '../src/features/chat-relay/data/scenarios/hallway.ts';
-import { lunchScenarios } from '../src/features/chat-relay/data/scenarios/lunch.ts';
-import { playgroundScenarios } from '../src/features/chat-relay/data/scenarios/playground.ts';
-import { clubScenarios } from '../src/features/chat-relay/data/scenarios/club.ts';
-import { outingScenarios } from '../src/features/chat-relay/data/scenarios/outing.ts';
 import { scenarios as publishedScenarios } from '../src/features/chat-relay/data/scenarios/index.ts';
 import { scenes, skillTags, contentVersion } from '../src/features/chat-relay/data/manifest.ts';
 import { validateScenarios } from '../src/features/chat-relay/engine/validateScenarios.ts';
@@ -14,10 +8,13 @@ import { hashSeed, seededRandom, shuffle } from '../src/features/chat-relay/engi
 import { summarize } from '../src/features/chat-relay/engine/scoring.ts';
 import { STORAGE_KEY, defaultSettings, initialData, validSettings, validSession, historyFor, saveData, loadData, decodeStoredData } from '../src/features/chat-relay/services/storage.ts';
 import { speechAvailable, speak, stopSpeech } from '../src/features/chat-relay/services/speech.ts';
+import { previousAnswers } from '../src/features/chat-relay/data/previousAnswers.ts';
+import { baselineScenarios } from '../src/features/chat-relay/data/scenarios/baseline.ts';
+import { feedbackTitles } from '../src/features/chat-relay/feedback.ts';
 
 // Run with Node's native TypeScript stripping, as used by test-money.mjs.
 // This is an exhaustive state-machine test, not a browser accessibility audit.
-const bank = [...classroomScenarios, ...hallwayScenarios, ...lunchScenarios, ...playgroundScenarios, ...clubScenarios, ...outingScenarios];
+const bank = publishedScenarios;
 const clone = value => structuredClone(value);
 let passed = 0, failed = 0, terminalPaths = 0, decisionsPlayed = 0;
 function test(name, run) {
@@ -64,25 +61,38 @@ class MemoryStorage {
   removeItem(key) { this.values.delete(key); }
 }
 
-test('60 authored scenarios, published entry, unique IDs, six scenes and all difficulty graphs', () => {
-  assert.equal(bank.length, 60);
+test('61 authored scenarios (60 existing plus the drawing copy), published entry, unique IDs, six scenes and all difficulty graphs', () => {
+  assert.equal(bank.length, 61);
   assert.deepEqual(publishedScenarios.map(s => s.id), bank.map(s => s.id));
   const report = validateScenarios(bank);
   assert.deepEqual(report.errors, []);
   assert.equal(report.valid, true);
-  assert.equal(report.scenarios, 60);
-  assert.equal(report.decisionNodes, 300);
-  assert.equal(report.choices, 900);
-  assert.equal(report.terminalPaths, 6720);
+  assert.equal(report.scenarios, 61);
+  assert.equal(report.decisionNodes, 310);
+  assert.equal(report.choices, 920);
+  assert.equal(report.terminalPaths, 6846);
   for (const scene of scenes) {
-    assert.equal(report.byScene[scene.id], 10);
+    assert.equal(report.byScene[scene.id], scene.id==='classroom'?11:10);
     for (let n = 1; n <= 10; n++) byId(`${scene.id}-${String(n).padStart(2, '0')}`);
   }
-  assert.equal(new Set(bank.map(s => s.nodes[s.startNodeId].npcText)).size, 60, 'Openings are distinct');
+  assert.equal(new Set(bank.map(s => s.nodes[s.startNodeId].npcText)).size, 61, 'Openings are distinct');
   const responseSets = bank.map(s => s.nodes[s.startNodeId].choices.map(c => c.npcReaction.text).join('|'));
-  assert.equal(new Set(responseSets).size, 60, 'The primary responses are not a repeated NPC template');
+  assert.equal(new Set(responseSets).size, 61, 'The primary responses are not a repeated NPC template');
   assert.ok(bank.every(s => new Set(s.skillTags).size >= 2));
-  assert.ok(bank.every(s => JSON.stringify(s.easy) !== JSON.stringify(graphFor(s, 2))), 'Lv1 is separately authored');
+  assert.ok(bank.every(s => s.turnPolicy==='natural'||JSON.stringify(s.easy) !== JSON.stringify(graphFor(s, 2))), 'Lv1 is separately authored');
+});
+
+test('five learning goals include opening, distance, continuation and twenty actual message scenarios', () => {
+  assert.equal(bank.filter(s=>s.channel==='message').length,20);
+  for(const goal of ['distance','opening','continuing','message_emotion','online_friendship']) assert.ok(bank.filter(s=>s.learningGoal===goal).length>=5,goal);
+  const messages=bank.filter(s=>s.learningGoal==='message_emotion');
+  assert.equal(messages.length,10);
+  for(const s of messages) assert.ok(Object.values(s.nodes).some(n=>n.kind==='decision'&&n.choices.some(c=>c.sticker)),s.id+' offers a pictorial reply');
+  assert.ok(bank.filter(s=>s.learningGoal==='opening'&&s.nodes.start.npcText.startsWith('（')).length>=7,'Learner practices initiating, not only replying');
+  const happy=byId('club-07').nodes.b.choices.find(c=>c.sticker==='laugh');
+  const sad=byId('club-02').nodes.start.choices.find(c=>c.sticker==='laugh');
+  assert.equal(happy.feedbackLevel,'effective');assert.equal(sad.feedbackLevel,'try_another','Same sticker depends on emotional context');
+  assert.equal(new Set(Object.values(feedbackTitles)).size,3,'Encouragement explicitly distinguishes suitable, acceptable and adjust');
 });
 
 test('validator rejects broken targets, loops, empty feedback, repeated reactions and missing assets', () => {
@@ -93,6 +103,8 @@ test('validator rejects broken targets, loops, empty feedback, repeated reaction
     s => { s.nodes.start.choices[1].npcReaction.text = s.nodes.start.choices[0].npcReaction.text; },
     s => { s.npcId = 'unknown'; },
     s => { s.easy.nodes.start.choices = [s.easy.nodes.start.choices[0]]; },
+    s => { s.learningGoal = 'missing'; },
+    s => { s.nodes.start.choices[0].sticker = 'external-character'; },
   ];
   for (const mutate of damage) {
     const scenario = clone(bank[0]); mutate(scenario);
@@ -107,11 +119,11 @@ test('every reachable choice shows its own reaction and reaches an end through t
     const expectedDepth = difficulty === 1 ? 2 : difficulty === 2 ? 3 : 4;
     const initial = createSession([scenario.id], settings({ difficulty }), 44, 'A01');
     function walk(session, ancestors = [], depth = 0) {
-      assert.ok(depth <= 5, `${scenario.id} has no loop`);
+      assert.ok(depth <= (scenario.turnPolicy==='natural'?6:5), `${scenario.id} has no loop`);
       const node = graph.nodes[session.nodeId];
       assert.ok(node, `${scenario.id} target exists`);
       if (node.kind === 'end') {
-        assert.equal(depth, expectedDepth, `${scenario.id} Lv${difficulty} decision count`);
+        if(scenario.turnPolicy==='natural')assert.ok(depth>=1&&depth<=6);else assert.equal(depth, expectedDepth, `${scenario.id} Lv${difficulty} decision count`);
         assert.equal(session.phase, 'end');
         assert.equal(session.records[0].completed, true);
         assert.equal(session.records[0].ending, node.ending);
@@ -122,7 +134,7 @@ test('every reachable choice shows its own reaction and reaches an end through t
         return;
       }
       assert.ok(!ancestors.includes(node.id));
-      assert.equal(node.choices.length, difficulty === 1 ? 2 : 3);
+      if(scenario.turnPolicy==='natural')assert.ok(node.choices.length>=2&&node.choices.length<=3);else assert.equal(node.choices.length, difficulty === 1 ? 2 : 3);
       assert.equal(new Set(node.choices.map(c => c.npcReaction.text)).size, node.choices.length);
       for (const choice of node.choices) {
         const attempt = clone(session);
@@ -145,7 +157,7 @@ test('every reachable choice shows its own reaction and reaches an end through t
     walk(initial);
     if (difficulty !== 1) assert.ok(new Set(graph.nodes.start.choices.map(c => c.nextNodeId)).size >= 2, 'Actual a/b branches');
   }
-  assert.equal(terminalPaths, 6720);
+  assert.equal(terminalPaths, 6846);
   assert.deepEqual([...endings].sort(), ['brief', 'extended', 'repair', 'respectful_close']);
 });
 
@@ -181,7 +193,7 @@ test('same settings and seed select the same five unique diverse scenarios', () 
   assert.equal(JSON.stringify({ history, options, bank }), before);
 });
 
-test('twenty consecutive three-question sessions exhaust all 60 before any repeat', () => {
+test('twenty consecutive three-question sessions use 60 distinct scenarios before the remaining drawing/bank item', () => {
   const history = emptyHistory(), played = [], sessions = [];
   for (let round = 0; round < 20; round++) {
     const recent = new Set(history.recentScenarioIds.slice(-12));
@@ -217,7 +229,7 @@ test('scene, skill and supported difficulty filters hold; insufficient pools nev
   const changed = bank.slice(0, 3).map((s, i) => ({ ...s, supportedDifficulties: i === 0 ? [1] : [2, 3] }));
   assert.equal(select({ difficulty: 1 }, emptyHistory(), 10, 9, changed).ids.length, 1);
   assert.equal(select({ difficulty: 2 }, emptyHistory(), 10, 9, changed).ids.length, 2);
-  const none = select({ sceneIds: ['outing'] }, emptyHistory(), 3, 9, classroomScenarios);
+  const none = select({ sceneIds: ['outing'] }, emptyHistory(), 3, 9, bank.filter(s => s.sceneId === 'classroom'));
   assert.deepEqual(none.ids, []); assert.ok(none.notice);
   const limited = select({ sceneIds: ['club'] }, emptyHistory(), 15);
   assert.equal(limited.ids.length, 10); assert.ok(limited.notice.includes('10'));
@@ -465,6 +477,27 @@ test('restored sessions reject fabricated branches and inconsistent phase or com
   answerAndContinue(revised, scenario, 1);
   assert.equal(validSession(revised, bank), true);
   assert.equal(validSession(completedSession([scenario.id, 'club-08'], { difficulty: 3 }), bank), true);
+});
+
+test('dialogue update preserves exact v1 archives and history while restarting incompatible active stories', () => {
+  const oldBank=clone(baselineScenarios);
+  for(const s of oldBank)for(const [mode,g] of [['full',s],['easy',s.easy]])for(const n of Object.values(g.nodes))if(n.kind==='decision')for(const c of n.choices){
+    const old=previousAnswers[`${s.id}:${mode}:${n.id}:${c.id}`];
+    assert.ok(old);[c.text,c.npcReaction.text,c.feedbackLevel,c.scores]=clone(old);
+  }
+  const oldScenario=oldBank.find(s=>s.id==='club-01');
+  const archive=createSession([oldScenario.id],settings({difficulty:3}),99,'A01');
+  completeCurrent(archive,oldScenario);nextScenario(archive);
+  const active=createSession([oldScenario.id],settings(),77,'A01');answerAndContinue(active,oldScenario);
+  assert.equal(validSession(archive,bank),false);assert.equal(validSession(archive,bank,true),true);
+  const data=initialData();data.profileId='A01';data.records=[{session:archive}];data.activeSession=active;data.settings.textSize=22;
+  remember(historyFor(data),oldScenario.id,new Date().toISOString());
+  const restored=decodeStoredData(JSON.stringify(data),bank);
+  assert.equal(restored.activeSession,null);assert.deepEqual(restored.records,data.records);assert.deepEqual(restored.histories,data.histories);assert.equal(restored.settings.textSize,22);
+  const store=new MemoryStorage();store.setItem(STORAGE_KEY,JSON.stringify(data));
+  assert.match(loadData(bank,store).notice,/已更新/);
+  const forged=clone(data);forged.records[0].session.records[0].choices[0].reaction+='forged';
+  assert.throws(()=>decodeStoredData(JSON.stringify(forged),bank),'Legacy compatibility still rejects unknown text');
 });
 
 test('speech defaults to silent, works only when invoked, prefers zh-TW and falls back without APIs', () => {

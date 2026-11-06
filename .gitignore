@@ -45,3 +45,15 @@ test-results/
 !/scripts/test-chat-relay.mjs
 !/scripts/playtest-chat-relay.mjs
 !/docs/chat-relay-validation.md
+
+# Exam sampling and timer validation ship with the feature.
+!/scripts/test-exam.mjs
+!/scripts/playtest-exam.mjs
+!/docs/exam-validation.md
+
+# Four authored dialogue branch audits must also run in CI.
+!/scripts/test-chat-relay-branches.mjs
+!/scripts/playtest-chat-relay-branches.mjs
+!/docs/chat-relay/
+/docs/chat-relay/*
+!/docs/chat-relay/four-dialogues.md

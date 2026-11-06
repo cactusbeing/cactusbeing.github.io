@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import SceneArt from '../chat-relay/components/SceneArt.vue';
 import SiteIcon from '../../shared/components/SiteIcon.vue';
+import { availableGameIds } from '../../content/games';
 </script>
 <template>
   <section class="game-center" aria-labelledby="games-title">
@@ -12,25 +13,32 @@ import SiteIcon from '../../shared/components/SiteIcon.vue';
       <a href="/">返回特教百寶袋 <SiteIcon name="arrow" :size="16" /></a>
     </div>
     <div class="game-entries">
-      <article class="game-entry chat-relay-entry entry-disabled" aria-disabled="true">
+      <article
+        class="game-entry chat-relay-entry"
+        :class="{ 'entry-disabled': !availableGameIds.has('chat-relay') }"
+        :aria-disabled="!availableGameIds.has('chat-relay')"
+      >
         <div class="entry-picture"><SceneArt home /></div>
         <div class="entry-copy">
           <h2>社會技巧：聊天傳接球</h2>
           <p class="tagline">接住話題，讓聊天自然繼續。</p>
-          <p>走進六種生活場景，練習聆聽、接話、分享與收尾。60 組原創多回合情境，每個選擇都能看見不同回應；也可以安心說「我想先休息」。</p>
+          <p>從當面聊天到模擬訊息，練習保持距離、開話題、接話與網路交友。60 組原創多回合情境，包含依心情選訊息或貼圖；也可以安心說「先不聊」。</p>
           <section class="entry-learning" aria-labelledby="chat-relay-goals">
             <h3 id="chat-relay-goals">學習目標</h3>
             <ul>
-              <li>聽懂對方的話題與感受，選擇相關回應。</li>
-              <li>輪流提問與分享，延續多回合對話。</li>
-              <li>辨識休息與拒絕的訊號，尊重界線並自然收尾。</li>
+              <li>建立社交距離與身體界線，碰觸前先問。</li>
+              <li>觀察時機，用招呼或小問題開啟談話。</li>
+              <li>接著話題提問與分享，讓談話自然延續。</li>
+              <li>依情緒選擇訊息或貼圖，確認不清楚的語氣。</li>
+              <li>練習網路交友，保留個人資料並在需要時求助。</li>
             </ul>
           </section>
           <div class="entry-meta"><span>三種難度</span><span>四章教學</span><span>60 組生活情境</span></div>
-          <button class="entry-play" type="button" disabled>Coming Soon</button>
+          <a v-if="availableGameIds.has('chat-relay')" class="entry-play" href="/game/chat-relay/">開始聊天傳接球 <SiteIcon name="arrow" :size="18" /></a>
+          <button v-else class="entry-play" type="button" disabled>Coming Soon</button>
         </div>
       </article>
-      <article class="game-entry money-entry">
+      <article v-if="availableGameIds.has('money')" class="game-entry money-entry">
         <a class="entry-picture" href="/game/money/" aria-label="遊玩生活數學：認識新台幣"><img src="/assets/money/tea-shop.webp" width="1536" height="1024" alt="百寶茶舖裡，店員準備好飲料，等你一起練習點餐。" loading="lazy" /></a>
         <div class="entry-copy">
           <h2>生活數學：認識新台幣</h2>
@@ -48,7 +56,7 @@ import SiteIcon from '../../shared/components/SiteIcon.vue';
           <a class="entry-play" href="/game/money/">開始認識新台幣 <SiteIcon name="arrow" :size="18" /></a>
         </div>
       </article>
-      <article class="game-entry campus-entry">
+      <article v-if="availableGameIds.has('campus')" class="game-entry campus-entry">
         <a class="entry-picture" href="/game/campus/" aria-label="遊玩特教宣導：同一座校園"
           ><img
             src="/assets/decor/campus-invitation.png"

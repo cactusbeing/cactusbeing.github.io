@@ -1,6 +1,7 @@
 import type { Scenario, Difficulty, DialogueGraph, Session, Settings, Choice, DecisionNode } from '../types.ts';
 import { hashSeed, seededRandom, shuffle } from './random.ts';
 export function graphFor(scenario:Scenario,difficulty:Difficulty):DialogueGraph {
+ if(scenario.turnPolicy==='natural')return scenario;
  if(difficulty===1)return scenario.easy;
  if(difficulty===3)return scenario;
  return {startNodeId:scenario.startNodeId,nodes:Object.fromEntries(Object.entries(scenario.nodes).filter(([id])=>id!=='extra').map(([id,node])=>[id,node.kind==='end'?node:{...node,choices:node.choices.map(c=>({...c,nextNodeId:c.nextNodeId==='extra'?'close':c.nextNodeId}))}]))};

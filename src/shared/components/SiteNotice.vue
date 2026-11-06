@@ -9,14 +9,10 @@ import { siteUrl } from '../site-path';
       <SiteIcon name="megaphone" />小站公告<span class="notice-dot" aria-hidden="true"></span>
     </h2>
     <article class="notice-entry">
-      <p class="muted notice-date"><time datetime="2026-11-03">2026 / 11 / 03</time></p>
-      <a class="small-link" :href="siteUrl('/exam/?year=114')"><strong>114 年教檢全類科上架</strong><SiteIcon name="arrow" :size="13" /></a>
+      <p class="muted notice-date"><time datetime="2026-11-06">2026 / 11 / 06</time></p>
+      <a class="small-link" :href="siteUrl('/exam/')"><strong>111～115 年教檢全類科上架</strong><SiteIcon name="arrow" :size="13" /></a>
+      <p class="muted">新增每題限時、整卷限時與隨機抽題模式。</p>
     </article>
-    <article class="notice-entry">
-      <p class="muted notice-date"><time datetime="2026-11-01">2026 / 11 / 01</time></p>
-      <a class="small-link" :href="siteUrl('/exam/?year=115')"><strong>115 年教檢全類科上架</strong><SiteIcon name="arrow" :size="13" /></a>
-    </article>
-    <p class="muted">幼兒園、特教、國小至中等學校皆可練習，其他年份陸續上架。</p>
   </section>
 </template>
 
@@ -37,7 +33,6 @@ import { siteUrl } from '../site-path';
   letter-spacing: 0;
 }
 .notice-card p { font-size: .74rem; line-height: 1.95; }
-.notice-entry + .notice-entry { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--color-border); }
 .notice-dot { margin-left: auto; width: 5px; height: 5px; border-radius: 50%; background: var(--color-primary); }
 .small-link { display: inline-flex; align-items: center; gap: 7px; padding-block: 7px; font-size: .75rem; text-decoration: none; }
 @media (max-width: 1180px) {

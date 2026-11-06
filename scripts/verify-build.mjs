@@ -124,7 +124,7 @@ for (const year of examIndex.years) {
         throw new Error(`Invalid exam content: ${year.year} ${subject.id} Q${question.id}`);
       const diagrams = question.body_blocks ? validateBlocks(question.body_blocks) : [];
       if (question.body_blocks) Object.values(question.options).forEach(validateMath);
-      if ([114, 115].includes(year.year) && subject.id === 'math' &&
+      if (subject.id === 'math' &&
           (!question.body_blocks?.length || question.image || question.original_image ||
            (year.year === 115 && question.id <= 6 && diagrams.length)))
         throw new Error('Math must use text, LaTeX and figure-only images');

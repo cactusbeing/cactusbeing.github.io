@@ -45,7 +45,7 @@ import { imageSource, imageSrcset } from '../../shared/responsive-images';
           </div>
           <div class="resource-grid">
             <a
-              v-for="resource in [resources[1], resources[2], resources[0]]"
+              v-for="resource in [resources[1], resources[4], resources[0]]"
               :key="resource.href"
               :href="resource.href"
               class="resource-entry"

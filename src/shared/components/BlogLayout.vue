@@ -3,6 +3,8 @@ import SiteIcon from './SiteIcon.vue';
 import SiteNotice from './SiteNotice.vue';
 import { articleCategories, articleEntries } from '../../content/article-details';
 import { resources } from '../../content/resources';
+import { availableGameIds } from '../../content/games';
+const materialCount = new Set(resources.flatMap((resource) => resource.files)).size;
 const tags = [...new Set(articleEntries.flatMap((article) => article.tags))];
 const archives = [...new Set(articleEntries.map((article) => article.date.slice(0, 7)))]
   .sort((a, b) => b.localeCompare(a))
@@ -33,10 +35,13 @@ const archives = [...new Set(articleEntries.map((article) => article.date.slice(
           <a href="/post.html"
             ><strong>{{ articleEntries.length }}</strong
             ><span>文章</span></a
-          ><a href="/教材.html"
-            ><strong>{{ resources.length }}</strong
-            ><span>教材分類</span></a
-          ><a href="/tool.html"><strong>2</strong><span>實用工具</span></a>
+          ><a href="/教材.html" :aria-label="`${materialCount} 份教材`"
+            ><strong>{{ materialCount }}</strong
+            ><span>教材</span></a
+          ><a href="/tool.html" aria-label="2 個實用工具"><strong>2</strong><span>工具</span></a>
+          <a href="/game/" :aria-label="`${availableGameIds.size} 款已開放遊戲`"
+            ><strong>{{ availableGameIds.size }}</strong><span>遊戲</span></a
+          >
         </div>
         <div class="profile-social">
           <a href="https://www.instagram.com/cactusbeingorz" aria-label="仙人掌星人的 Instagram"
@@ -191,32 +196,46 @@ const archives = [...new Set(articleEntries.map((article) => article.date.slice(
 .profile-role {
   font-size: 0.75rem;
   color: var(--color-primary);
-  margin: 0 0 20px;
+  margin: 0 16px;
 }
 .profile-bio {
+  margin: 20px 16px 0;
   color: var(--color-text-muted);
   font-size: 0.75rem;
   line-height: 1.9;
 }
 .profile-stats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  margin: 16px 18px;
-  padding-bottom: 16px;
-  border-bottom: 1px dashed var(--color-border);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 20px 16px 16px;
+  padding-block: 12px;
+  border-block: 1px solid var(--color-border);
 }
 .profile-stats a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   text-decoration: none;
   color: var(--color-text);
-  min-height: 44px;
+  min-width: 0;
+  min-height: 60px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.profile-stats a:hover {
+  background: var(--color-primary-soft);
 }
 .profile-stats strong {
-  display: block;
-  font-size: 1.15rem;
-  font-weight: 600;
+  font-size: 1.25rem;
+  font-weight: 650;
+  line-height: 1.25;
+  font-variant-numeric: tabular-nums;
 }
 .profile-stats span {
-  font-size: 0.65rem;
+  font-size: 0.72rem;
+  line-height: 1.5;
   color: var(--color-text-muted);
 }
 .profile-social {
@@ -236,8 +255,8 @@ const archives = [...new Set(articleEntries.map((article) => article.date.slice(
   font-size: 0.65rem;
   background: var(--color-accent-soft);
   color: var(--color-accent);
-  margin: 14px 16px 16px;
-  padding: 7px;
+  margin: 16px;
+  padding: 8px;
   border-radius: 9px;
 }
 .category-link {

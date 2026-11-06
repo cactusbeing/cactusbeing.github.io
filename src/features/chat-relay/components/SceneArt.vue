@@ -29,7 +29,7 @@ withDefaults(defineProps<{sceneId?:SceneId;npcId?:string;emotion?:Emotion;home?:
 </g></svg>
 <div class="scene-person scene-player"><CharacterArt player :emotion="home?'happy':'neutral'"/><span v-if="showNames" class="scene-nameplate">你</span></div>
 <div class="scene-person scene-npc"><CharacterArt :npc-id="npcId" :emotion="home?'happy':emotion"/><span v-if="showNames" class="scene-nameplate">{{npcName}}</span></div>
-<svg v-if="home||passing" :key="turnKey" class="relay-ball" :class="{'ball-in-flight':passing&&!home}" viewBox="0 0 120 100"><path d="M103 43c0 25-29 40-55 29L20 85l7-27C0 20 45-4 79 10c15 5 24 16 24 33Z" fill="#fffaf2" stroke="#7e9e88" stroke-width="3"/><path d="m40 39 9 7 22-21" fill="none" stroke="#7e9e88" stroke-width="5" stroke-linecap="round"/></svg>
+<svg v-if="home||passing" :key="turnKey" class="relay-ball" :class="{'ball-in-flight':passing&&!home}" viewBox="0 0 120 100"><path d="M103 43c0 25-29 40-55 29L20 85l7-27C0 20 45-4 79 10c15 5 24 16 24 33Z" fill="#fffaf2" stroke="#7e9e88" stroke-width="3"/><g fill="#7e9e88"><circle cx="42" cy="39" r="5"/><circle cx="60" cy="39" r="5"/><circle cx="78" cy="39" r="5"/></g></svg>
 </div></template>
 
 <style scoped>
