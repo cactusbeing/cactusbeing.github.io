@@ -6,10 +6,17 @@ export const articleCategories = [
   { id: 'behavior', label: '情緒與行為' },
   { id: 'family', label: '親師合作' },
   { id: 'relationships', label: '心理與關係' },
+  { id: 'exam', label: '教檢準備' },
 ] as const;
 export type ArticleCategory = Exclude<(typeof articleCategories)[number]['id'], 'all'>;
 const details: { category: ArticleCategory; tags: string[]; image: string; description: string }[] =
   [
+    {
+      category: 'exam',
+      tags: ['教師資格考試', '教檢考古題', '教檢線上測驗', '錯題複習'],
+      image: '/assets/img/post/exam-guide/revenge.webp',
+      description: '111～115 年全類科教檢題庫怎麼用？圖文帶你操作歷屆試題、隨機抽題、限時測驗與錯題復仇戰，整理錯題本並追蹤各科答對率。',
+    },
     {
       category: 'relationships',
       tags: ['佛洛姆', '愛的藝術', '成熟的愛', '親密關係', '影劇解析'],

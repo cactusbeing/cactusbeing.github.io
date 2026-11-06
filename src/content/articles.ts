@@ -9,6 +9,12 @@ export interface Article {
 }
 export const legacyArticles: Article[] = [
   {
+    title: '教檢刷題系統使用指南：從歷屆試題到錯題復仇戰',
+    href: '/exam-guide.html',
+    date: '2026-11-06',
+    author: '仙人掌星人',
+  },
+  {
     title: '如果讓佛洛姆看《直到T恤乾了為止》',
     href: '/如果讓佛洛姆看《直到T恤乾了為止》.html',
     date: '2026-10-28',

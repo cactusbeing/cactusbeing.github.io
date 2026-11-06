@@ -1,0 +1,43 @@
+.reading.exam-guide { max-width: 60rem; line-height: 1.95; }
+.exam-guide h1 { margin: 16px 0 20px; color: var(--color-primary); font-size: clamp(1.75rem, 3.5vw, 2.5rem); line-height: 1.5; text-wrap: balance; }
+.exam-guide h1 span { white-space: nowrap; }
+.exam-guide .guide-back, .exam-guide .guide-meta a { display: inline-flex; align-items: center; min-height: 44px; }
+.guide-back { font-size: .9rem; }
+.guide-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; color: var(--color-text-muted); font-size: .875rem; }
+.exam-guide .guide-deck { color: var(--color-text-muted); margin-bottom: 0; }
+.guide-actions { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; margin: 24px 0; }
+.guide-actions a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; font-weight: 700; }
+.guide-actions .button { padding: 10px 20px; background: var(--color-primary); color: var(--color-surface); border-radius: var(--radius-control); }
+.guide-actions .button:hover { background: var(--color-primary-hover); }
+.guide-contents { padding-block: 24px; margin-block: 32px 48px; border-block: 1px solid var(--color-border); }
+.exam-guide .guide-contents h2 { margin: 0 0 12px; font-size: 1rem; }
+.guide-contents ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 32px; padding-left: 24px; margin: 0; }
+.guide-contents a { display: inline-flex; align-items: center; min-height: 44px; font-size: .9375rem; }
+.exam-guide .guide-contents a { text-decoration: none; }
+.exam-guide > section { margin-top: 56px; scroll-margin-top: 96px; }
+.exam-guide h2 { color: var(--color-primary); font-size: clamp(1.3rem, 2.5vw, 1.65rem); line-height: 1.65; text-wrap: pretty; }
+.exam-guide h3 { font-size: 1.1rem; }
+.guide-phone-step { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 300px); gap: 32px; align-items: start; }
+.guide-phone-step > * { min-width: 0; }
+.exam-guide .guide-phone-step figure { margin-top: 0; }
+.exam-guide figure img { display: block; width: 100%; border: 1px solid var(--color-border); border-radius: var(--radius-control); }
+.exam-guide figcaption { margin-top: 12px; line-height: 1.8; }
+.exam-guide figure > a { display: block; border-radius: var(--radius-control); }
+.guide-note { padding: 16px 20px; background: var(--color-primary-soft); border-radius: var(--radius-control); }
+.exam-guide .guide-note p { margin: 0; }
+.exam-guide li + li { margin-top: 10px; }
+.guide-definition { margin-block: 24px; }
+.guide-definition > div { padding-block: 16px; border-bottom: 1px solid var(--color-border); }
+.guide-definition dt { font-weight: 700; color: var(--color-primary); }
+.guide-definition dd { margin: 6px 0 0; }
+.guide-footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--color-border); }
+.guide-tags { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+.guide-tags a { display: inline-flex; align-items: center; min-height: 44px; font-size: .875rem; }
+.exam-guide a:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 4px; }
+@media (max-width: 700px) {
+  .reading.exam-guide { padding: 24px 20px; }
+  .guide-phone-step { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .exam-guide .guide-phone-step figure { max-width: 340px; margin-inline: auto; }
+  .guide-contents ol { grid-template-columns: minmax(0, 1fr); }
+  .guide-meta { gap: 4px 16px; }
+}
