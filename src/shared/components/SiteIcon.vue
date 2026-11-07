@@ -16,6 +16,7 @@ withDefaults(
       | 'heart'
       | 'tag'
       | 'megaphone'
+      | 'pin'
       | 'copy';
     size?: number;
   }>(),
@@ -36,6 +37,7 @@ const paths = {
   heart: 'M20 5c-3-3-7-1-8 1-1-2-5-4-8-1-5 5 2 11 8 15 6-4 13-10 8-15Z',
   tag: 'M3 3h9l9 9-9 9-9-9ZM7 7h.01',
   megaphone: 'M3 10v5h5l11 5V4L8 10ZM8 15l2 6H6l-2-6M22 9v6',
+  pin: 'M9 3h6l-1 7 4 4v3H6v-3l4-4-1-7ZM12 17v5',
   copy: 'M8 4h12v14H8zM4 8H3v13h12v-1',
 };
 </script>

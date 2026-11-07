@@ -47,6 +47,8 @@ function fixture() {
     { title: '生活管理', image: '/assets/example.png', description: '既有分類。', href: '/生活管理slide.html', files: ['/files/既有教材.pdf'] },
   ];
   writeFileSync(join(root, 'src/content/resource-categories.json'), JSON.stringify(categories, null, 2) + '\n');
+  writeFileSync(join(root, 'src/content/updates.json'), JSON.stringify({ notice: { enabled: false, heading: '小站公告', message: '' }, entries: [] }, null, 2) + '\n');
+  cpSync(join(project, 'src/content/news-model.mjs'), join(root, 'src/content/news-model.mjs'));
   writeFileSync(join(root, 'assets/example.png'), 'image');
   writeFileSync(join(root, 'files/既有教材.pdf'), pdf('existing'));
   writeFileSync(join(root, '生活管理slide.html'), '<!doctype html><title>Existing authored page</title><div id="catalog-app"></div>');
@@ -74,13 +76,33 @@ function run(f, files, answer = '1\n', succeeds = true, commits = false) {
 }
 const catalog = (f) => JSON.parse(readFileSync(join(f.root, 'src/content/resource-categories.json')));
 function sources(f) {
-  return JSON.stringify([readFileSync(join(f.root, 'src/content/resource-categories.json'), 'utf8'),
+  return JSON.stringify([readFileSync(join(f.root, 'src/content/resource-categories.json'), 'utf8'), readFileSync(join(f.root, 'src/content/updates.json'), 'utf8'),
     readdirSync(join(f.root, 'files')).sort().map((name) => [name, readFileSync(join(f.root, 'files', name)).toString('base64')]),
     readdirSync(f.root).filter((name) => name.endsWith('.html')).sort().map((name) => [name, readFileSync(join(f.root, name), 'utf8')])]);
 }
 function test(name, fn) { fn(); count++; console.log('PASS ' + name); }
 
 try {
+  test('Dirty news blocks auto-commit; invalid announcements stop all uploads before the menu', () => {
+    for (const invalid of [true, false]) {
+      const f = fixture(); const path = join(f.root, 'src/content/updates.json');
+      if (invalid) writeFileSync(path, JSON.stringify({ notice: { enabled: true }, entries: [] }));
+      else writeFileSync(path, readFileSync(path, 'utf8') + ' ');
+      const before = sources(f);
+      const result = run(f, [...(invalid ? [] : ['--commit']), input(f, 'news-conflict.pdf')], '', false);
+      assert.equal(sources(f), before); assert.ok(!result.stdout.includes('請選擇教材分類'));
+    }
+  });
+  test('--commit can add a later editable companion when the generated HTML stays identical', () => {
+    const f = fixture();
+    run(f, ['--commit', input(f, '補齊.pdf')], '1\n', true, true);
+    const page = readFileSync(join(f.root, '學習策略slide.html'));
+    run(f, ['--commit', input(f, '補齊.docx', office('docx', 'later'))], '1\n', true, true);
+    assert.deepEqual(readFileSync(join(f.root, '學習策略slide.html')), page);
+    const news = JSON.parse(readFileSync(join(f.root, 'src/content/updates.json')));
+    assert.equal(news.entries.length, 1); assert.ok(news.entries[0].summary.includes('可編輯 DOCX'));
+    assert.ok(!f.git('diff-tree', '--no-commit-id', '--name-only', '-r', '-z', 'HEAD').split('\0').includes('學習策略slide.html'));
+  });
   test('--commit commits only this upload and leaves unrelated unstaged/untracked work untouched', () => {
     const f = fixture(); const head = f.git('rev-parse', 'HEAD');
     writeFileSync(join(f.root, 'assets/example.png'), 'unrelated edit');
@@ -88,7 +110,7 @@ try {
     run(f, ['--commit', input(f, '自動提交.pdf'), input(f, '自動提交.pptx', office('pptx', 'auto'))], '1\n', true, true);
     assert.notEqual(f.git('rev-parse', 'HEAD'), head);
     assert.deepEqual(f.git('diff-tree', '--no-commit-id', '--name-only', '-r', '-z', 'HEAD').split('\0').filter(Boolean).sort(),
-      ['files/自動提交.pdf', 'files/自動提交.pptx', 'src/content/resource-categories.json', '學習策略slide.html'].sort());
+      ['files/自動提交.pdf', 'files/自動提交.pptx', 'src/content/resource-categories.json', 'src/content/updates.json', '學習策略slide.html'].sort());
     assert.equal(f.git('diff', '--cached', '--name-only'), '');
     assert.equal(f.git('show', 'HEAD:assets/example.png'), 'image');
     assert.equal(readFileSync(join(f.root, 'assets/example.png'), 'utf8'), 'unrelated edit');
@@ -165,6 +187,10 @@ try {
     const [category, other] = catalog(f);
     assert.equal(category.comingSoon, undefined); assert.equal(category.href, '/學習策略slide.html'); assert.equal(category.files.length, 1);
     assert.equal(category.editableFiles[category.files[0]].length, 2);
+    const news = JSON.parse(readFileSync(join(f.root, 'src/content/updates.json')));
+    assert.equal(news.entries.length, 1, 'Three formats announce one material');
+    assert.ok(news.entries[0].summary.includes('可編輯 PPTX')); assert.ok(news.entries[0].summary.includes('可編輯 DOCX'));
+    assert.ok(news.entries[0].href.includes('#material-'));
     assert.deepEqual(other, f.categories[1]);
     const html = readFileSync(join(f.root, '學習策略slide.html'), 'utf8');
     assert.ok(html.includes('&quot;好&quot;')); assert.ok(html.includes('%23')); assert.ok(html.includes('%26'));
@@ -181,6 +207,7 @@ try {
     run(f, [input(f, '純編輯.pdf')]);
     const category = catalog(f)[0]; assert.equal(category.files.length, 2);
     assert.ok(category.files[0].endsWith('.pdf')); assert.ok(category.editableFiles[category.files[0]][0].endsWith('.pptx'));
+    assert.equal(JSON.parse(readFileSync(join(f.root, 'src/content/updates.json'))).entries.length, 2, 'Later formats do not create duplicate announcements');
   });
   test('Adding editable versions to an existing PDF keeps one material and preserves the authored category description', () => {
     const f = fixture(); run(f, [input(f, '既有教材_可編輯版.docx', office('docx', 'editable'))], '2\n');

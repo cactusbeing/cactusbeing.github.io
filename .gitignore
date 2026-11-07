@@ -44,6 +44,7 @@ test-results/
 !/scripts/check-clean-build.mjs
 !/scripts/upload-materials.mjs
 !/scripts/test-upload-materials.mjs
+!/scripts/test-news.mjs
 /docs/*
 !/docs/legacy-baseline.json
 !/docs/article-baseline.json

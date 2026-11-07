@@ -4,11 +4,21 @@ import { createHash } from 'node:crypto';
 import { runInNewContext } from 'node:vm';
 import katex from 'katex';
 import { validateCatalog } from './upload-materials.mjs';
+import { liveNews, validateNewsData } from '../src/content/news-model.mjs';
 const outputDirectory = process.argv[2] || 'dist';
 const built = (file) => resolve(outputDirectory, file);
 const resourceCategories = JSON.parse(readFileSync('src/content/resource-categories.json', 'utf8'));
 validateCatalog(resourceCategories, resolve(outputDirectory), true);
 console.log('Materials: category pages, images, primary files and editable downloads verified.');
+const news = JSON.parse(readFileSync('src/content/updates.json', 'utf8'));
+validateNewsData(news);
+for (const entry of liveNews(news.entries, resourceCategories).filter((entry) => !entry.hidden)) {
+  const path = decodeURIComponent(new URL(entry.href, 'https://local.test').pathname);
+  if (!existsSync(built('.' + path + (path.endsWith('/') ? 'index.html' : ''))))
+    throw Error(`Broken news destination: ${entry.id} → ${entry.href}`);
+}
+if (!existsSync(built('news.html'))) throw Error('Missing news archive.');
+console.log('News: archive, announcement schema and published destinations verified.');
 const baseline = JSON.parse(readFileSync('docs/legacy-baseline.json', 'utf8'));
 for (const { file } of baseline.pages) {
   if (!existsSync(built(file))) throw new Error(`Missing public page: ${file}`);
@@ -46,6 +56,7 @@ const pages = [
   'game/bakery/index.html',
   'game/chat-relay/index.html',
   '404.html',
+  'news.html',
 ];
 if (existsSync(built('campus/index.html')))
   throw new Error('Removed campus entry must not be emitted.');

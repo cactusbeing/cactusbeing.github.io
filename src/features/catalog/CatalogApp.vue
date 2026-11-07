@@ -6,6 +6,7 @@ import BaseButton from '../../shared/components/BaseButton.vue';
 import { materialFiles, materialFormat, materialFormatLabel, resourceCountLabel, resources } from '../../content/resources';
 import { sitePathname } from '../../shared/site-path';
 import { imageSource, imageSrcset } from '../../shared/responsive-images';
+import { materialAnchor } from '../../content/news-model.mjs';
 const path = sitePathname();
 const category = resources.find((resource) => resource.href === path);
 const posts = path === '/post.html' || path === '/post-old.html';
@@ -45,7 +46,7 @@ function filename(path: string) {
     <h1 class="section">{{ category.title }}</h1>
     <p class="muted">{{ category.description }}</p>
     <div v-if="!category.comingSoon" class="stack section">
-      <BaseCard v-for="file in category.files" :key="file"
+      <BaseCard v-for="file in category.files" :key="file" :id="materialAnchor(decodeURIComponent(file.split('/').pop()!))"
         ><span class="tag">{{ materialFiles(category, file).map(materialFormatLabel).join('・') }}</span>
         <h2>{{ decodeURIComponent(filename(file)) }}</h2>
         <div class="actions">

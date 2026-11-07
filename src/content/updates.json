@@ -1,0 +1,70 @@
+{
+  "notice": {
+    "enabled": true,
+    "heading": "小站公告",
+    "message": "",
+    "featuredId": "exam-108-115",
+    "expiresAt": null
+  },
+  "entries": [
+    {
+      "id": "news-launch",
+      "date": "2026-11-08",
+      "category": "site",
+      "title": "[網站更新] 首頁新增分類最新消息",
+      "summary": "依教材、遊戲、文章、教檢與其他消息，快速找到小站最近的進展。",
+      "href": "/news.html"
+    },
+    {
+      "id": "life-body-health",
+      "date": "2026-11-08",
+      "category": "materials",
+      "title": "生活管理「身體保健大冒險」上架",
+      "summary": "練習安全運動、正確坐姿與肩膀放鬆，提供 PDF 與可編輯 PPTX。",
+      "href": "/生活管理slide.html#material-生活管理_身體保健大冒險",
+      "material": { "category": "生活管理", "key": "生活管理_身體保健大冒險" }
+    },
+    {
+      "id": "life-dental",
+      "date": "2026-11-07",
+      "category": "materials",
+      "title": "生活管理「護牙大冒險」上架",
+      "summary": "從日常生活練習口腔保健與自我照顧，提供 PDF 與可編輯 PPTX。",
+      "href": "/生活管理slide.html#material-生活管理-護牙大冒險",
+      "material": { "category": "生活管理", "key": "生活管理-護牙大冒險" }
+    },
+    {
+      "id": "exam-108-115",
+      "date": "2026-11-07",
+      "category": "exam",
+      "title": "108～115 年教檢各組別、各科目試題已全數上架刷題系統",
+      "summary": "新增每題限時、整卷限時與隨機抽題模式。",
+      "href": "/exam/"
+    },
+    {
+      "id": "bakery-launch",
+      "date": "2026-11-07",
+      "category": "games",
+      "title": "魔法烘焙坊上架",
+      "summary": "用餅乾訂單練習形狀、數量與四則運算，還能挑戰今日營業。",
+      "href": "/game/bakery/"
+    },
+    {
+      "id": "math-material-launch",
+      "date": "2026-11-07",
+      "category": "materials",
+      "title": "特教班數學「認識新台幣×魔法烘焙坊」上架",
+      "summary": "搭配生活數學遊戲使用，提供認識新台幣與魔法烘焙坊的 PDF 教材。",
+      "href": "/數學slide.html#material-特教班數學%7C認識新台幣×魔法烘焙坊",
+      "material": { "category": "特教班數學", "key": "特教班數學|認識新台幣×魔法烘焙坊" }
+    },
+    {
+      "id": "money-launch",
+      "date": "2026-11-01",
+      "category": "games",
+      "title": "認識新台幣與百寶茶舖上架",
+      "summary": "認識真實錢幣，在手搖店情境練習點餐、付款與找零。",
+      "href": "/game/money/"
+    }
+  ]
+}

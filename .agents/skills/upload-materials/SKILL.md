@@ -32,13 +32,20 @@ labeled editable. It does not convert formats or change the documents' contents.
 ## Finish and diagnose
 
 The script updates the shared JSON catalog, copies downloads, generates category
-HTML and runs `npm run build` (including uploader regression tests). Missing
+HTML, adds one news entry per material in `src/content/updates.json`, and runs
+`npm run build` (including uploader and news regression tests). Missing
 installed dependencies trigger `npm ci`. Existing authored category descriptions
 remain; site counts, availability and search derive from the shared catalog.
+Material news titles use `教材類別「教材名稱」上架`; remove a repeated category
+prefix/separator and editable suffix from the filename. Later formats update
+the original announcement instead of publishing another.
+News links target the matching material card. Removed materials are hidden from
+the news feed. [README-news.md](../../../README-news.md) explains freeform notices,
+featured news, expiry and manual announcements.
 
 If a conflict is reported, inspect its cause rather than bypassing checks or
 silently replacing existing materials. Normal build failure/interruption rolls
-back source changes and the prior `dist`; the printed temporary directory keeps
+back source changes (including news) and the prior `dist`; the printed temporary directory keeps
 the build log, before-files and plan. Concurrent source edits are preserved for
 manual diagnosis rather than overwritten. A stale-lock error includes its path;
 verify the original process has stopped before removing it.
@@ -50,12 +57,12 @@ interaction, collisions, generated HTML, build failure and rollback in fixtures.
 
 By default the command does not stage or commit. When the user has authorized
 committing this upload, use `./upload-materials --commit <files...>`: it builds,
-stages only the shared catalog, category HTML and new downloads, runs
+stages only the shared catalog, news, changed category HTML and new downloads, runs
 `npm run check:clean -- --staged` when available, then commits. It never pushes
 or deploys. Do not add `--commit` without existing Git authorization.
 
 Auto-commit requires an empty index and no existing uncommitted changes to the
-shared catalog or target HTML; handle earlier uploads separately rather than
+shared catalog, news file or target HTML; handle earlier uploads separately rather than
 folding them into this commit. Other unstaged/untracked work is excluded. HEAD,
 index and source changes during validation stop the commit. A build failure
 rolls back the upload; a later clean-check/Git failure keeps the successful

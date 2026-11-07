@@ -4,6 +4,7 @@ import SiteNotice from './SiteNotice.vue';
 import { articleCategories, articleEntries } from '../../content/article-details';
 import { resources } from '../../content/resources';
 import { availableGameIds } from '../../content/games';
+withDefaults(defineProps<{ showNotice?: boolean }>(), { showNotice: true });
 const materialCount = new Set(resources.flatMap((resource) => resource.files)).size;
 const tags = [...new Set(articleEntries.flatMap((article) => article.tags))];
 const archives = [...new Set(articleEntries.map((article) => article.date.slice(0, 7)))]
@@ -86,11 +87,11 @@ const archives = [...new Set(articleEntries.map((article) => article.date.slice(
       /></a>
     </aside>
     <div class="blog-content">
-      <SiteNotice class="mobile-notice" />
+      <SiteNotice v-if="showNotice" class="mobile-notice" />
       <slot />
     </div>
     <aside class="right-sidebar" aria-label="網站消息與最新文章">
-      <SiteNotice />
+      <SiteNotice v-if="showNotice" />
       <section class="sidebar-card sidebar-panel">
         <h2><SiteIcon name="clock" />最近文章</h2>
         <ol class="recent-list">

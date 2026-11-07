@@ -1,6 +1,7 @@
 import { computed, ref } from 'vue';
 import { articleEntries } from '../../content/article-details';
 import { resources } from '../../content/resources';
+import { materialAnchor } from '../../content/news-model.mjs';
 
 export function matchesSearch(item: { title: string; keywords?: string }, query: string): boolean {
   return `${item.title} ${item.keywords ?? ''}`
@@ -13,6 +14,11 @@ export function useSiteSearch() {
     [
       ...articleEntries,
       ...resources.filter((resource) => !resource.comingSoon && resource.href),
+      ...resources.filter((resource) => !resource.comingSoon && resource.href).flatMap((resource) => resource.files.map((file) => {
+        const name = decodeURIComponent(file.split('/').pop()!);
+        return { title: name.replace(/\.(pdf|pptx|docx)$/i, ''), href: `${resource.href}#${encodeURIComponent(materialAnchor(name))}`, keywords: `${resource.title} 教材` };
+      })),
+      { title: '最新消息', href: '/news.html', keywords: '小站公告 更新 新上架' },
       { title: '遊戲百寶箱', href: '/game/' },
       { title: '社會技巧：聊天傳接球', href: '/game/chat-relay/', keywords: '社會技巧 聆聽 接話 提問 分享 感受 尊重界線 對話' },
       { title: '特教宣導：同一座校園', href: '/game/campus/', keywords: '特教宣導 RPG 校園探索' },

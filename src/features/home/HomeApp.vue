@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import ArticleFeed from '../articles/ArticleFeed.vue';
+import NewsFeed from '../news/NewsFeed.vue';
+import HomeSearch from './HomeSearch.vue';
 import BlogLayout from '../../shared/components/BlogLayout.vue';
 import SiteIcon from '../../shared/components/SiteIcon.vue';
 import { resourceCountLabel, resources } from '../../content/resources';
 import { imageSource, imageSrcset } from '../../shared/responsive-images';
 </script>
 <template>
-  <BlogLayout>
-    <ArticleFeed home>
-      <template #discovery>
+  <BlogLayout :show-notice="false">
+    <HomeSearch />
+    <NewsFeed home />
+    <div class="home-discovery">
         <section class="game-invitation" aria-labelledby="game-invitation-title">
           <img
             class="game-invitation-art"
@@ -94,11 +96,11 @@ import { imageSource, imageSrcset } from '../../shared/responsive-images';
             </a>
           </div>
         </section>
-      </template>
-    </ArticleFeed>
+    </div>
   </BlogLayout>
 </template>
 <style scoped>
+.home-discovery { display: grid; gap: 24px; margin-top: 24px; }
 .game-invitation {
   position: relative;
   isolation: isolate;

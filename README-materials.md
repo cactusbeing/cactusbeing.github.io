@@ -13,6 +13,10 @@
 `npm run build`。依賴尚未安裝時會先跑 `npm ci`。灰階分類會自動啟用，
 不需要另外修改教材目錄、搜尋或首頁統計。原始下載檔案保留。
 
+同時更新 `src/content/updates.json`，自動公告教材上架；同一教材的多格式只產生
+一則消息，補交格式會更新原消息。教材標題可直接連到對應卡片。
+消息及小站公告的設定見 [README-news.md](README-news.md)。
+
 - PDF、PPTX、DOCX 都可單獨上架。PPTX／DOCX 下載會自動標示「可編輯」。
 - 同名的不同格式合併成同一份教材，忽略 `_可編輯版`、`-editable` 等結尾。
   不同名稱則各自建立教材項目。PDF 優先作為主檔，可編輯版本保留在同一卡片。
@@ -53,11 +57,11 @@ npm run test:materials
 ./upload-materials --commit ~/Downloads/新教材.pdf ~/Downloads/新教材_可編輯版.pptx
 ```
 
-自動提交前，暫存區必須為空，教材清單及目標分類 HTML 必須沒有未提交修改；
+自動提交前，暫存區必須為空，教材／消息清單及目標分類 HTML 必須沒有未提交修改；
 工具不會把之前尚未提交的上架內容合併進這次 commit。其他未暫存修改和未追蹤
 檔案會保留，且不納入提交。
 
-工具先跑完整 build，再暫存本次教材、清單與 HTML；專案有 `check:clean` 時會
+工具先跑完整 build，再暫存本次教材、教材／消息清單與有變更的 HTML；專案有 `check:clean` 時會
 自動跑 `npm run check:clean -- --staged`，驗證乾淨副本後才建立 commit。
 提交前也會檢查 HEAD、暫存區與來源檔案是否被其他程序修改。
 建置失敗仍會還原；乾淨副本檢查或 Git 提交失敗時，已成功上架的檔案會保留，

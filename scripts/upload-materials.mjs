@@ -9,8 +9,11 @@ import { tmpdir } from 'node:os';
 import { basename, dirname, extname, join, relative, resolve } from 'node:path';
 import { createInterface } from 'node:readline';
 import { fileURLToPath } from 'node:url';
+import { addMaterialNews, materialKey, validateNewsData } from '../src/content/news-model.mjs';
+export { materialKey } from '../src/content/news-model.mjs';
 
 const catalogPath = 'src/content/resource-categories.json';
+const newsPath = 'src/content/updates.json';
 const formats = ['pdf', 'pptx', 'docx'];
 const fold = (value) => value.normalize('NFC').toLowerCase();
 const hash = (bytes) => createHash('sha256').update(bytes).digest('hex');
@@ -69,12 +72,6 @@ export function validateCatalog(categories, root, requirePages = false) {
       if (!category.files.includes(key)) throw Error(`可編輯版沒有對應主檔：${key}`);
     }
   }
-}
-
-export function materialKey(name) {
-  return basename(name, extname(name)).normalize('NFKC')
-    .replace(/[\s_-]*(?:[（(]\s*)?(?:可編輯(?:版)?|editable)(?:\s*[）)])?$/iu, '')
-    .trim().toLowerCase();
 }
 
 function inspectInputs(root, args) {
@@ -257,11 +254,11 @@ async function command(root, args, signal, log) {
 export async function main(args = process.argv.slice(2), root = fileURLToPath(new URL('../', import.meta.url))) {
   if (args.length === 1 && ['--help', '-h'].includes(args[0])) {
     console.log(`用法：./upload-materials [--commit] <教材.pdf> [教材_可編輯版.pptx] [教材.docx] ...
-支援 PDF、PPTX、DOCX。先檢查衝突，再選擇分類，最後自動更新檔案及 HTML 並執行 npm run build。
+支援 PDF、PPTX、DOCX。先檢查衝突，再選擇分類，最後自動更新檔案、HTML 與最新消息並執行 npm run build。
 同名檔案（忽略 _可編輯版、-editable 後綴）合併為一份教材；不同名稱分開顯示。
 可只上架 PPTX／DOCX；它們會標示「可編輯」。未開放分類會自動建立頁面並啟用。
 不覆蓋同名或同內容檔案；建置失敗會還原本次來源變更與原 dist。原始教材檔案保留。
-加上 --commit：建置成功後只提交本次清單、HTML 與教材；有 check:clean 時會先驗證乾淨暫存副本。
+加上 --commit：建置成功後只提交本次清單、消息、HTML 與教材；有 check:clean 時會先驗證乾淨暫存副本。
 自動提交要求暫存區為空、清單及目標 HTML 沒有未提交修改；提交失敗會保留已上架檔案。
 未加 --commit 不會 stage 或 commit。任何模式都不 push 或部署。可用 -- 分隔檔案參數。`);
     return;
@@ -287,8 +284,8 @@ export async function main(args = process.argv.slice(2), root = fileURLToPath(ne
   };
   if (autoCommit) {
     assertCommitReady();
-    if (git(root, 'status', '--porcelain', '--', catalogPath))
-      throw Error('--commit 要求教材清單沒有未提交修改，請先提交既有上架內容。');
+    if (git(root, 'status', '--porcelain', '--', catalogPath, newsPath))
+      throw Error('--commit 要求教材及消息清單沒有未提交修改，請先提交既有上架內容。');
   }
   const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
   if (!pkg.scripts?.build) throw Error('專案未定義 npm run build。');
@@ -297,6 +294,11 @@ export async function main(args = process.argv.slice(2), root = fileURLToPath(ne
   const registry = join(root, catalogPath);
   if (lstatSync(registry).isSymbolicLink()) throw Error('分類清單不可為符號連結。');
   const original = readFileSync(registry);
+  const newsRegistry = join(root, newsPath);
+  if (lstatSync(newsRegistry).isSymbolicLink()) throw Error('消息清單不可為符號連結。');
+  const originalNews = readFileSync(newsRegistry);
+  const news = JSON.parse(originalNews);
+  validateNewsData(news);
   const categories = JSON.parse(original);
   validateCatalog(categories, root);
   const inputs = inspectInputs(root, args);
@@ -326,6 +328,7 @@ export async function main(args = process.argv.slice(2), root = fileURLToPath(ne
     const index = await selectCategory(categories, controller);
     if (controller.signal.aborted) throw Error('已取消。');
     if (!readFileSync(registry).equals(original)) throw Error('選單開啟期間教材清單已變更，請重新執行。');
+    if (!readFileSync(newsRegistry).equals(originalNews)) throw Error('選單開啟期間消息清單已變更，請重新執行。');
     const checked = inspectInputs(root, args);
     if (checked.some((input, i) => input.digest !== inputs[i].digest)) throw Error('教材檔案已變更，請重新執行。');
     if (git(root, 'ls-files', '--unmerged', '-z')) throw Error('Repository 出現 merge conflict，請先處理。');
@@ -340,14 +343,16 @@ export async function main(args = process.argv.slice(2), root = fileURLToPath(ne
     const updated = structuredClone(categories); updated[index] = selected;
     const bytes = Buffer.from(JSON.stringify(updated, null, 2) + '\n');
     const html = Buffer.from(renderCategory(selected));
+    const newsBytes = Buffer.from(JSON.stringify(addMaterialNews(news, selected, inputs), null, 2) + '\n');
     const dist = join(root, 'dist');
     if (existsSync(dist) && (!lstatSync(dist).isDirectory() || lstatSync(dist).isSymbolicLink()))
       throw Error('dist 必須是一般目錄。');
     work = mkdtempSync(join(tmpdir(), 'cactus-material-upload-'));
     writeFileSync(join(work, 'catalog.before.json'), original);
+    writeFileSync(join(work, 'updates.before.json'), originalNews);
     if (beforePage) writeFileSync(join(work, 'page.before.html'), beforePage);
     writeFileSync(join(work, 'plan.json'), JSON.stringify({ category: selected.title, page,
-      inputs, registry, hadPage: Boolean(beforePage) }, null, 2));
+      inputs, registry, newsRegistry, hadPage: Boolean(beforePage) }, null, 2));
     console.log(`\n上架至「${selected.title}」，建置紀錄：${join(work, 'build.log')}`);
     for (const input of inputs) {
       const destination = siteFile(root, input.url);
@@ -357,7 +362,7 @@ export async function main(args = process.argv.slice(2), root = fileURLToPath(ne
       if (copiedDigest !== input.digest) throw Error(`複製期間來源已變更：${input.name}`);
       chmodSync(destination, 0o644);
     }
-    writes = [{ path: registry, before: original, after: bytes }, { path: page, before: beforePage, after: html }];
+    writes = [{ path: registry, before: original, after: bytes }, { path: newsRegistry, before: originalNews, after: newsBytes }, { path: page, before: beforePage, after: html }];
     for (const write of writes) {
       const current = existsSync(write.path) ? readFileSync(write.path) : null;
       if (write.before ? !current?.equals(write.before) : current !== null) throw Error(`寫入前發現檔案衝突：${write.path}`);
@@ -376,7 +381,7 @@ export async function main(args = process.argv.slice(2), root = fileURLToPath(ne
     let commit = null;
     if (autoCommit) {
       assertCommitReady();
-      const commitPaths = [catalogPath, relative(root, page), ...copied.map((file) => relative(root, file.path))];
+      const commitPaths = [...writes.filter((write) => !write.before?.equals(write.after)).map((write) => relative(root, write.path)), ...copied.map((file) => relative(root, file.path))];
       let staged = false;
       try {
         staged = true;
