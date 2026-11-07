@@ -7,6 +7,8 @@ import type { CookieDestination, CookieSource } from './packing';
 import { createBakerySound } from './sound';
 import RestockStation from './RestockStation.vue';
 import BakingStation from './BakingStation.vue';
+import BaseButton from '../../shared/components/BaseButton.vue';
+import { mathGameMaterialPdf } from '../../content/resources';
 import { siteUrl } from '../../shared/site-path';
 import { CHAPTERS, FLAVORS, countBox, counts, createDaily, createTask, equation, isComplete, total } from './bakery';
 import type { Chapter, Counts, Flavor, Task } from './bakery';
@@ -139,6 +141,7 @@ onBeforeUnmount(() => { window.speechSynthesis?.cancel(); sounds.dispose(); });
   <div class="bakery-app">
     <div class="bakery-topline"><a v-if="screen === 'entry'" :href="siteUrl('/game/')">← 遊戲百寶箱</a><button v-else class="bakery-text return-entry" type="button" @click="goEntry">← 換練習</button><div class="bakery-top-actions"><button class="bakery-text sound-toggle" type="button" :disabled="!sounds.supported" :aria-pressed="soundOn" :aria-label="soundOn ? '關閉遊戲音效' : '開啟遊戲音效'" :title="soundOn ? '音效開啟，點擊靜音' : '音效關閉，點擊開啟'" @click="toggleSound"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" /><path v-if="soundOn" d="M17 8a7 7 0 0 1 0 8M20 5a11 11 0 0 1 0 14" /><path v-else d="m17 9 5 6m0-6-5 6" /></svg></button><button class="bakery-text voice-toggle" type="button" :aria-pressed="voice" :disabled="!voiceSupported" @click="toggleVoice">自動朗讀：{{ voice ? '開' : '關' }}</button><button class="bakery-text math-toggle" type="button" :aria-pressed="showMath" @click="showMath = !showMath">顯示算式：{{ showMath ? '開' : '關' }}</button></div></div>
     <header class="bakery-welcome"><h1>魔法烘焙坊</h1><img :src="siteUrl('/assets/bakery/magic-bakery.webp')" width="1568" height="882" alt="小小烘焙師在溫暖的烘焙坊，烤盤和玻璃罐裡擺著三種形狀的餅乾。" /></header>
+    <BaseButton v-if="screen === 'entry'" :href="siteUrl(mathGameMaterialPdf)" variant="secondary" target="_blank" rel="noopener" aria-label="開啟搭配教材：認識新台幣×魔法烘焙坊 PDF（新分頁）">搭配教材（PDF）</BaseButton>
     <section v-if="screen === 'entry'" class="bakery-entry" aria-label="選擇練習內容">
       <h2 ref="entryHeading" tabindex="-1">今天要練習什麼？</h2>
       <div class="lesson-choices" role="group" aria-label="練習內容"><button v-for="item in CHAPTERS" :key="item.id" type="button" :aria-pressed="mode === 'practice' && chapter === item.id" @click="mode = 'practice'; chapter = item.id"><b>{{ item.name }}</b><span>{{ item.short }}</span></button></div>

@@ -46,14 +46,21 @@ function filename(path: string) {
     <p class="muted">{{ category.description }}</p>
     <div class="stack section">
       <BaseCard v-for="file in category.files" :key="file"
-        ><span class="tag">PDF 教材</span>
+        ><span class="tag">{{ category.editableFiles?.[file] ? 'PDF・可編輯 PPTX' : 'PDF 教材' }}</span>
         <h2>{{ filename(file) }}</h2>
         <div class="actions">
           <BaseButton :href="file" target="_blank" rel="noopener"
             >開啟 PDF
             <span class="visually-hidden">{{ filename(file) }}（新分頁）</span></BaseButton
           ><BaseButton :href="file" variant="secondary" download
-            >下載 <span class="visually-hidden">{{ filename(file) }}</span></BaseButton
+            >下載 PDF <span class="visually-hidden">{{ filename(file) }}</span></BaseButton
+          ><BaseButton
+            v-if="category.editableFiles?.[file]"
+            :href="category.editableFiles[file]"
+            variant="secondary"
+            download
+            >下載可編輯 PPTX
+            <span class="visually-hidden">{{ filename(file) }}</span></BaseButton
           >
         </div></BaseCard
       >

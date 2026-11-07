@@ -19,6 +19,7 @@
 .money-back { display: inline-block; font-size: .875rem; margin-bottom: 12px; }
 .money-page-heading h1 { color: var(--color-primary); font-size: clamp(1.8rem, 3vw, 2.35rem); margin-bottom: 6px; }
 .money-page-heading p { margin: 0; color: var(--color-text-muted); }
+.money-material-link { margin-top: 12px; }
 .money-heading-note { color: var(--color-primary); text-align: right; font-weight: 650; white-space: nowrap; }
 .money-heading-note span { display: block; font-size: .8125rem; color: var(--color-text-muted); font-weight: 400; }
 .money-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 18px; flex-wrap: wrap; }

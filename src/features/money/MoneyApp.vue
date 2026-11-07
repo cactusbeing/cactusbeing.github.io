@@ -3,6 +3,9 @@ import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
 import MoneyImage from './MoneyImage.vue';
 import MoneyWallet from './MoneyWallet.vue';
 import TeaShop from './TeaShop.vue';
+import BaseButton from '../../shared/components/BaseButton.vue';
+import { mathGameMaterialPdf } from '../../content/resources';
+import { siteUrl } from '../../shared/site-path';
 import { MONEY, denominations, moneyKind, questions, type Difficulty, type Mode, type Side } from './money';
 import './money.css';
 const modes: { id: Mode; title: string; hint: string }[] = [
@@ -92,7 +95,7 @@ announce();
 </script>
 <template>
   <div class="money-app">
-    <div class="money-page-heading"><div><a class="money-back" href="/game/">← 遊戲百寶箱</a><h1>生活數學：認識新台幣</h1><p>從一個硬幣，到自己買一杯喜歡的飲料。</p></div><div class="money-heading-note">生活數學練習<span>不限時・可以再試・慢慢學</span></div></div>
+    <div class="money-page-heading"><div><a class="money-back" href="/game/">← 遊戲百寶箱</a><h1>生活數學：認識新台幣</h1><p>從一個硬幣，到自己買一杯喜歡的飲料。</p><BaseButton class="money-material-link" :href="siteUrl(mathGameMaterialPdf)" variant="secondary" target="_blank" rel="noopener" aria-label="開啟搭配教材：認識新台幣×魔法烘焙坊 PDF（新分頁）">搭配教材（PDF）</BaseButton></div><div class="money-heading-note">生活數學練習<span>不限時・可以再試・慢慢學</span></div></div>
     <div class="money-toolbar">
       <div class="difficulty" role="group" aria-label="學習難度"><button type="button" :aria-pressed="difficulty === 'basic'" @click="difficulty = 'basic'"><b>簡易模式</b><span>認識硬幣</span></button><button type="button" :aria-pressed="difficulty === 'advanced'" @click="difficulty = 'advanced'"><b>進階模式</b><span>硬幣＋紙鈔</span></button></div>
       <div class="money-toolbar-actions"><button class="money-secondary" type="button" :aria-pressed="voice" :disabled="!voiceSupported" @click="toggleVoice">{{ voiceSupported ? `朗讀：${voice ? '開啟' : '關閉'}` : '此裝置不支援朗讀' }}</button><button v-if="voice" class="money-text" type="button" @click="say(prompt)">再聽一次</button><button class="money-text" type="button" :aria-expanded="settingsOpen" aria-controls="money-settings" @click="settingsOpen = !settingsOpen">練習設定 {{ settingsOpen ? '−' : '＋' }}</button></div>

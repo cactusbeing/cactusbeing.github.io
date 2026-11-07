@@ -4,7 +4,10 @@ export interface ResourceCategory {
   image: string;
   description: string;
   files: string[];
+  editableFiles?: Record<string, string>;
 }
+export const mathGameMaterialPdf = '/files/特教班數學｜認識新台幣×魔法烘焙坊.pdf';
+
 export const resources: ResourceCategory[] = [
   {
     title: '特教宣導',
@@ -34,19 +37,18 @@ export const resources: ResourceCategory[] = [
     title: '特教班數學',
     href: '/數學slide.html',
     image: '/assets/img/math.jpg',
-    description: '包含採購預算組合、認識幣值計算與生活比例應用等實用教案。',
-    files: [
-      '/files/特教班數學-採購與預算組合配對.pdf',
-      '/files/特教班數學-數值大小與比例的應用.pdf',
-      '/files/特教班數學-認識並使用不同面值的硬幣和紙鈔.pdf',
-    ],
+    description: '搭配「認識新台幣」與「魔法烘焙坊」遊戲，練習錢幣、湊錢、找零、形狀與數量。',
+    files: [mathGameMaterialPdf],
   },
   {
     title: '生活管理',
     href: '/生活管理slide.html',
     image: '/assets/img/life.jpg',
-    description: '從日常生活出發，練習整理與自我照顧。',
-    files: ['/files/生活管理-《雜物整理基礎課》.pdf'],
+    description: '從日常生活出發，練習口腔保健與自我照顧。',
+    files: ['/files/生活管理-護牙大冒險.pdf'],
+    editableFiles: {
+      '/files/生活管理-護牙大冒險.pdf': '/files/生活管理-護牙大冒險_可編輯版.pptx',
+    },
   },
   {
     title: '關係教育',
