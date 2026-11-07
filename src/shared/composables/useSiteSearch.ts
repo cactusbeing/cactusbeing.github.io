@@ -12,7 +12,7 @@ export function useSiteSearch() {
   const results = computed(() =>
     [
       ...articleEntries,
-      ...resources,
+      ...resources.filter((resource) => !resource.comingSoon && resource.href),
       { title: '遊戲百寶箱', href: '/game/' },
       { title: '社會技巧：聊天傳接球', href: '/game/chat-relay/', keywords: '社會技巧 聆聽 接話 提問 分享 感受 尊重界線 對話' },
       { title: '特教宣導：同一座校園', href: '/game/campus/', keywords: '特教宣導 RPG 校園探索' },

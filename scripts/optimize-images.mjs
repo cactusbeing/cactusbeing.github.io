@@ -7,7 +7,7 @@ import { basename, extname } from 'node:path';
 const photos = [
   'postbrain-bg', 'post-bg', 'pbs', 'tool-background', 'learn', 'about-bg',
 ];
-const resources = ['work', 'math', 'pexels-mh-j-5720724', 'life', 'yan-krukov-8618062'];
+const resources = ['work', 'math', 'pexels-mh-j-5720724', 'life', 'yan-krukov-8618062', 'social', 'english', 'chinese'];
 const targets = [
   ...photos.map((name) => ({ file: `assets/img/${name}.jpg`, widths: [480, 960] })),
   { file: 'assets/img/post/融合教育.jpeg', widths: [480, 960] },

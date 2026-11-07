@@ -44,7 +44,7 @@ function filename(path: string) {
     ><a href="/教材.html">← 所有教學資源</a>
     <h1 class="section">{{ category.title }}</h1>
     <p class="muted">{{ category.description }}</p>
-    <div class="stack section">
+    <div v-if="!category.comingSoon" class="stack section">
       <BaseCard v-for="file in category.files" :key="file"
         ><span class="tag">{{ category.editableFiles?.[file] ? 'PDF・可編輯 PPTX' : 'PDF 教材' }}</span>
         <h2>{{ filename(file) }}</h2>
@@ -71,7 +71,12 @@ function filename(path: string) {
     <h1>教材資源分享</h1>
     <p class="muted">選一個主題，為下一堂課找點靈感。</p>
     <div class="grid">
-      <BaseCard v-for="resource in resources" :key="resource.href" :href="resource.href"
+      <BaseCard
+        v-for="resource in resources"
+        :key="resource.title"
+        :href="resource.comingSoon ? undefined : resource.href"
+        :aria-disabled="resource.comingSoon || undefined"
+        :class="{ 'resource-unavailable': resource.comingSoon }"
         ><img
           class="resource-image"
           :src="imageSource(resource.image)"
@@ -81,19 +86,20 @@ function filename(path: string) {
           height="400"
           alt=""
           loading="lazy"
-        /><span class="tag">{{ resource.files.length }} 份 PDF</span>
+        /><span class="tag">{{ resource.comingSoon ? '準備中' : `${resource.files.length} 份 PDF` }}</span>
         <h2>{{ resource.title }}</h2>
         <p class="muted">{{ resource.description }}</p>
-        <span>探索教材 →</span></BaseCard
+        <span>{{ resource.comingSoon ? '暫未開放' : '探索教材 →' }}</span></BaseCard
       >
     </div>
-    <BaseCard class="section"
-      ><h2>持續準備中的資源</h2>
-      <p class="muted">學習策略、社會技巧、英文、國文：建置中，敬請期待！</p></BaseCard
-    ></template
+    </template
   >
 </template>
 <style scoped>
+.resource-unavailable {
+  filter: grayscale(1);
+  background: var(--color-surface-muted);
+}
 .resource-image {
   display: block;
   width: 100%;

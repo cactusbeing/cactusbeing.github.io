@@ -1,10 +1,11 @@
 export interface ResourceCategory {
   title: string;
-  href: string;
+  href?: string;
   image: string;
   description: string;
   files: string[];
   editableFiles?: Record<string, string>;
+  comingSoon?: boolean;
 }
 export const mathGameMaterialPdf = '/files/特教班數學｜認識新台幣×魔法烘焙坊.pdf';
 
@@ -23,15 +24,9 @@ export const resources: ResourceCategory[] = [
     title: '職業教育',
     href: '/職業教育slide.html',
     image: '/assets/img/work.jpg',
-    description: '收錄手工皂製作、園藝栽培、色彩學等實務操作課程大綱與教材。',
-    files: [
-      '/files/色彩學X花藝 課程大綱簡報.pdf',
-      '/files/職業教育-手工皂基礎.pdf',
-      '/files/職業教育-芳香精油手工皂製作方法.pdf',
-      '/files/職業教育-甜點樣態手工皂製作方法.pdf',
-      '/files/職業教育-礦物皂製作方法.pdf',
-      '/files/職業教育-基礎園藝課程.pdf',
-    ],
+    description: '教材暫未開放，敬請期待。',
+    files: [],
+    comingSoon: true,
   },
   {
     title: '特教班數學',
@@ -56,5 +51,33 @@ export const resources: ResourceCategory[] = [
     image: '/assets/img/yan-krukov-8618062.jpg',
     description: '在家庭、學校與職場中認識人際關係。',
     files: ['/files/關係教育手冊-「隱性虐待」(家庭、學校、職場).pdf'],
+  },
+  {
+    title: '學習策略',
+    image: '/assets/img/learn.jpg',
+    description: '教材準備中，敬請期待。',
+    files: [],
+    comingSoon: true,
+  },
+  {
+    title: '社會技巧',
+    image: '/assets/img/social.jpg',
+    description: '教材準備中，敬請期待。',
+    files: [],
+    comingSoon: true,
+  },
+  {
+    title: '英文',
+    image: '/assets/img/english.jpg',
+    description: '教材準備中，敬請期待。',
+    files: [],
+    comingSoon: true,
+  },
+  {
+    title: '國文',
+    image: '/assets/img/chinese.jpg',
+    description: '教材準備中，敬請期待。',
+    files: [],
+    comingSoon: true,
   },
 ];

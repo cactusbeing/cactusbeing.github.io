@@ -232,5 +232,47 @@
       "src": "/assets/optimized/games-invitation-1536.webp",
       "width": 1536
     }
+  ],
+  "/assets/img/social.jpg": [
+    {
+      "src": "/assets/optimized/social-240.webp",
+      "width": 240
+    },
+    {
+      "src": "/assets/optimized/social-480.webp",
+      "width": 480
+    },
+    {
+      "src": "/assets/optimized/social-960.webp",
+      "width": 960
+    }
+  ],
+  "/assets/img/english.jpg": [
+    {
+      "src": "/assets/optimized/english-240.webp",
+      "width": 240
+    },
+    {
+      "src": "/assets/optimized/english-480.webp",
+      "width": 480
+    },
+    {
+      "src": "/assets/optimized/english-960.webp",
+      "width": 960
+    }
+  ],
+  "/assets/img/chinese.jpg": [
+    {
+      "src": "/assets/optimized/chinese-240.webp",
+      "width": 240
+    },
+    {
+      "src": "/assets/optimized/chinese-480.webp",
+      "width": 480
+    },
+    {
+      "src": "/assets/optimized/chinese-960.webp",
+      "width": 960
+    }
   ]
 }

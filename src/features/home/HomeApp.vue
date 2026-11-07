@@ -44,10 +44,12 @@ import { imageSource, imageSrcset } from '../../shared/responsive-images';
             />
           </div>
           <div class="resource-grid">
-            <a
+            <component
+              :is="resource.comingSoon ? 'div' : 'a'"
               v-for="resource in [resources[1], resources[4], resources[0]]"
-              :key="resource.href"
-              :href="resource.href"
+              :key="resource.title"
+              :href="resource.comingSoon ? undefined : resource.href"
+              :aria-disabled="resource.comingSoon || undefined"
               class="resource-entry"
             >
               <img
@@ -58,11 +60,11 @@ import { imageSource, imageSrcset } from '../../shared/responsive-images';
               />
               <div class="resource-heading">
                 <h3>{{ resource.title }}</h3>
-                <span>{{ resource.files.length }} 份 PDF</span>
+                <span>{{ resource.comingSoon ? '準備中' : `${resource.files.length} 份 PDF` }}</span>
               </div>
               <p>{{ resource.description }}</p>
-              <span class="resource-action">查看教材 <SiteIcon name="arrow" :size="16" /></span>
-            </a>
+              <span class="resource-action">{{ resource.comingSoon ? '暫未開放' : '查看教材' }} <SiteIcon v-if="!resource.comingSoon" name="arrow" :size="16" /></span>
+            </component>
           </div>
         </section>
         <section class="home-tools" aria-labelledby="home-tools-title">
@@ -254,6 +256,9 @@ h2 {
   text-decoration: none;
   min-width: 0;
 }
+.resource-entry[aria-disabled='true'] {
+  filter: grayscale(1);
+}
 .resource-entry > img {
   width: 100%;
   aspect-ratio: 5 / 3;
@@ -298,7 +303,7 @@ h3 {
   font-size: 0.875rem;
   margin-top: auto;
 }
-.resource-entry:hover h3,
+a.resource-entry:hover h3,
 .tool-entry:hover h3 {
   color: var(--color-primary);
 }
