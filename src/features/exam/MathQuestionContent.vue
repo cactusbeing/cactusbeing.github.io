@@ -25,7 +25,7 @@ function figureStyle(block: Extract<QuestionBlock, { type: 'image' }>) {
       <div v-else-if="block.type === 'box'" class="stem-box">
         <MathQuestionContent :blocks="block.blocks" />
       </div>
-      <div v-else-if="block.type === 'columns'" class="stem-columns">
+      <div v-else-if="block.type === 'columns'" class="stem-columns" :class="{ 'stack-on-mobile': block.stack_on_mobile }">
         <MathQuestionContent v-for="(column, columnIndex) in block.columns" :key="columnIndex" :blocks="column" />
       </div>
       <div v-else-if="block.type === 'table'" class="stem-table-block">
@@ -69,6 +69,7 @@ function figureStyle(block: Extract<QuestionBlock, { type: 'image' }>) {
 .stem-table caption { text-align: left; margin-bottom: .4em; }
 .stem-table-hint { display: none; }
 @media (max-width: 600px) {
+  .stem-columns.stack-on-mobile { grid-template-columns: minmax(0, 1fr); }
   .stem-table-hint { display: block; margin: .65em 0 0; font-size: .85rem; color: var(--color-text-muted); }
 }
 </style>

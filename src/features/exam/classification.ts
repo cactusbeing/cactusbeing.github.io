@@ -1,5 +1,9 @@
 import type { ExamCategory, Subject, Year } from './progress';
 
+export function examYearLabel(year: number, sitting?: string): string {
+  return `${year} 年${sitting ? `（${sitting}）` : ''}`;
+}
+
 export function categoriesForYear(year?: Year): ExamCategory[] {
   if (!year) return [];
   return year.categories ?? [{ id: 'special-disability', name: '特教・身心障礙組' }];
@@ -12,8 +16,8 @@ export function subjectCategories(subject: Subject, year: Year): string[] {
 }
 
 export function subjectCategoryLabel(subject: Subject, year: Year): string {
-  if (subject.id === 'chinese') return '全類科共用';
   const ids = subjectCategories(subject, year);
+  if (categoriesForYear(year).every((category) => ids.includes(category.id))) return '全類科共用';
   if (ids.length === 2 && ids.includes('special-disability') && ids.includes('special-gifted'))
     return '特教兩組共用';
   return categoriesForYear(year).filter((category) => ids.includes(category.id))

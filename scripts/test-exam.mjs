@@ -3,10 +3,10 @@ import { readFileSync } from 'node:fs';
 import { sampleQuestions, sourceLabel, remainingSeconds, formatCountdown } from '../src/features/exam/session.ts';
 
 const manifest = JSON.parse(readFileSync(new URL('../assets/exams/index.json', import.meta.url)));
-const pool = manifest.years.flatMap(({ year, subjects }) => subjects.flatMap(subject => {
+const pool = manifest.years.flatMap(({ year, sitting, subjects }) => subjects.flatMap(subject => {
   const exam = JSON.parse(readFileSync(new URL('..' + subject.data, import.meta.url)));
   return exam.multiple_choice_questions.map(question => ({ ...question,
-    source: { year, subjectId: subject.id, subjectName: subject.name, questionId: question.id },
+    source: { year, ...(sitting ? { sitting } : {}), subjectId: subject.id, subjectName: subject.name, questionId: question.id },
   }));
 }));
 const before = JSON.stringify(pool);
@@ -38,6 +38,30 @@ assert.equal(formatCountdown(3600), '60:00');
 assert.equal(formatCountdown(0), '00:00');
 assert.equal(formatCountdown(-1), '00:00');
 console.log(`Exam domain checks passed (${pool.length} source questions).`);
+
+// Early papers have separate kindergarten Chinese papers and different point totals.
+const { categoriesForYear, examYearLabel, subjectCategoryLabel, subjectGroups } = await import('../src/features/exam/classification.ts');
+for (const [yearNumber, total] of [[108, 520], [109, 520], [110, 401]]) {
+  const year = manifest.years.find(item => item.year === yearNumber);
+  assert.ok(year, `Missing ${yearNumber} all-category bank`);
+  assert.equal(year.subjects.length, 16);
+  assert.equal(year.subjects.reduce((sum, subject) => sum + subject.count, 0), total);
+  assert.equal(categoriesForYear(year).length, 5);
+  for (const category of categoriesForYear(year)) {
+    const subjects = subjectGroups(year, category.id).flatMap(group => group.subjects);
+    assert.equal(subjects.length, category.id === 'primary' ? 5 : 4);
+    assert.equal(subjects.filter(subject => subject.id.startsWith('chinese')).length, 1);
+    assert.equal(subjects.find(subject => subject.id.startsWith('chinese')).id,
+      category.id === 'kindergarten' ? 'chinese-kindergarten' : 'chinese');
+  }
+  assert.notEqual(subjectCategoryLabel(year.subjects.find(subject => subject.id === 'chinese'), year), '全類科共用');
+  assert.ok(year.subjects.every(subject => subject.points === (yearNumber < 110 ? 60 : subject.id === 'math' ? 52 : 50)));
+}
+const latestYear = manifest.years.find(year => year.year === 115);
+assert.equal(subjectCategoryLabel(latestYear.subjects.find(subject => subject.id === 'chinese'), latestYear), '全類科共用');
+assert.equal(examYearLabel(108, '第二次考試'), '108 年（第二次考試）');
+assert.ok(sourceLabel(pool.find(question => question.source.year === 108)).startsWith('108 年（第二次考試）｜'));
+console.log('Early exams verified (48 papers, 1,441 questions, five categories, separate Chinese papers, original points and sitting labels).');
 
 // The optional metadata must remain compatible with old browser history.
 const { readHistory, readResponses, saveHistoryEntry, responseStorageKey } = await import('../src/features/exam/progress.ts');

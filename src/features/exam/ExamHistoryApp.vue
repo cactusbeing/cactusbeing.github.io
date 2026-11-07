@@ -5,7 +5,7 @@ import { siteUrl } from '../../shared/site-path';
 import SiteIcon from '../../shared/components/SiteIcon.vue';
 import { answeredCount, readHistory, readResponses, saveHistoryEntry } from './progress';
 import type { Choice, ExamHistoryEntry, Subject, Year } from './progress';
-import { subjectCategoryLabel, subjectGroups } from './classification';
+import { examYearLabel, subjectCategoryLabel, subjectGroups } from './classification';
 import { practiceStats } from './training';
 
 type Question = { id: number; answer: Choice; accepted_answers?: Choice[] };
@@ -30,6 +30,9 @@ const visibleHistory = computed(() => sortedHistory.value.filter(entry => histor
 function percent(value: number | null): string { return value === null ? '—' : `${Number(value.toFixed(1))}%`; }
 function modeLabel(entry: ExamHistoryEntry): string {
   return entry.mode === 'revenge' ? '錯題復仇戰' : entry.mode === 'random' ? '隨機抽題' : entry.mode === 'timed' ? '限時測驗' : '歷屆練習';
+}
+function yearLabel(year: number): string {
+  return examYearLabel(year, years.value.find((item) => item.year === year)?.sitting);
 }
 
 function statusLabel(count: number, total: number): string {
@@ -152,7 +155,7 @@ onBeforeUnmount(() => document.body.classList.remove('exam-page-shell'));
         <ol v-else class="attempt-list">
           <li v-for="entry in visibleHistory" :key="entry.id" class="attempt-row">
             <div>
-              <span class="attempt-year">{{ ['random', 'revenge'].includes(entry.mode ?? '') ? (entry.years ?? [entry.year]).map((year) => `${year} 年`).join('、') : `${entry.year} 年` }} · {{ modeLabel(entry) }}</span>
+              <span class="attempt-year">{{ ['random', 'revenge'].includes(entry.mode ?? '') ? (entry.years ?? [entry.year]).map(yearLabel).join('、') : yearLabel(entry.year) }} · {{ modeLabel(entry) }}</span>
               <strong>{{ subjectName(entry) }}</strong>
               <small>{{ dateLabel(entry.completedAt) }}</small>
             </div>
@@ -187,7 +190,7 @@ onBeforeUnmount(() => document.body.classList.remove('exam-page-shell'));
           <span>{{ subjects.length }} 科</span>
         </div>
         <div v-for="year in years" :key="year.year" class="year-section">
-          <h3>{{ year.year }} 年</h3>
+          <h3>{{ yearLabel(year.year) }}</h3>
           <div v-for="group in subjectGroups(year)" :key="group.id" class="subject-group">
             <h4>{{ group.name }}</h4>
             <a v-for="subject in group.subjects" :key="subject.id" class="subject-row" :href="examLink(year.year, subject)">

@@ -5,7 +5,7 @@ import { siteUrl } from '../../shared/site-path';
 import SiteIcon from '../../shared/components/SiteIcon.vue';
 import { answeredCount, readResponses, responseStorageKey, saveHistoryEntry } from './progress';
 import type { Choice, Subject, Year } from './progress';
-import { categoriesForYear, subjectCategoryLabel, subjectGroups } from './classification';
+import { categoriesForYear, examYearLabel, subjectCategoryLabel, subjectGroups } from './classification';
 import MathText from './MathText.vue';
 import MathQuestionContent from './MathQuestionContent.vue';
 import { contentImages } from './question-content';
@@ -151,7 +151,7 @@ const randomSubjectOptions = computed(() => {
 });
 const randomPapers = computed(() => manifest.value.filter((year) => randomYears.value.includes(year.year))
   .flatMap((year) => year.subjects.filter((subject) => randomSubjects.value.includes(subject.id))
-    .map((subject) => ({ year: year.year, subject }))));
+    .map((subject) => ({ year: year.year, sitting: year.sitting, subject }))));
 const poolCount = computed(() => randomPapers.value.reduce((sum, paper) => sum + paper.subject.count, 0));
 const settingsError = computed(() => {
   if (perQuestionEnabled.value && (!Number.isInteger(perQuestionSeconds.value) || perQuestionSeconds.value < 1 || perQuestionSeconds.value > 3600))
@@ -171,7 +171,11 @@ const randomError = computed(() => {
     return `題數請輸入 1 至 ${poolCount.value} 的整數。`;
   return settingsError.value;
 });
-const attemptYearLabel = computed(() => randomAttempt.value ? attemptYears.value.map((year) => `${year} 年`).join('、') : `${selectedYear.value} 年`);
+function yearLabel(year: number): string {
+  return examYearLabel(year, manifest.value.find((item) => item.year === year)?.sitting);
+}
+const attemptYearLabel = computed(() => randomAttempt.value ? attemptYears.value.map(yearLabel).join('、') : yearLabel(selectedYear.value!));
+const availableYearRange = computed(() => manifest.value.length ? `${manifest.value.at(-1)!.year}～${manifest.value[0]!.year}` : '');
 const currentYear = computed(() => manifest.value.find((item) => item.year === selectedYear.value));
 const categories = computed(() => categoriesForYear(currentYear.value));
 const selectedCategoryName = computed(() => categories.value.find((category) => category.id === selectedCategory.value)?.name ?? '全部類科');
@@ -327,7 +331,7 @@ function retryPreparedQuestion() {
 
 function questionSource(question: Question) {
   return question.source ?? {
-    year: selectedYear.value!, subjectId: selectedSubject.value!.id,
+    year: selectedYear.value!, ...(currentYear.value?.sitting ? { sitting: currentYear.value.sitting } : {}), subjectId: selectedSubject.value!.id,
     subjectName: selectedSubject.value!.name, questionId: question.id,
   };
 }
@@ -479,14 +483,14 @@ async function startRandomExam() {
   error.value = '';
   try {
     const papers = [...randomPapers.value];
-    const pool = (await Promise.all(papers.map(async ({ year, subject }) => {
+    const pool = (await Promise.all(papers.map(async ({ year, sitting, subject }) => {
       const response = await fetch(siteUrl(subject.data), { signal: request.signal });
       if (!response.ok) throw new Error('讀取失敗');
       const data = await response.json() as Exam;
       if (!Array.isArray(data.multiple_choice_questions) || !data.multiple_choice_questions.length)
         throw new Error('題庫格式錯誤');
       return data.multiple_choice_questions.map((question) => ({ ...question,
-        source: { year, subjectId: subject.id, subjectName: subject.name, questionId: question.id },
+        source: { year, ...(sitting ? { sitting } : {}), subjectId: subject.id, subjectName: subject.name, questionId: question.id },
       }));
     }))).flat();
     if (!isCurrentLoad(request) || settingsError.value) return;
@@ -666,7 +670,7 @@ async function exportWrongBook() {
   exportError.value = '';
   try {
     const { downloadWrongBook } = await import('./wrong-book-pdf');
-    await downloadWrongBook(selectedYear.value, selectedSubject.value.name, wrongQuestions.value, responses.value, correct.value, questions.value.length, totalPoints.value, randomAttempt.value ? `${attemptYearLabel.value} ${revengeAttempt.value ? '錯題復仇戰' : '隨機測驗'}` : undefined,
+    await downloadWrongBook(selectedYear.value, selectedSubject.value.name, wrongQuestions.value, responses.value, correct.value, questions.value.length, totalPoints.value, randomAttempt.value ? `${attemptYearLabel.value} ${revengeAttempt.value ? '錯題復仇戰' : '隨機測驗'}` : `${yearLabel(selectedYear.value)}教師資格考試`,
       Object.fromEntries(wrongQuestions.value.filter((question) => expired.value[question.id]).map((question) => [question.id, unansweredLabel(question)])));
   } catch {
     exportError.value = 'PDF 產生失敗，請再試一次。';
@@ -686,7 +690,7 @@ async function copyAiPrompt(question: Question) {
   const lines = [
     '請協助我理解以下教師資格考試題目。請先說明參考答案為何正確，再分析我的作答，並簡要說明其他選項。若題目資訊不足，請指出缺少什麼，不要猜測。',
     '',
-    sourceLabel(question) || `${selectedYear.value} 年｜${selectedSubject.value?.name ?? ''}｜第 ${question.id} 題`,
+    sourceLabel(question) || `${yearLabel(selectedYear.value!)}｜${selectedSubject.value?.name ?? ''}｜第 ${question.id} 題`,
     ...(question.context ? [`閱讀資料：\n${question.context}`, ''] : []),
     `題目：${question.question}`,
     ...(question.image_text ? [`附圖文字：${question.image_text}`] : []),
@@ -755,7 +759,7 @@ onBeforeUnmount(() => {
         <span v-if="mode === 'revenge'" class="fixed-timing"><SiteIcon name="clock" :size="18" />每題 60 秒</span>
         <a :href="siteUrl('/exam/history/')">個人練習紀錄 <SiteIcon name="arrow" :size="16" /></a>
       </nav>
-      <p class="heading-description">{{ mode === 'menu' ? '111～115 年全類科考古題，選擇你的練習方式。' : mode === 'past' ? '選擇年度、類科與科目。' : mode === 'random' ? '自選範圍與題數。' : '從自己的錯題出發，一次拿下 5 題。' }}</p>
+      <p class="heading-description">{{ mode === 'menu' ? `${availableYearRange} 年全類科考古題，選擇你的練習方式。` : mode === 'past' ? '選擇年度、類科與科目。' : mode === 'random' ? '自選範圍與題數。' : '從自己的錯題出發，一次拿下 5 題。' }}</p>
     </header>
 
     <p v-if="error" class="load-message" role="alert">{{ error }}</p>
@@ -791,7 +795,7 @@ onBeforeUnmount(() => {
         <div v-if="mode === 'random'" class="random-settings">
           <fieldset class="source-fieldset">
             <legend>選擇年度（可複選）</legend>
-            <div class="filter-checks"><label v-for="year in manifest" :key="year.year" class="check-label"><input v-model="randomYears" type="checkbox" :value="year.year" />{{ year.year }} 年</label></div>
+            <div class="filter-checks"><label v-for="year in manifest" :key="year.year" class="check-label"><input v-model="randomYears" type="checkbox" :value="year.year" />{{ yearLabel(year.year) }}</label></div>
           </fieldset>
           <fieldset class="subjects-fieldset">
             <legend>選擇科目（可複選）</legend>
@@ -809,12 +813,12 @@ onBeforeUnmount(() => {
       <details v-if="!selectedSubject" ref="yearPicker" class="mobile-year-picker" @keydown.esc.prevent="closeYearPicker">
         <summary>
           <span>考試年度</span>
-          <strong>{{ selectedYear }} 年</strong>
+          <strong>{{ yearLabel(selectedYear!) }}</strong>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
         </summary>
         <div class="mobile-year-options" role="group" aria-label="選擇考試年度">
           <button v-for="item in manifest" :key="item.year" type="button" :aria-pressed="selectedYear === item.year" @click="chooseMobileYear(item.year)">
-            <span>{{ item.year }} 年</span>
+            <span>{{ yearLabel(item.year) }}</span>
             <span v-if="selectedYear === item.year" class="current-year-label">目前年度</span>
           </button>
         </div>
@@ -828,7 +832,7 @@ onBeforeUnmount(() => {
           :aria-pressed="selectedYear === item.year"
           @click="chooseYear(item.year)"
         >
-          {{ item.year }} 年
+          {{ yearLabel(item.year) }}
         </button>
       </div>
 
@@ -845,7 +849,7 @@ onBeforeUnmount(() => {
           </div>
         </details>
         <div class="subject-heading">
-          <h2 ref="subjectTitle" tabindex="-1">{{ selectedYear }} 年試題</h2>
+          <h2 ref="subjectTitle" tabindex="-1">{{ yearLabel(selectedYear!) }}試題</h2>
           <p>共 {{ availableSubjectCount }} 份試卷。共用科目只收錄一份，作答進度也會共用。</p>
         </div>
         <section v-for="group in groupedSubjects" :key="group.id" class="subject-group" :aria-labelledby="`subject-group-${group.id}`">

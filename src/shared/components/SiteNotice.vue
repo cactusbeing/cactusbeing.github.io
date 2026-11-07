@@ -9,8 +9,8 @@ import { siteUrl } from '../site-path';
       <SiteIcon name="megaphone" />小站公告<span class="notice-dot" aria-hidden="true"></span>
     </h2>
     <article class="notice-entry">
-      <p class="muted notice-date"><time datetime="2026-11-06">2026 / 11 / 06</time></p>
-      <a class="small-link" :href="siteUrl('/exam/')"><strong>111～115 年教檢全類科上架</strong><SiteIcon name="arrow" :size="13" /></a>
+      <p class="muted notice-date"><time datetime="2026-11-07">2026 / 11 / 07</time></p>
+      <a class="small-link" :href="siteUrl('/exam/')"><strong>108～115 年教檢全類科上架</strong><SiteIcon name="arrow" :size="13" /></a>
       <p class="muted">新增每題限時、整卷限時與隨機抽題模式。</p>
     </article>
   </section>

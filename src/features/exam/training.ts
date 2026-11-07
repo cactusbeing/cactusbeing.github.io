@@ -34,15 +34,15 @@ export function recordOutcome(source: QuestionSource, correct: boolean): boolean
 export async function loadRevengePool(years: Year[], load: (path: string) => Promise<Exam>): Promise<Question[]> {
   const mistakes = readMistakes();
   // Only fetch papers with saved answers or outstanding mistakes, rather than the entire bank.
-  const papers = years.flatMap(({ year, subjects }) => subjects.map(subject => ({
-    year, subject, responses: readResponses(year, subject.id),
+  const papers = years.flatMap(({ year, sitting, subjects }) => subjects.map(subject => ({
+    year, sitting, subject, responses: readResponses(year, subject.id),
   }))).filter(({ year, subject, responses }) => Object.keys(responses).length ||
     Object.values(mistakes).some(item => !item.resolved && item.year === year && item.subjectId === subject.id));
-  const candidates = (await Promise.all(papers.map(async ({ year, subject, responses }) => {
+  const candidates = (await Promise.all(papers.map(async ({ year, sitting, subject, responses }) => {
     const data = await load(subject.data);
     if (!Array.isArray(data.multiple_choice_questions)) throw new Error('題庫格式錯誤');
     return data.multiple_choice_questions.flatMap(question => {
-      const source = { year, subjectId: subject.id, subjectName: subject.name, questionId: question.id };
+      const source = { year, ...(sitting ? { sitting } : {}), subjectId: subject.id, subjectName: subject.name, questionId: question.id };
       const key = sourceKey(source);
       const answer = responses[question.id];
       if (answer && !mistakes[key] && !(question.accepted_answers?.length ? question.accepted_answers : [question.answer]).includes(answer))

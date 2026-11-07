@@ -15,7 +15,7 @@ const details: { category: ArticleCategory; tags: string[]; image: string; descr
       category: 'exam',
       tags: ['教師資格考試', '教檢考古題', '教檢線上測驗', '錯題複習'],
       image: '/assets/img/post/exam-guide/revenge.webp',
-      description: '111～115 年全類科教檢題庫怎麼用？圖文帶你操作歷屆試題、隨機抽題、限時測驗與錯題復仇戰，整理錯題本並追蹤各科答對率。',
+      description: '108～115 年全類科教檢題庫怎麼用？圖文帶你操作歷屆試題、隨機抽題、限時測驗與錯題復仇戰，整理錯題本並追蹤各科答對率。',
     },
     {
       category: 'relationships',

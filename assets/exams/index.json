@@ -949,6 +949,631 @@
           "section": "professional"
         }
       ]
+    },
+    {
+      "year": 110,
+      "categories": [
+        {
+          "id": "kindergarten",
+          "name": "幼兒園"
+        },
+        {
+          "id": "special-disability",
+          "name": "特教・身心障礙組"
+        },
+        {
+          "id": "special-gifted",
+          "name": "特教・資賦優異組"
+        },
+        {
+          "id": "primary",
+          "name": "國民小學"
+        },
+        {
+          "id": "secondary",
+          "name": "中等學校"
+        }
+      ],
+      "subjects": [
+        {
+          "id": "chinese",
+          "name": "國語文能力測驗（國小・中等・特教共用）",
+          "count": 25,
+          "points": 50,
+          "data": "/assets/exams/110/chinese.json",
+          "categories": [
+            "special-disability",
+            "special-gifted",
+            "primary",
+            "secondary"
+          ],
+          "section": "common"
+        },
+        {
+          "id": "chinese-kindergarten",
+          "name": "國語文能力測驗（幼兒園）",
+          "count": 25,
+          "points": 50,
+          "data": "/assets/exams/110/chinese-kindergarten.json",
+          "categories": [
+            "kindergarten"
+          ],
+          "section": "common"
+        },
+        {
+          "id": "math",
+          "name": "數學能力測驗（國小）",
+          "count": 26,
+          "points": 52,
+          "data": "/assets/exams/110/math.json",
+          "categories": [
+            "primary"
+          ],
+          "section": "common"
+        },
+        {
+          "id": "education-kindergarten",
+          "name": "教育理念與實務（幼兒園）",
+          "count": 25,
+          "points": 50,
+          "data": "/assets/exams/110/education-kindergarten.json",
+          "categories": [
+            "kindergarten"
+          ],
+          "section": "common"
+        },
+        {
+          "id": "education",
+          "name": "教育理念與實務（特教共用）",
+          "count": 25,
+          "points": 50,
+          "data": "/assets/exams/110/education.json",
+          "categories": [
+            "special-disability",
+            "special-gifted"
+          ],
+          "section": "common"
+        },
+        {
+          "id": "education-primary",
+          "name": "教育理念與實務（國小）",
+          "count": 25,
+          "points": 50,
+          "data": "/assets/exams/110/education-primary.json",
+          "categories": [
+            "primary"
+          ],
+          "section": "common"
+        },
+        {
+          "id": "education-secondary",
+          "name": "教育理念與實務（中等）",
+          "count": 25,
+          "points": 50,
+          "data": "/assets/exams/110/education-secondary.json",
+          "categories": [
+            "secondary"
+          ],
+          "section": "common"
+        },
+        {
+          "id": "development-kindergarten",
+          "name": "學習者發展與適性輔導（幼兒園）",
+          "count": 25,
+          "points": 50,
+          "data": "/assets/exams/110/development-kindergarten.json",
+          "categories": [
+            "kindergarten"
+          ],
+          "section": "professional"
+        },
+        {
+          "id": "curriculum-kindergarten",
+          "name": "課程教學與評量（幼兒園）",
+          "count": 25,
+          "points": 50,
+          "data": "/assets/exams/110/curriculum-kindergarten.json",
+          "categories": [
+            "kindergarten"
+          ],
+          "section": "professional"
+        },
+        {
+          "id": "development",
+          "name": "學習者發展與適性輔導（特教共用）",
+          "count": 25,
+          "points": 50,
+          "data": "/assets/exams/110/development.json",
+          "categories": [
+            "special-disability",
+            "special-gifted"
+          ],
+          "section": "professional"
+        },
+        {
+          "id": "curriculum",
+          "name": "課程教學與評量（身心障礙組）",
+          "count": 25,
+          "points": 50,
+          "data": "/assets/exams/110/curriculum.json",
+          "categories": [
+            "special-disability"
+          ],
+          "section": "professional"
+        },
+        {
+          "id": "curriculum-gifted",
+          "name": "課程教學與評量（資賦優異組）",
+          "count": 25,
+          "points": 50,
+          "data": "/assets/exams/110/curriculum-gifted.json",
+          "categories": [
+            "special-gifted"
+          ],
+          "section": "professional"
+        },
+        {
+          "id": "development-primary",
+          "name": "學習者發展與適性輔導（國小）",
+          "count": 25,
+          "points": 50,
+          "data": "/assets/exams/110/development-primary.json",
+          "categories": [
+            "primary"
+          ],
+          "section": "professional"
+        },
+        {
+          "id": "curriculum-primary",
+          "name": "課程教學與評量（國小）",
+          "count": 25,
+          "points": 50,
+          "data": "/assets/exams/110/curriculum-primary.json",
+          "categories": [
+            "primary"
+          ],
+          "section": "professional"
+        },
+        {
+          "id": "development-secondary",
+          "name": "學習者發展與適性輔導（中等）",
+          "count": 25,
+          "points": 50,
+          "data": "/assets/exams/110/development-secondary.json",
+          "categories": [
+            "secondary"
+          ],
+          "section": "professional"
+        },
+        {
+          "id": "curriculum-secondary",
+          "name": "課程教學與評量（中等）",
+          "count": 25,
+          "points": 50,
+          "data": "/assets/exams/110/curriculum-secondary.json",
+          "categories": [
+            "secondary"
+          ],
+          "section": "professional"
+        }
+      ]
+    },
+    {
+      "year": 109,
+      "categories": [
+        {
+          "id": "kindergarten",
+          "name": "幼兒園"
+        },
+        {
+          "id": "special-disability",
+          "name": "特教・身心障礙組"
+        },
+        {
+          "id": "special-gifted",
+          "name": "特教・資賦優異組"
+        },
+        {
+          "id": "primary",
+          "name": "國民小學"
+        },
+        {
+          "id": "secondary",
+          "name": "中等學校"
+        }
+      ],
+      "subjects": [
+        {
+          "id": "chinese",
+          "name": "國語文能力測驗（國小・中等・特教共用）",
+          "count": 30,
+          "points": 60,
+          "data": "/assets/exams/109/chinese.json",
+          "categories": [
+            "special-disability",
+            "special-gifted",
+            "primary",
+            "secondary"
+          ],
+          "section": "common"
+        },
+        {
+          "id": "chinese-kindergarten",
+          "name": "國語文能力測驗（幼兒園）",
+          "count": 30,
+          "points": 60,
+          "data": "/assets/exams/109/chinese-kindergarten.json",
+          "categories": [
+            "kindergarten"
+          ],
+          "section": "common"
+        },
+        {
+          "id": "math",
+          "name": "數學能力測驗（國小）",
+          "count": 30,
+          "points": 60,
+          "data": "/assets/exams/109/math.json",
+          "categories": [
+            "primary"
+          ],
+          "section": "common"
+        },
+        {
+          "id": "education-kindergarten",
+          "name": "教育原理與制度（幼兒園）",
+          "count": 40,
+          "points": 60,
+          "data": "/assets/exams/109/education-kindergarten.json",
+          "categories": [
+            "kindergarten"
+          ],
+          "section": "common"
+        },
+        {
+          "id": "education",
+          "name": "教育原理與制度（特教共用）",
+          "count": 40,
+          "points": 60,
+          "data": "/assets/exams/109/education.json",
+          "categories": [
+            "special-disability",
+            "special-gifted"
+          ],
+          "section": "common"
+        },
+        {
+          "id": "education-primary",
+          "name": "教育原理與制度（國小）",
+          "count": 40,
+          "points": 60,
+          "data": "/assets/exams/109/education-primary.json",
+          "categories": [
+            "primary"
+          ],
+          "section": "common"
+        },
+        {
+          "id": "education-secondary",
+          "name": "教育原理與制度（中等）",
+          "count": 40,
+          "points": 60,
+          "data": "/assets/exams/109/education-secondary.json",
+          "categories": [
+            "secondary"
+          ],
+          "section": "common"
+        },
+        {
+          "id": "development-kindergarten",
+          "name": "幼兒發展與輔導（幼兒園）",
+          "count": 30,
+          "points": 60,
+          "data": "/assets/exams/109/development-kindergarten.json",
+          "categories": [
+            "kindergarten"
+          ],
+          "section": "professional"
+        },
+        {
+          "id": "curriculum-kindergarten",
+          "name": "幼兒園課程與教學（幼兒園）",
+          "count": 30,
+          "points": 60,
+          "data": "/assets/exams/109/curriculum-kindergarten.json",
+          "categories": [
+            "kindergarten"
+          ],
+          "section": "professional"
+        },
+        {
+          "id": "development",
+          "name": "特殊教育學生評量與輔導（特教共用）",
+          "count": 30,
+          "points": 60,
+          "data": "/assets/exams/109/development.json",
+          "categories": [
+            "special-disability",
+            "special-gifted"
+          ],
+          "section": "professional"
+        },
+        {
+          "id": "curriculum",
+          "name": "特殊教育課程與教學（身心障礙組）",
+          "count": 30,
+          "points": 60,
+          "data": "/assets/exams/109/curriculum.json",
+          "categories": [
+            "special-disability"
+          ],
+          "section": "professional"
+        },
+        {
+          "id": "curriculum-gifted",
+          "name": "特殊教育課程與教學（資賦優異組）",
+          "count": 30,
+          "points": 60,
+          "data": "/assets/exams/109/curriculum-gifted.json",
+          "categories": [
+            "special-gifted"
+          ],
+          "section": "professional"
+        },
+        {
+          "id": "development-primary",
+          "name": "兒童發展與輔導（國小）",
+          "count": 30,
+          "points": 60,
+          "data": "/assets/exams/109/development-primary.json",
+          "categories": [
+            "primary"
+          ],
+          "section": "professional"
+        },
+        {
+          "id": "curriculum-primary",
+          "name": "國民小學課程與教學（國小）",
+          "count": 30,
+          "points": 60,
+          "data": "/assets/exams/109/curriculum-primary.json",
+          "categories": [
+            "primary"
+          ],
+          "section": "professional"
+        },
+        {
+          "id": "development-secondary",
+          "name": "青少年發展與輔導（中等）",
+          "count": 30,
+          "points": 60,
+          "data": "/assets/exams/109/development-secondary.json",
+          "categories": [
+            "secondary"
+          ],
+          "section": "professional"
+        },
+        {
+          "id": "curriculum-secondary",
+          "name": "中等學校課程與教學（中等）",
+          "count": 30,
+          "points": 60,
+          "data": "/assets/exams/109/curriculum-secondary.json",
+          "categories": [
+            "secondary"
+          ],
+          "section": "professional"
+        }
+      ]
+    },
+    {
+      "year": 108,
+      "sitting": "第二次考試",
+      "categories": [
+        {
+          "id": "kindergarten",
+          "name": "幼兒園"
+        },
+        {
+          "id": "special-disability",
+          "name": "特教・身心障礙組"
+        },
+        {
+          "id": "special-gifted",
+          "name": "特教・資賦優異組"
+        },
+        {
+          "id": "primary",
+          "name": "國民小學"
+        },
+        {
+          "id": "secondary",
+          "name": "中等學校"
+        }
+      ],
+      "subjects": [
+        {
+          "id": "chinese",
+          "name": "國語文能力測驗（國小・中等・特教共用）",
+          "count": 30,
+          "points": 60,
+          "data": "/assets/exams/108/chinese.json",
+          "categories": [
+            "special-disability",
+            "special-gifted",
+            "primary",
+            "secondary"
+          ],
+          "section": "common"
+        },
+        {
+          "id": "chinese-kindergarten",
+          "name": "國語文能力測驗（幼兒園）",
+          "count": 30,
+          "points": 60,
+          "data": "/assets/exams/108/chinese-kindergarten.json",
+          "categories": [
+            "kindergarten"
+          ],
+          "section": "common"
+        },
+        {
+          "id": "math",
+          "name": "數學能力測驗（國小）",
+          "count": 30,
+          "points": 60,
+          "data": "/assets/exams/108/math.json",
+          "categories": [
+            "primary"
+          ],
+          "section": "common"
+        },
+        {
+          "id": "education-kindergarten",
+          "name": "教育原理與制度（幼兒園）",
+          "count": 40,
+          "points": 60,
+          "data": "/assets/exams/108/education-kindergarten.json",
+          "categories": [
+            "kindergarten"
+          ],
+          "section": "common"
+        },
+        {
+          "id": "education",
+          "name": "教育原理與制度（特教共用）",
+          "count": 40,
+          "points": 60,
+          "data": "/assets/exams/108/education.json",
+          "categories": [
+            "special-disability",
+            "special-gifted"
+          ],
+          "section": "common"
+        },
+        {
+          "id": "education-primary",
+          "name": "教育原理與制度（國小）",
+          "count": 40,
+          "points": 60,
+          "data": "/assets/exams/108/education-primary.json",
+          "categories": [
+            "primary"
+          ],
+          "section": "common"
+        },
+        {
+          "id": "education-secondary",
+          "name": "教育原理與制度（中等）",
+          "count": 40,
+          "points": 60,
+          "data": "/assets/exams/108/education-secondary.json",
+          "categories": [
+            "secondary"
+          ],
+          "section": "common"
+        },
+        {
+          "id": "development-kindergarten",
+          "name": "幼兒發展與輔導（幼兒園）",
+          "count": 30,
+          "points": 60,
+          "data": "/assets/exams/108/development-kindergarten.json",
+          "categories": [
+            "kindergarten"
+          ],
+          "section": "professional"
+        },
+        {
+          "id": "curriculum-kindergarten",
+          "name": "幼兒園課程與教學（幼兒園）",
+          "count": 30,
+          "points": 60,
+          "data": "/assets/exams/108/curriculum-kindergarten.json",
+          "categories": [
+            "kindergarten"
+          ],
+          "section": "professional"
+        },
+        {
+          "id": "development",
+          "name": "特殊教育學生評量與輔導（特教共用）",
+          "count": 30,
+          "points": 60,
+          "data": "/assets/exams/108/development.json",
+          "categories": [
+            "special-disability",
+            "special-gifted"
+          ],
+          "section": "professional"
+        },
+        {
+          "id": "curriculum",
+          "name": "特殊教育課程與教學（身心障礙組）",
+          "count": 30,
+          "points": 60,
+          "data": "/assets/exams/108/curriculum.json",
+          "categories": [
+            "special-disability"
+          ],
+          "section": "professional"
+        },
+        {
+          "id": "curriculum-gifted",
+          "name": "特殊教育課程與教學（資賦優異組）",
+          "count": 30,
+          "points": 60,
+          "data": "/assets/exams/108/curriculum-gifted.json",
+          "categories": [
+            "special-gifted"
+          ],
+          "section": "professional"
+        },
+        {
+          "id": "development-primary",
+          "name": "兒童發展與輔導（國小）",
+          "count": 30,
+          "points": 60,
+          "data": "/assets/exams/108/development-primary.json",
+          "categories": [
+            "primary"
+          ],
+          "section": "professional"
+        },
+        {
+          "id": "curriculum-primary",
+          "name": "國民小學課程與教學（國小）",
+          "count": 30,
+          "points": 60,
+          "data": "/assets/exams/108/curriculum-primary.json",
+          "categories": [
+            "primary"
+          ],
+          "section": "professional"
+        },
+        {
+          "id": "development-secondary",
+          "name": "青少年發展與輔導（中等）",
+          "count": 30,
+          "points": 60,
+          "data": "/assets/exams/108/development-secondary.json",
+          "categories": [
+            "secondary"
+          ],
+          "section": "professional"
+        },
+        {
+          "id": "curriculum-secondary",
+          "name": "中等學校課程與教學（中等）",
+          "count": 30,
+          "points": 60,
+          "data": "/assets/exams/108/curriculum-secondary.json",
+          "categories": [
+            "secondary"
+          ],
+          "section": "professional"
+        }
+      ]
     }
   ]
 }

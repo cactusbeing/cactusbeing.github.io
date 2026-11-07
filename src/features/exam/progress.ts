@@ -6,7 +6,7 @@ export type Subject = {
   categories?: string[];
   section?: 'common' | 'professional';
 };
-export type Year = { year: number; subjects: Subject[]; categories?: ExamCategory[] };
+export type Year = { year: number; sitting?: string; subjects: Subject[]; categories?: ExamCategory[] };
 export type Responses = Record<number, Choice>;
 export type QuestionOutcome = {
   year: number;

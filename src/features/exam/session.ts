@@ -1,7 +1,8 @@
 import type { Choice } from './progress';
 import type { QuestionBlock } from './question-content';
+import { examYearLabel } from './classification.ts';
 
-export type QuestionSource = { year: number; subjectId: string; subjectName: string; questionId: number };
+export type QuestionSource = { year: number; sitting?: string; subjectId: string; subjectName: string; questionId: number };
 export type Question = {
   id: number;
   answer: Choice;
@@ -25,7 +26,7 @@ export type Exam = {
 
 export function sourceLabel(question: Pick<Question, 'source'>): string {
   const source = question.source;
-  return source ? `${source.year} 年｜${source.subjectName}｜第 ${source.questionId} 題` : '';
+  return source ? `${examYearLabel(source.year, source.sitting)}｜${source.subjectName}｜第 ${source.questionId} 題` : '';
 }
 
 /** Shuffle once, without replacement; keep source IDs distinct from attempt IDs. */
