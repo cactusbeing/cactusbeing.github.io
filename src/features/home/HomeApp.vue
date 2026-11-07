@@ -46,7 +46,7 @@ import { imageSource, imageSrcset } from '../../shared/responsive-images';
           <div class="resource-grid">
             <component
               :is="resource.comingSoon ? 'div' : 'a'"
-              v-for="resource in [resources[1], resources[4], resources[0]]"
+              v-for="resource in [resources[3], resources[4], resources[0]]"
               :key="resource.title"
               :href="resource.comingSoon ? undefined : resource.href"
               :aria-disabled="resource.comingSoon || undefined"
