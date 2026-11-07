@@ -31,6 +31,23 @@ test-results/
 /PRODUCT.md
 /REFACTOR_PLAN.md
 /STYLE_FUSION_BRIEF.md
+/CHAT_RELAY_2D_SPEC.md
+
+# Local image-generation notes; published artwork remains tracked.
+/assets/decor/exam-revenge.webp.json
+/assets/decor/exam-revenge-battle.webp.json
+
+# Local exam import/layout utilities; built question data remains tracked.
+/exam/early_exam_layout.py
+/exam/early_math_layout.py
+/exam/historical_exam_layout.py
+/exam/historical_math_layout.py
+/exam/import-108-110-all.py
+/exam/import-111-113-all.py
+/exam/import-114-all.py
+/exam/import-115-all.py
+/exam/math_114_layout.py
+/exam/math_115_layout.py
 
 # Local QA tools and evidence are kept on this computer, outside the website commit.
 /tests/
@@ -54,10 +71,9 @@ test-results/
 !/scripts/playtest-chat-relay.mjs
 !/docs/chat-relay-validation.md
 
-# Exam sampling and timer validation ship with the feature.
+# Exam regression checks ship with the feature; local review notes stay ignored.
 !/scripts/test-exam.mjs
 !/scripts/playtest-exam.mjs
-!/docs/exam-validation.md
 
 # Four authored dialogue branch audits must also run in CI.
 !/scripts/test-chat-relay-branches.mjs
