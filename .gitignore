@@ -57,3 +57,7 @@ test-results/
 !/docs/chat-relay/
 /docs/chat-relay/*
 !/docs/chat-relay/four-dialogues.md
+
+# Bakery validation is required by the production build.
+!/scripts/test-bakery.mjs
+!/docs/bakery-validation.md

@@ -13,29 +13,18 @@ import { availableGameIds } from '../../content/games';
       <a href="/">返回特教百寶袋 <SiteIcon name="arrow" :size="16" /></a>
     </div>
     <div class="game-entries">
-      <article
-        class="game-entry chat-relay-entry"
-        :class="{ 'entry-disabled': !availableGameIds.has('chat-relay') }"
-        :aria-disabled="!availableGameIds.has('chat-relay')"
-      >
-        <div class="entry-picture"><SceneArt home /></div>
+      <article v-if="availableGameIds.has('bakery')" class="game-entry bakery-entry">
+        <a class="entry-picture" href="/game/bakery/" aria-label="遊玩魔法烘焙坊"><img src="/assets/bakery/magic-bakery.webp" width="1568" height="882" alt="小小烘焙師在溫暖的烘焙坊，烤盤和玻璃罐裡擺著三種形狀的餅乾。" /></a>
         <div class="entry-copy">
-          <h2>社會技巧：聊天傳接球</h2>
-          <p class="tagline">接住話題，讓聊天自然繼續。</p>
-          <p>從當面聊天到模擬訊息，練習保持距離、開話題、接話與網路交友。60 組原創多回合情境，包含依心情選訊息或貼圖；也可以安心說「先不聊」。</p>
-          <section class="entry-learning" aria-labelledby="chat-relay-goals">
-            <h3 id="chat-relay-goals">學習目標</h3>
-            <ul>
-              <li>建立社交距離與身體界線，碰觸前先問。</li>
-              <li>觀察時機，用招呼或小問題開啟談話。</li>
-              <li>接著話題提問與分享，讓談話自然延續。</li>
-              <li>依情緒選擇訊息或貼圖，確認不清楚的語氣。</li>
-              <li>練習網路交友，保留個人資料並在需要時求助。</li>
-            </ul>
+          <h2>生活數學：魔法烘焙坊</h2>
+          <p class="tagline">小小餅乾，大大的本領。</p>
+          <p>當個小小烘焙師！看訂單、挑形狀，一片一片裝進盒子。幫客人準備多盒點心、平均分裝，再烤出缺少的餅乾。</p>
+          <section class="entry-learning" aria-labelledby="bakery-goals">
+            <h3 id="bakery-goals">學習目標</h3>
+            <ul><li>辨認正方形、圓形與三角形，點數餅乾數量。</li><li>透過裝盒、拿走、多盒製作與公平分裝練習四則運算。</li><li>按照訂單分步完成烘烤、分裝與交貨。</li></ul>
           </section>
-          <div class="entry-meta"><span>三種難度</span><span>四章教學</span><span>60 組生活情境</span></div>
-          <a v-if="availableGameIds.has('chat-relay')" class="entry-play" href="/game/chat-relay/">開始聊天傳接球 <SiteIcon name="arrow" :size="18" /></a>
-          <button v-else class="entry-play" type="button" disabled>Coming Soon</button>
+          <div class="entry-meta"><span>六個自由選章</span><span>形狀與四則運算</span><span>今日營業模式</span></div>
+          <a class="entry-play" href="/game/bakery/">走進魔法烘焙坊 <SiteIcon name="arrow" :size="18" /></a>
         </div>
       </article>
       <article v-if="availableGameIds.has('money')" class="game-entry money-entry">
@@ -85,6 +74,31 @@ import { availableGameIds } from '../../content/games';
           <a class="entry-play" href="/game/campus/"
             >走進校園的一天 <SiteIcon name="arrow" :size="18"
           /></a>
+        </div>
+      </article>
+      <article
+        class="game-entry chat-relay-entry"
+        :class="{ 'entry-disabled': !availableGameIds.has('chat-relay') }"
+        :aria-disabled="!availableGameIds.has('chat-relay')"
+      >
+        <div class="entry-picture"><SceneArt home /></div>
+        <div class="entry-copy">
+          <h2>社會技巧：聊天傳接球</h2>
+          <p class="tagline">接住話題，讓聊天自然繼續。</p>
+          <p>從當面聊天到模擬訊息，練習保持距離、開話題、接話與網路交友。60 組原創多回合情境，包含依心情選訊息或貼圖；也可以安心說「先不聊」。</p>
+          <section class="entry-learning" aria-labelledby="chat-relay-goals">
+            <h3 id="chat-relay-goals">學習目標</h3>
+            <ul>
+              <li>建立社交距離與身體界線，碰觸前先問。</li>
+              <li>觀察時機，用招呼或小問題開啟談話。</li>
+              <li>接著話題提問與分享，讓談話自然延續。</li>
+              <li>依情緒選擇訊息或貼圖，確認不清楚的語氣。</li>
+              <li>練習網路交友，保留個人資料並在需要時求助。</li>
+            </ul>
+          </section>
+          <div class="entry-meta"><span>三種難度</span><span>四章教學</span><span>60 組生活情境</span></div>
+          <a v-if="availableGameIds.has('chat-relay')" class="entry-play" href="/game/chat-relay/">開始聊天傳接球 <SiteIcon name="arrow" :size="18" /></a>
+          <button v-else class="entry-play" type="button" disabled>Coming Soon</button>
         </div>
       </article>
     </div>
@@ -148,6 +162,8 @@ import { availableGameIds } from '../../content/games';
   height: 100%;
   object-fit: cover;
 }
+.bakery-entry .entry-picture { background: #fff0df; }
+.bakery-entry .entry-picture img { object-fit: contain; }
 .chat-relay-entry .entry-picture { display: flex; align-items: center; background: #e6ecdf; }
 .chat-relay-entry :deep(.scene-art) { height: 100%; aspect-ratio: 1.5; border-radius: 0; }
 .chat-relay-entry :deep(.scene-person) { bottom: 7%; width: 30%; }

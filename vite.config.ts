@@ -29,6 +29,7 @@ for (const entry of [
   'game/index.html',
   'game/campus/index.html',
   'game/money/index.html',
+  'game/bakery/index.html',
   'game/chat-relay/index.html',
 ]) {
   if (existsSync(entry)) inputs.push(entry);

@@ -1,8 +1,9 @@
 // Keep published game entries and the sidebar count on the same availability list.
 export const gameEntries = [
-  { id: 'chat-relay', available: false },
+  { id: 'bakery', available: true },
   { id: 'money', available: true },
   { id: 'campus', available: true },
+  { id: 'chat-relay', available: false },
 ] as const;
 
 export const availableGameIds = new Set<(typeof gameEntries)[number]['id']>(

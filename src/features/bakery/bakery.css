@@ -1,0 +1,267 @@
+.bakery-page .site-banner { height: 96px; }
+.bakery-page .site-banner .banner-content, .bakery-page .site-banner .side-note { display: none; }
+.bakery-page .site-banner .banner-waves { height: 24px; }
+.bakery-app {
+  --bakery-green: #2f6348;
+  --bakery-ink: #423e32;
+  --bakery-muted: #706957;
+  --bakery-paper: #fffdf7;
+  --bakery-cream: #fbf8ef;
+  --bakery-line: #ded9c9;
+  max-width: 1000px;
+  margin: 0 auto 48px;
+  color: var(--bakery-ink);
+  font-size: 1.125rem;
+  line-height: 1.8;
+  font-variant-numeric: tabular-nums;
+  accent-color: var(--bakery-green);
+  caret-color: var(--bakery-green);
+}
+.bakery-app ::selection { background: #d9e9ca; color: #28462d; }
+.bakery-app button, .bakery-app select, .bakery-app input { font: inherit; }
+.bakery-app button, .bakery-app summary, .bakery-app select { min-height: 48px; touch-action: manipulation; }
+.bakery-app button { cursor: pointer; transition: background-color .15s; }
+.bakery-app button:disabled { cursor: default; opacity: .5; }
+.bakery-app :is(button, select, input, summary, a):focus-visible { outline: 3px solid var(--bakery-green); outline-offset: 4px; }
+.bakery-app :is(h2, h3):focus { outline: none; }
+.bakery-app h1, .bakery-app h2 { color: var(--bakery-green); line-height: 1.5; }
+.bakery-app h2 { font-size: 1.25rem; margin: 0; }
+.bakery-topline { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: .875rem; margin-bottom: 8px; }
+.bakery-welcome { display: flex; justify-content: space-between; align-items: center; min-height: 105px; background: #f4f0e2; border-radius: 16px; overflow: hidden; margin-bottom: 24px; }
+.bakery-welcome h1 { font-size: clamp(1.75rem, 3vw, 2.15rem); margin: 0; padding: 15px 28px; }
+.bakery-welcome img { display: block; width: 42%; height: auto; object-fit: contain; }
+.bakery-primary, .bakery-secondary, .bakery-text { padding: 9px 18px; border-radius: 12px; font-weight: 650 !important; }
+.bakery-primary { background: var(--bakery-green); color: white; border: 1px solid var(--bakery-green); }
+.bakery-primary:hover:not(:disabled) { background: #244f3a; }
+.bakery-secondary { background: white; color: var(--bakery-green); border: 1px solid #8d9b7d; }
+.bakery-text { border: 1px solid transparent; background: transparent; color: var(--bakery-green); }
+.bakery-text:hover:not(:disabled), .bakery-secondary:hover:not(:disabled) { background: #edf4e8; }
+.bakery-app summary { cursor: pointer; padding: 8px 0; color: var(--bakery-green); font-weight: 650; width: fit-content; }
+.bakery-order { margin-bottom: 28px; }
+.order-heading { display: flex; align-items: center; justify-content: space-between; gap: 15px; }
+.order-heading .bakery-text { font-size: .875rem; }
+.customer-request { font-size: 1.2rem; margin: 7px 0 0; max-width: 64ch; }
+.daily-progress { display: block; margin-top: 10px; color: var(--bakery-muted); font-size: .875rem; }
+.cookie-choice:hover:not(:disabled) { background: #f0f4e4; }
+.cookie-box { --box-outer: #e4ead6; --box-inner: #f4f6ec; --box-edge: #bac7a1; padding: 10px; border: 2px solid var(--box-edge); border-radius: 12px; background: var(--box-outer); }
+.cookie-box.rose { --box-outer: #f2dbdc; --box-inner: #fcf0ef; --box-edge: #d4a3a6; }
+.cookie-box.honey { --box-outer: #f0e2b6; --box-inner: #fdf7e5; --box-edge: #c9b57e; }
+.box-interior { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 9px; padding: 18px 10px; min-height: 165px; background: var(--box-inner); border-radius: 7px; }
+.packed-cookie { display: flex; border: 1px solid transparent; background: transparent; border-radius: 9px; padding: 1px; }
+.packed-cookie .cookie-art { width: 67px; height: 67px; }
+.packed-cookie:hover:not(:disabled) { background: white; border-color: #a1ad90; }
+.packed-cookie:disabled { opacity: 1 !important; }
+.box-ribbon { display: block; width: fit-content; padding: 2px 24px; background: var(--bakery-green); color: white; border-radius: 4px; margin: 10px auto 0; font-size: .8rem; }
+.bakery-message { background: #fff4d9; color: #70522b; padding: 11px 15px; border-radius: 9px; margin: 12px 0; font-size: 1rem; }
+.bakery-success, .bakery-day-finish { padding: 28px; background: var(--bakery-cream); border-radius: 16px; }
+.success-heading { display: flex; align-items: center; gap: 20px; margin-bottom: 26px; }
+.success-heading h2 { font-size: 1.5rem; }
+.success-heading p { margin: 4px 0 0; }
+.bakery-stamp { display: grid; place-items: center; flex-shrink: 0; width: 65px; height: 65px; border: 3px double #a84f40; border-radius: 50%; font-size: 1.2rem; font-weight: 700; color: #a84f40; transform: rotate(-13deg); animation: bakery-stamp .3s cubic-bezier(.16,1,.3,1); }
+.finished-boxes { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; }
+.box-heading { display: flex; align-items: center; justify-content: space-between; gap: 6px; font-size: .85rem; color: #485b3c; margin-bottom: 8px; }
+.finished-boxes .box-interior { min-height: 100px; padding: 12px 6px; gap: 3px; }
+.finished-boxes .cookie-art { width: 45px; height: 45px; }
+.next-order { display: block; min-width: 220px; margin: 28px auto 0; font-size: 1.15rem !important; }
+.bakery-equation { text-align: center; font-size: 1.5rem; font-weight: 700; color: var(--bakery-green); margin: 23px 0 0; }
+.bakery-equation span { display: block; font-size: 1rem; font-weight: 400; }
+.bakery-day-finish { text-align: center; }
+.bakery-day-finish .bakery-stamp { margin: 0 auto 20px; }
+.bakery-day-finish .bakery-primary { margin-top: 20px; }
+.bakery-oven { padding: 28px; border-radius: 16px; background: var(--bakery-cream); text-align: center; }
+@keyframes bakery-stamp { from { transform: scale(1.3) rotate(-20deg); } to { transform: scale(1) rotate(-13deg); } }
+@media (max-width: 800px) {
+  .packed-cookie .cookie-art { width: 55px; height: 55px; }
+  .finished-boxes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .bakery-welcome { height: 84px; margin-bottom: 18px; }
+  .bakery-welcome h1 { font-size: 1.6rem; padding: 12px 17px; }
+  .bakery-welcome img { width: 39%; }
+  .bakery-order { margin-bottom: 20px; }
+  .customer-request { font-size: 1.1rem; }
+  .box-interior { min-height: 132px; padding: 12px 8px; }
+  .packed-cookie .cookie-art { width: 62px; height: 62px; }
+  .bakery-success { padding: 22px 16px; }
+  .success-heading { gap: 15px; }
+  .success-heading h2 { font-size: 1.35rem; }
+  .finished-boxes { gap: 10px; }
+  .finished-boxes .cookie-art { width: 37px; height: 37px; }
+  .bakery-oven { padding: 24px 15px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bakery-app *, .bakery-app *::before, .bakery-app *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+.bakery-entry > h2 { font-size: 1.45rem; margin: 28px 0 20px; }
+.lesson-choices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.lesson-choices button, .daily-choice { display: flex; flex-direction: column; align-items: flex-start; padding: 20px 24px; background: white; border: 2px solid #d9e1d1; border-radius: 12px; color: var(--bakery-green); text-align: left; }
+.lesson-choices button:hover, .daily-choice:hover { background: #f6f8f1; }
+.lesson-choices button[aria-pressed='true'], .daily-choice[aria-pressed='true'] { background: #edf4e5; border-color: var(--bakery-green); }
+.lesson-choices b, .daily-choice b { font-size: 1.2rem; }
+.lesson-choices span, .daily-choice span { font-size: .9rem; color: #657057; margin-top: 4px; }
+.daily-choice { width: 100%; flex-direction: row; align-items: center; gap: 22px; margin-top: 14px; padding-block: 14px; }
+.daily-choice span { margin: 0; }
+.start-practice { display: block; min-width: 250px; margin: 28px auto 20px; min-height: 58px !important; font-size: 1.2rem !important; }
+.entry-progress { color: var(--bakery-muted); font-size: .8rem; margin-top: 14px; }
+.bakery-app > .bakery-calculator { margin-top: 20px; font-size: .95rem; }
+@media (max-width: 600px) {
+  .lesson-choices { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .lesson-choices button { padding: 16px; }
+  .lesson-choices b, .daily-choice b { font-size: 1.05rem; }
+  .lesson-choices span, .daily-choice span { font-size: .8rem; }
+  .daily-choice { gap: 10px; padding: 14px 16px; }
+  .daily-choice b { flex-shrink: 0; }
+  .start-practice { width: 100%; }
+}
+.restock-station { padding: 28px; border-radius: 16px; background: var(--bakery-cream); }
+.restock-heading { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-bottom: 20px; }
+.restock-heading > span { font-size: 1.1rem; font-weight: 700; color: var(--bakery-green); }
+.restock-tray, .restock-finished-tray { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 12px; min-height: 180px; padding: 22px; border: 3px solid #d2ccbd; border-radius: 12px; background: #f1ecdf; }
+.restock-tray > .cookie-art, .restock-tray .packed-cookie .cookie-art { width: 65px; height: 65px; }
+.restock-tray .newly-baked { border: 1px dashed #7f8f6c; background: #fffdf7; }
+.restock-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 25px; }
+.restock-actions button { min-height: 58px; font-size: 1.2rem; }
+.restock-finished-tray .cookie-art { width: 65px; height: 65px; }
+@media (max-width: 600px) {
+  .restock-station { padding: 20px 16px; }
+  .restock-heading { flex-wrap: wrap; }
+  .restock-tray { padding: 16px 9px; gap: 9px; }
+  .restock-tray > .cookie-art, .restock-tray .packed-cookie .cookie-art { width: 53px; height: 53px; }
+  .restock-actions { gap: 13px; }
+}
+.bakery-top-actions { display: flex; align-items: center; gap: 6px; }
+.sound-toggle { display: inline-flex; align-items: center; justify-content: center; gap: 7px; }
+.sound-toggle svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.packing-instruction { margin: 0 0 14px; color: var(--bakery-green); font-size: 1.1rem; font-weight: 650; }
+.drag-workbench { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.4fr); gap: 24px; padding: 24px; border-radius: 16px; background: var(--bakery-cream); }
+.physical-tray { min-width: 0; min-height: 230px; padding: 14px; background: #eee9dc; border: 3px solid #d2ccbd; border-radius: 12px; }
+.tray-heading { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 12px; }
+.tray-heading h2 { font-size: 1.15rem; }
+.return-cookie { min-height: 36px !important; padding: 3px 5px; font-size: .875rem !important; }
+.tray-batches { display: grid; gap: 14px; min-height: 145px; }
+.batch-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 5px; color: #5a654c; font-size: .8rem; }
+.batch-heading > span:last-child { margin-left: auto; }
+.tray-cookie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(46px, 1fr)); gap: 3px; min-height: 3px; }
+.tray-cookie { display: grid; place-items: center; min-width: 0; min-height: 48px; padding: 0; border: 1px solid transparent; border-radius: 8px; background: transparent; touch-action: none !important; user-select: none; -webkit-user-select: none; cursor: grab !important; }
+.tray-cookie .cookie-art { width: 49px; height: 49px; pointer-events: none; }
+.tray-cookie:hover { background: #fffaf0; }
+.tray-cookie:active, .packing-station .packed-cookie:active { cursor: grabbing !important; }
+.packing-station .picked { outline: 2px solid var(--bakery-green); outline-offset: 1px; background: #fffdf7; }
+.tray-empty { display: grid; place-items: center; min-height: 90px; color: var(--bakery-muted); font-size: .9rem; }
+.packing-box-area { min-width: 0; }
+.packing-box-area > h2 { font-size: 1.15rem; margin-bottom: 15px; }
+.all-cookie-boxes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.all-cookie-boxes.single-box { grid-template-columns: 1fr; }
+.all-cookie-boxes .cookie-box { min-width: 0; padding: 8px; }
+.box-destination { display: flex; align-items: center; justify-content: space-between; gap: 6px; width: 100%; min-height: 37px !important; padding: 2px 5px 7px; border: 0; background: transparent; color: #485b3c; font-size: .85rem !important; text-align: left; border-radius: 6px; }
+.box-destination:hover { background: #f7faef; }
+.all-cookie-boxes .box-interior { gap: 3px; min-height: 102px; padding: 10px 5px; align-content: center; }
+.all-cookie-boxes .packed-cookie { padding: 0; touch-action: none !important; user-select: none; -webkit-user-select: none; cursor: grab !important; }
+.all-cookie-boxes .packed-cookie .cookie-art { width: 47px; height: 47px; pointer-events: none; }
+.single-box .box-interior { min-height: 185px; padding: 17px 10px; gap: 5px; }
+.single-box .packed-cookie .cookie-art { width: 62px; height: 62px; }
+.empty-box-target { display: grid; place-items: center; width: 100%; min-height: 70px !important; border: 0; background: transparent; color: #687558; font-size: .85rem !important; border-radius: 8px; }
+.physical-tray.drop-active, .all-cookie-boxes .cookie-box.drop-active { border-color: var(--bakery-green); background: #dceacb; }
+.check-packing { width: 100%; min-height: 56px !important; margin-top: 20px; font-size: 1.15rem !important; }
+.drag-alternative { font-size: .8rem; color: var(--bakery-muted); margin: 11px 0 0; }
+.dragged-cookie { position: fixed; left: 0; top: 0; z-index: 1500; pointer-events: none; filter: drop-shadow(0 7px 8px rgb(70 55 28 / 18%)); }
+.dragged-cookie .cookie-art { width: 64px; height: 64px; }
+@media (max-width: 800px) {
+  .drag-workbench { gap: 17px; padding: 18px; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); }
+  .physical-tray { padding: 10px; }
+  .all-cookie-boxes { gap: 9px; }
+  .all-cookie-boxes .packed-cookie .cookie-art { width: 40px; height: 40px; }
+  .single-box .packed-cookie .cookie-art { width: 55px; height: 55px; }
+}
+@media (max-width: 600px) {
+  .bakery-topline { flex-wrap: wrap; gap: 4px; }
+  .bakery-top-actions { margin-left: auto; }
+  .bakery-top-actions button { font-size: .8rem; padding-inline: 8px; }
+  .packing-instruction { font-size: 1rem; }
+  .drag-workbench { grid-template-columns: minmax(0, .72fr) minmax(0, 1fr); gap: 10px; padding: 13px 10px; }
+  .physical-tray { padding: 8px 5px; border-width: 2px; }
+  .tray-heading { flex-direction: column; align-items: flex-start; gap: 0; margin-bottom: 8px; }
+  .tray-heading h2, .packing-box-area > h2 { font-size: .95rem; }
+  .return-cookie { min-height: 32px !important; padding: 0; font-size: .75rem !important; }
+  .tray-cookie-grid { grid-template-columns: repeat(auto-fill, minmax(37px, 1fr)); gap: 1px; }
+  .tray-cookie { min-height: 42px !important; }
+  .tray-cookie .cookie-art { width: 39px; height: 39px; }
+  .batch-heading { font-size: .7rem; gap: 3px; flex-wrap: wrap; }
+  .all-cookie-boxes { grid-template-columns: 1fr; gap: 8px; }
+  .all-cookie-boxes .cookie-box { padding: 6px; }
+  .all-cookie-boxes .box-interior { min-height: 76px; padding: 6px 2px; gap: 1px; }
+  .all-cookie-boxes .packed-cookie .cookie-art { width: 36px; height: 36px; }
+  .single-box .box-interior { min-height: 155px; }
+  .box-destination { font-size: .75rem !important; padding-inline: 2px; }
+  .empty-box-target { min-height: 52px !important; font-size: .75rem !important; }
+  .check-packing { font-size: .95rem !important; padding-inline: 8px; line-height: 1.6; }
+  .drag-alternative { font-size: .75rem; }
+}
+@media (max-width: 600px) {
+  .all-cookie-boxes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .all-cookie-boxes.single-box { grid-template-columns: 1fr; }
+  .all-cookie-boxes:not(.single-box) .box-destination { flex-direction: column; align-items: flex-start; gap: 1px; font-size: .68rem !important; }
+  .all-cookie-boxes:not(.single-box) .packed-cookie .cookie-art { width: 30px; height: 30px; }
+}
+.sound-toggle { width: 42px; padding-inline: 7px; }
+.voice-toggle, .math-toggle { font-size: .85rem !important; padding-inline: 9px; }
+.baking-flavors { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 15px; margin-top: 23px; }
+.baking-flavor { min-width: 0; }
+.baking-flavor .batch-heading { font-size: .95rem; }
+.baking-cookie-tray { display: flex; align-content: center; justify-content: center; align-items: center; flex-wrap: wrap; gap: 4px; min-height: 145px; padding: 14px 7px; border: 2px solid #d2ccbd; border-radius: 10px; background: #f1ecdf; }
+.baking-cookie-tray .cookie-art, .baking-cookie-tray .packed-cookie .cookie-art { width: 48px; height: 48px; }
+.baking-cookie-tray .newly-baked { border: 1px dashed #7f8f6c; }
+.bake-flavor { width: 100%; margin-top: 10px; }
+.finish-baking { min-width: 250px; margin-top: 24px; }
+@media (max-width: 600px) {
+  .bakery-top-actions { gap: 0; }
+  .bakery-top-actions .sound-toggle { width: 34px; padding-inline: 4px; }
+  .bakery-top-actions .voice-toggle, .bakery-top-actions .math-toggle { font-size: .75rem !important; padding-inline: 5px; }
+  .baking-flavors { gap: 8px; }
+  .baking-flavor .batch-heading { font-size: .75rem; }
+  .baking-cookie-tray { min-height: 150px; padding: 8px 2px; }
+  .baking-cookie-tray .cookie-art, .baking-cookie-tray .packed-cookie .cookie-art { width: 37px; height: 37px; }
+  .bake-flavor { padding-inline: 4px; font-size: .9rem !important; }
+}
+.mobile-tap-hint { display: none; }
+.return-zone { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 64px !important; margin-top: 22px; padding: 12px; border: 2px dashed #82936b; border-radius: 10px; color: var(--bakery-green); background: #fffdf7; font-weight: 700 !important; font-size: 1.1rem !important; }
+.return-zone svg { width: 25px; height: 25px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.return-zone:hover, .return-zone.drop-active { background: #e0ecd2; border-color: var(--bakery-green); }
+.all-cookie-boxes .empty-box-target { min-height: 100px !important; font-weight: 600; font-size: .95rem !important; }
+.all-cookie-boxes .box-interior { cursor: pointer; }
+.selected-cookie-tools { position: sticky; bottom: 15px; z-index: 50; display: flex; align-items: center; justify-content: center; gap: 12px; width: fit-content; max-width: 100%; margin: 18px auto 0; padding: 8px 15px; border: 2px solid var(--bakery-green); border-radius: 12px; background: #fffdf7; }
+.selected-cookie-tools > .cookie-art { width: 47px; height: 47px; }
+.selected-cookie-tools > span { color: var(--bakery-green); font-size: .95rem; font-weight: 600; }
+@media (pointer: coarse) {
+  .tray-cookie, .all-cookie-boxes .packed-cookie { touch-action: pan-y !important; }
+}
+@media (max-width: 600px) {
+  .desktop-drag-hint { display: none; }
+  .mobile-tap-hint { display: inline; }
+  .drag-workbench { grid-template-columns: minmax(0, 1fr); gap: 22px; padding: 16px 12px; }
+  .physical-tray { padding: 11px; }
+  .tray-heading { flex-direction: row; align-items: center; margin-bottom: 12px; }
+  .tray-heading h2 { font-size: 1.05rem; }
+  .tray-batches { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; min-height: 50px; align-items: start; }
+  .batch-heading { min-height: 22px; }
+  .tray-cookie-grid { grid-template-columns: repeat(auto-fill, minmax(35px, 1fr)); gap: 1px; }
+  .tray-cookie .cookie-art { width: 37px; height: 37px; }
+  .tray-batches:has(.tray-batch:only-of-type) { grid-template-columns: 1fr; }
+  .tray-empty { grid-column: 1 / -1; min-height: 50px; }
+  .return-zone { min-height: 58px !important; margin-top: 14px; font-size: 1rem !important; }
+  .packing-box-area > h2 { font-size: 1.05rem; margin-bottom: 12px; }
+  .all-cookie-boxes { gap: 10px; }
+  .all-cookie-boxes:not(.single-box) .box-destination { flex-direction: row; align-items: center; font-size: .85rem !important; min-height: 44px !important; }
+  .all-cookie-boxes .box-interior { min-height: 116px; }
+  .all-cookie-boxes .empty-box-target { min-height: 105px !important; font-size: .95rem !important; }
+  .all-cookie-boxes:not(.single-box) .packed-cookie .cookie-art { width: 42px; height: 42px; }
+  .check-packing { min-height: 60px !important; font-size: 1.1rem !important; }
+  .drag-alternative { display: none; }
+  .packing-station.has-picked { padding-bottom: 94px; }
+  .selected-cookie-tools { position: fixed; bottom: max(10px, env(safe-area-inset-bottom)); left: 10px; right: 10px; width: auto; margin: 0; gap: 6px; padding: 8px; }
+  .selected-cookie-tools > span { font-size: .85rem; flex: 1; }
+  .selected-cookie-tools > .cookie-art { width: 37px; height: 37px; }
+  .selected-cookie-tools button { padding-inline: 9px; font-size: .85rem; }
+}
+
+@media (max-width: 600px) { .physical-tray { min-height: 0; } }

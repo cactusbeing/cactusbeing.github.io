@@ -39,6 +39,7 @@ const pages = [
   'game/index.html',
   'game/campus/index.html',
   'game/money/index.html',
+  'game/bakery/index.html',
   'game/chat-relay/index.html',
   '404.html',
 ];
