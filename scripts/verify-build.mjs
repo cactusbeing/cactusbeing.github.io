@@ -3,8 +3,12 @@ import { resolve } from 'node:path';
 import { createHash } from 'node:crypto';
 import { runInNewContext } from 'node:vm';
 import katex from 'katex';
+import { validateCatalog } from './upload-materials.mjs';
 const outputDirectory = process.argv[2] || 'dist';
 const built = (file) => resolve(outputDirectory, file);
+const resourceCategories = JSON.parse(readFileSync('src/content/resource-categories.json', 'utf8'));
+validateCatalog(resourceCategories, resolve(outputDirectory), true);
+console.log('Materials: category pages, images, primary files and editable downloads verified.');
 const baseline = JSON.parse(readFileSync('docs/legacy-baseline.json', 'utf8'));
 for (const { file } of baseline.pages) {
   if (!existsSync(built(file))) throw new Error(`Missing public page: ${file}`);

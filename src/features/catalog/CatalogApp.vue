@@ -3,7 +3,7 @@ import BlogLayout from '../../shared/components/BlogLayout.vue';
 import ArticleFeed from '../articles/ArticleFeed.vue';
 import BaseCard from '../../shared/components/BaseCard.vue';
 import BaseButton from '../../shared/components/BaseButton.vue';
-import { resources } from '../../content/resources';
+import { materialFiles, materialFormat, materialFormatLabel, resourceCountLabel, resources } from '../../content/resources';
 import { sitePathname } from '../../shared/site-path';
 import { imageSource, imageSrcset } from '../../shared/responsive-images';
 const path = sitePathname();
@@ -15,7 +15,7 @@ function filename(path: string) {
     path
       .split('/')
       .pop()
-      ?.replace(/\.pdf$/, '') || path
+      ?.replace(/\.(pdf|pptx|docx)$/i, '') || path
   );
 }
 </script>
@@ -46,21 +46,20 @@ function filename(path: string) {
     <p class="muted">{{ category.description }}</p>
     <div v-if="!category.comingSoon" class="stack section">
       <BaseCard v-for="file in category.files" :key="file"
-        ><span class="tag">{{ category.editableFiles?.[file] ? 'PDF・可編輯 PPTX' : 'PDF 教材' }}</span>
-        <h2>{{ filename(file) }}</h2>
+        ><span class="tag">{{ materialFiles(category, file).map(materialFormatLabel).join('・') }}</span>
+        <h2>{{ decodeURIComponent(filename(file)) }}</h2>
         <div class="actions">
-          <BaseButton :href="file" target="_blank" rel="noopener"
+          <BaseButton v-if="materialFormat(file) === 'PDF'" :href="file" target="_blank" rel="noopener"
             >開啟 PDF
-            <span class="visually-hidden">{{ filename(file) }}（新分頁）</span></BaseButton
-          ><BaseButton :href="file" variant="secondary" download
-            >下載 PDF <span class="visually-hidden">{{ filename(file) }}</span></BaseButton
+            <span class="visually-hidden">{{ decodeURIComponent(filename(file)) }}（新分頁）</span></BaseButton
           ><BaseButton
-            v-if="category.editableFiles?.[file]"
-            :href="category.editableFiles[file]"
+            v-for="downloadFile in materialFiles(category, file)"
+            :key="downloadFile"
+            :href="downloadFile"
             variant="secondary"
             download
-            >下載可編輯 PPTX
-            <span class="visually-hidden">{{ filename(file) }}</span></BaseButton
+            >下載{{ materialFormat(downloadFile) === 'PDF' ? ' PDF' : `可編輯 ${materialFormat(downloadFile)}` }}
+            <span class="visually-hidden">{{ decodeURIComponent(filename(file)) }}</span></BaseButton
           >
         </div></BaseCard
       >
@@ -86,7 +85,7 @@ function filename(path: string) {
           height="400"
           alt=""
           loading="lazy"
-        /><span class="tag">{{ resource.comingSoon ? '準備中' : `${resource.files.length} 份 PDF` }}</span>
+        /><span class="tag">{{ resource.comingSoon ? '準備中' : resourceCountLabel(resource) }}</span>
         <h2>{{ resource.title }}</h2>
         <p class="muted">{{ resource.description }}</p>
         <span>{{ resource.comingSoon ? '暫未開放' : '探索教材 →' }}</span></BaseCard

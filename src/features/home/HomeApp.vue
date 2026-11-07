@@ -2,7 +2,7 @@
 import ArticleFeed from '../articles/ArticleFeed.vue';
 import BlogLayout from '../../shared/components/BlogLayout.vue';
 import SiteIcon from '../../shared/components/SiteIcon.vue';
-import { resources } from '../../content/resources';
+import { resourceCountLabel, resources } from '../../content/resources';
 import { imageSource, imageSrcset } from '../../shared/responsive-images';
 </script>
 <template>
@@ -60,7 +60,7 @@ import { imageSource, imageSrcset } from '../../shared/responsive-images';
               />
               <div class="resource-heading">
                 <h3>{{ resource.title }}</h3>
-                <span>{{ resource.comingSoon ? '準備中' : `${resource.files.length} 份 PDF` }}</span>
+                <span>{{ resource.comingSoon ? '準備中' : resourceCountLabel(resource) }}</span>
               </div>
               <p>{{ resource.description }}</p>
               <span class="resource-action">{{ resource.comingSoon ? '暫未開放' : '查看教材' }} <SiteIcon v-if="!resource.comingSoon" name="arrow" :size="16" /></span>
