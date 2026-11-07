@@ -154,3 +154,45 @@ node --experimental-strip-types scripts/playtest-chat-relay.mjs http://127.0.0.1
 原本啟用worker時會刪掉所有同前綴舊快取，包含同網域其他部署路徑。以VM實際執行啟用事件，確認其他安裝的快取會被刪除。現在名稱含registration.scope，僅清理同scope的舊版本；verify-build實際執行install／activate，確認資源清單完整且其他安裝快取保留。
 
 修正後整體評估：沒有剩餘已確認的可採取行動缺陷。題庫／引擎仍有60組完整情境、6,720條終點路徑與9,900次選項轉移。三難度各三題、四章30個練習、七種尺寸、偏好保存、鍵盤焦點與閱讀位置、旁白收尾、全螢幕與hover回歸通過，瀏覽器0個JavaScript錯誤。報告：`/tmp/chat-relay-review-browser-report.json`。`npm run typecheck`、完整`npm run build`及生活數學3,600題／288種訂單測試通過；快取安裝與清理測試已加入verify-build。Safari／實體iPad語音與原生全螢幕仍未實機驗證。
+
+## 2026-11-03：教室友善 UX 改版
+
+沿用既有 Vue 元件、60 組情境、圖引擎、抽題、紀錄格式與原創校園美術，沒有增加題庫或改寫遊戲。
+
+- 首頁只有一個主要入口「立即開始」，直接抽三題；全新使用者為一般難度與即時回饋，不需設定或確認。次要入口「先看示範」沿用原章節的三句對話，結束即可直接開始。
+- 教師說明、四章教材、續玩與偏好放進預設收合的「教師工具與說明」。首頁一句話玩法及適用對象、建議時間、免登入資訊直接可讀。
+- 選回答與看反應分開呈現。選擇後只保留本次回答、NPC 專屬反應、短回饋及下一步；提示、換個回答與更多協助降低視覺權重。最後反應與原結尾文字完全相同，因此直接銜接下一題／結算，避免重讀。
+- 選項至少 56px；主要台詞桌面至少 24px、手機至少 22px，另保留大字偏好。1／2／3 對應目前顯示順序；Enter 前進，不攔截偏好表單、對話框或原生按鈕操作。全螢幕與清楚的退出按鈕保留。
+- 結算先顯示完成數及根據本次回答的具體鼓勵；主要按鈕為「再玩三題」，詳細分析及本次紀錄收合。首頁操作只保留上方工具列的一個按鈕。
+
+驗證範圍：
+
+- `npm run typecheck`、完整 `npm run build` 通過；build 包含19組題庫／引擎測試、6,720條終點路徑、9,900次選項轉移及 verify-build。既有22個 HTML URL、48個資產hash、7篇文章、目前工作區1,027題考題、scoped worker 與11項資源fingerprint通過。
+- shared default Chromium 於全新本機預覽來源實測：首次一鍵開始、不出現設定／確認框、三個不同情境、一般難度及即時回饋。
+- 三難度各三題、四章全部示範及30個練習完成；不同選項反應、重試、上一句、休息續玩、重新整理還原分支及鍵盤焦點通過。
+- 實測「再玩三題」直接開始，連續兩局共六題不重複；展開分析可看三題紀錄。引擎另驗證連續20局先抽完60題才重複。
+- 1440×900、1366×768、1280×720、1024×768、768×1024、390×844、320×640：無水平溢出，偏好展開、22／26px、hover及全螢幕通過。
+- 以真實 DOM 套用全部300個正式決策節點及900個反應文字，1366×768與1280×720預設字級均能看見全部選項／下一步。收緊較矮桌面的留白，沒有縮小台詞或回答目標。
+- 瀏覽器0個 JavaScript page errors。正式瀏覽器流程報告及桌面／手機截圖：`/tmp/chat-classroom-release-browser-report.json`、`/tmp/chat-classroom-release-home-*.png`、`/tmp/chat-classroom-release-mobile-session-*.png`、`/tmp/chat-classroom-release-results-*.png`。建置紀錄：`/tmp/chat-classroom-final-build.log`。
+
+本輪修改：`ChatRelayApp.vue`、`chat-relay.css`、`components/GameIcon.vue`、`components/StoryDemo.vue`、`scripts/playtest-chat-relay.mjs`、`README-chat-relay.md`及本紀錄。最新範圍沒有未完成P0；手機保留垂直閱讀，大字模式優先清晰度並允許捲動。Safari／實體iPad的裝置中文語音與原生全螢幕尚未實機驗證。本輪未提交或推送。
+
+
+## 四組連續對話分支修正（2026-11-04）
+
+- 僅覆寫 `classroom-05`、`club-03`、`outing-01`，並接入先前只有文案的 `classroom-drawing`；其餘 57 組資料以 deep equality 確認未變。總庫 61 組。
+- 畫畫 A4 分成風吹／先畫再想；模型 C5 分成疲累／提過拆掉；網路交友先遊戲好友、再詢問 LINE，保留各階段拒絕與修復。
+- NPC 自然反應優先；一般回答短提示、需調整才完整提醒，情境結束再整理實際練習技巧。原有版面架構保留。
+- `npm run test:chat-relay`：21 組原有測試通過；61 組題庫共 6,846 條難度路徑、10,176 次選項轉移。
+- 新增分支稽核：四組分別 22／44／33／55 條完整路徑，合計 154；三種難度共 462 次完整演練、1,977 次轉移，逐步驗證儲存與續玩。九種故障注入全部被攔截。
+- 稽核檢查節點、循環、孤立節點、出口、前文資訊、明確拒絕後停止、回饋與舊紀錄相容；語意依人工標註及獨立文字規則檢查，另逐節點人工檢閱，無已知未解前後文問題。
+- `scripts/playtest-chat-relay-branches.mjs`：1366×768 桌面及 390×844 手機，9 組流程通過，0 瀏覽器執行錯誤。驗證 NPC 字級高於教學回饋、回答後不疊選項、結束後有技巧整理、LINE 不要求個資輸入。
+- 證據：`/tmp/chat-relay-branches-browser.json`、`/tmp/chat-relay-branches/paths.json`、`/tmp/chat-relay-branches-drawing-desktop.png`、`/tmp/chat-relay-branches-privacy-desktop.png`、`/tmp/chat-relay-branches-summary-mobile.png`。
+- `npm run typecheck` 與 `npm run build` 通過（含 `scripts/verify-build.mjs`）：22 HTML URLs、48 未變動資產雜湊、7 篇文章、聊天入口／SEO／離線快取及 11 個資源指紋通過；既有 CampusScene 大型 chunk 警告仍在。
+- 完整台詞與所有節點出口見 [四組對話](chat-relay/four-dialogues.md)。沒有 commit、push 或部署。
+
+## Review 修正：瀏覽器測試支援自然對話
+
+版面測試依每個節點的實際選項數建立量測內容，涵蓋兩選項分支；回應使用正式的短提示／詳細回饋規則。回合數改與實際完成路徑核對。對話操作限定於當前情境，備份並還原原有本機資料，失敗時留下診斷畫面。
+
+完整 shared default Chromium 流程通過：310 個決策節點、920 個回應的桌面量測，三種難度、四章共 30 個練習、七種桌面／手機尺寸、續玩、鍵盤與全螢幕；瀏覽器執行錯誤為 0。`npm run build` 與型別檢查通過。測試證據：`/tmp/chat-relay-browser-report.json`、`/private/tmp/chat-review-fix-browser.log`。
