@@ -13,7 +13,10 @@ test-results/
 /assets/exams/**/*.pdf
 
 # Local agent skills, hooks, design records and editor state
-/.agents/
+/.agents/*
+!/.agents/skills/
+/.agents/skills/*
+!/.agents/skills/clean-build/
 /.codex/
 /.impeccable/
 /.github/agents/
@@ -37,6 +40,7 @@ test-results/
 /scripts/*
 !/scripts/verify-build.mjs
 !/scripts/optimize-images.mjs
+!/scripts/check-clean-build.mjs
 /docs/*
 !/docs/legacy-baseline.json
 !/docs/article-baseline.json
