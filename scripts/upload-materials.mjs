@@ -256,18 +256,40 @@ async function command(root, args, signal, log) {
 
 export async function main(args = process.argv.slice(2), root = fileURLToPath(new URL('../', import.meta.url))) {
   if (args.length === 1 && ['--help', '-h'].includes(args[0])) {
-    console.log(`用法：./upload-materials <教材.pdf> [教材_可編輯版.pptx] [教材.docx] ...
+    console.log(`用法：./upload-materials [--commit] <教材.pdf> [教材_可編輯版.pptx] [教材.docx] ...
 支援 PDF、PPTX、DOCX。先檢查衝突，再選擇分類，最後自動更新檔案及 HTML 並執行 npm run build。
 同名檔案（忽略 _可編輯版、-editable 後綴）合併為一份教材；不同名稱分開顯示。
 可只上架 PPTX／DOCX；它們會標示「可編輯」。未開放分類會自動建立頁面並啟用。
 不覆蓋同名或同內容檔案；建置失敗會還原本次來源變更與原 dist。原始教材檔案保留。
-這個指令只更新本機網站，不自動 git add、commit、push 或部署。`);
+加上 --commit：建置成功後只提交本次清單、HTML 與教材；有 check:clean 時會先驗證乾淨暫存副本。
+自動提交要求暫存區為空、清單及目標 HTML 沒有未提交修改；提交失敗會保留已上架檔案。
+未加 --commit 不會 stage 或 commit。任何模式都不 push 或部署。可用 -- 分隔檔案參數。`);
     return;
   }
-  if (!args.length) throw Error('請提供至少一份教材。用法：./upload-materials <教材file1> [教材file2 ...]');
+  let autoCommit = false;
+  let literal = false;
+  const paths = [];
+  for (const arg of args) {
+    if (!literal && arg === '--') literal = true;
+    else if (!literal && arg === '--commit') autoCommit = true;
+    else if (!literal && arg.startsWith('-')) throw Error(`未知選項：${arg}。請使用 --help 查看用法。`);
+    else paths.push(arg);
+  }
+  args = paths;
+  if (!args.length) throw Error('請提供至少一份教材。用法：./upload-materials [--commit] <教材file1> [教材file2 ...]');
   root = realpathSync(root);
   if (realpathSync(git(root, 'rev-parse', '--show-toplevel').trim()) !== root) throw Error('請在專案的 Git 根目錄使用此工具。');
   if (git(root, 'ls-files', '--unmerged', '-z')) throw Error('Repository 有尚未解決的 merge conflict，請先處理。');
+  const initialHead = autoCommit ? git(root, 'rev-parse', 'HEAD').trim() : null;
+  const assertCommitReady = () => {
+    if (git(root, 'rev-parse', 'HEAD').trim() !== initialHead) throw Error('HEAD 已變更，停止自動提交。');
+    if (git(root, 'diff', '--cached', '--name-only', '-z')) throw Error('--commit 要求暫存區為空，請先處理已暫存修改。');
+  };
+  if (autoCommit) {
+    assertCommitReady();
+    if (git(root, 'status', '--porcelain', '--', catalogPath))
+      throw Error('--commit 要求教材清單沒有未提交修改，請先提交既有上架內容。');
+  }
   const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
   if (!pkg.scripts?.build) throw Error('專案未定義 npm run build。');
   if (!existsSync(join(root, 'node_modules')) && !existsSync(join(root, 'package-lock.json')))
@@ -299,6 +321,7 @@ export async function main(args = process.argv.slice(2), root = fileURLToPath(ne
   let distBackedUp = false;
   let buildStarted = false;
   let hadDist = false;
+  let uploadCompleted = false;
   try {
     const index = await selectCategory(categories, controller);
     if (controller.signal.aborted) throw Error('已取消。');
@@ -308,6 +331,11 @@ export async function main(args = process.argv.slice(2), root = fileURLToPath(ne
     if (git(root, 'ls-files', '--unmerged', '-z')) throw Error('Repository 出現 merge conflict，請先處理。');
     const selected = addMaterials(categories[index], inputs);
     const page = checkPage(root, categories[index], selected);
+    if (autoCommit) {
+      assertCommitReady();
+      if (git(root, 'status', '--porcelain', '--', relative(root, page)))
+        throw Error('--commit 要求目標分類 HTML 沒有未提交修改。');
+    }
     beforePage = existsSync(page) ? readFileSync(page) : null;
     const updated = structuredClone(categories); updated[index] = selected;
     const bytes = Buffer.from(JSON.stringify(updated, null, 2) + '\n');
@@ -343,10 +371,41 @@ export async function main(args = process.argv.slice(2), root = fileURLToPath(ne
     buildStarted = true;
     await command(root, ['run', 'build'], controller.signal, log);
     if (writes.some((write) => !readFileSync(write.path).equals(write.after))) throw Error('建置期間教材來源被其他程序修改。');
+    uploadCompleted = true;
     rmSync(join(work, 'dist.before'), { recursive: true, force: true });
-    writeFileSync(join(work, 'result.json'), JSON.stringify({ status: 'passed', category: selected.title, href: selected.href, files: inputs.map((input) => input.url) }, null, 2));
-    console.log(`\n上架完成：${selected.title} → ${selected.href}\n建置通過。尚未 commit／push。`);
+    let commit = null;
+    if (autoCommit) {
+      assertCommitReady();
+      const commitPaths = [catalogPath, relative(root, page), ...copied.map((file) => relative(root, file.path))];
+      let staged = false;
+      try {
+        staged = true;
+        git(root, 'add', '--', ...commitPaths);
+        const stagedFiles = git(root, 'diff', '--cached', '--name-only', '-z').split('\0').filter(Boolean).sort();
+        if (JSON.stringify(stagedFiles) !== JSON.stringify([...commitPaths].sort())) throw Error('暫存區包含非本次上架檔案，停止自動提交。');
+        const indexBefore = git(root, 'ls-files', '--stage', '-z');
+        if (pkg.scripts['check:clean']) await command(root, ['run', 'check:clean', '--', '--staged'], controller.signal, log);
+        if (controller.signal.aborted || git(root, 'rev-parse', 'HEAD').trim() !== initialHead ||
+            git(root, 'ls-files', '--stage', '-z') !== indexBefore ||
+            writes.some((write) => !existsSync(write.path) || !readFileSync(write.path).equals(write.after)) ||
+            copied.some((file) => !existsSync(file.path) || hash(readFileSync(file.path)) !== file.digest))
+          throw Error('提交前來源、HEAD 或暫存區已變更，停止自動提交。');
+        console.log(git(root, 'commit', '-m', `Add ${selected.title} teaching materials`, '--only', '--', ...commitPaths).trim());
+        commit = git(root, 'rev-parse', 'HEAD').trim();
+      } catch (error) {
+        // Git failures must not roll back an upload that has already built successfully.
+        if (staged && git(root, 'rev-parse', 'HEAD').trim() === initialHead)
+          git(root, 'reset', '--quiet', 'HEAD', '--', ...commitPaths);
+        throw error;
+      }
+    }
+    writeFileSync(join(work, 'result.json'), JSON.stringify({ status: 'passed', category: selected.title, href: selected.href, files: inputs.map((input) => input.url), commit }, null, 2));
+    console.log(`\n上架完成：${selected.title} → ${selected.href}\n建置通過。${commit ? `已 commit：${commit}，尚未 push。` : '尚未 commit／push。'}`);
   } catch (error) {
+    if (uploadCompleted) {
+      console.error(`上架與建置已完成；後續提交或紀錄失敗，保留教材及 HTML，請檢查 Git 狀態。診斷紀錄：${work}`);
+      throw error;
+    }
     const concurrentEdits = writes.some((write) => write.written &&
       (!existsSync(write.path) || !readFileSync(write.path).equals(write.after)));
     if (concurrentEdits) {

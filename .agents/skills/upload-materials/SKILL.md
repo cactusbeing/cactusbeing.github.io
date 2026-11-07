@@ -48,7 +48,17 @@ format labels and download links, using desktop/mobile rendering when new format
 or pages are involved. `npm run test:materials` exercises pairing, actual CLI
 interaction, collisions, generated HTML, build failure and rollback in fixtures.
 
-The command does not stage, commit, push or deploy. Follow the user's existing
-Git authorization; when committing, include the changed JSON catalog, generated
-category HTML and new download files, then use `$clean-build` to validate that
-exact staged snapshot. Leave unrelated changes out of the commit.
+By default the command does not stage or commit. When the user has authorized
+committing this upload, use `./upload-materials --commit <files...>`: it builds,
+stages only the shared catalog, category HTML and new downloads, runs
+`npm run check:clean -- --staged` when available, then commits. It never pushes
+or deploys. Do not add `--commit` without existing Git authorization.
+
+Auto-commit requires an empty index and no existing uncommitted changes to the
+shared catalog or target HTML; handle earlier uploads separately rather than
+folding them into this commit. Other unstaged/untracked work is excluded. HEAD,
+index and source changes during validation stop the commit. A build failure
+rolls back the upload; a later clean-check/Git failure keeps the successful
+upload and removes only uploader staging so it can be reviewed and committed
+manually. For manual commits, stage only intended files and use `$clean-build`
+to validate that exact snapshot. Leave unrelated changes out of the commit.

@@ -59,16 +59,17 @@ function fixture() {
   function git(...args) { return execFileSync('git', args, { cwd: root, encoding: 'utf8' }); }
   git('init', '-q'); git('add', '.');
   git('-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid', '-c', 'core.hooksPath=/dev/null', '-c', 'commit.gpgSign=false', 'commit', '-qm', 'fixture');
+  for (const [key, value] of Object.entries({ 'user.name': 'Fixture', 'user.email': 'fixture@example.invalid', 'commit.gpgSign': 'false', 'core.hooksPath': '/dev/null' })) git('config', key, value);
   return { root, inbox, git, categories };
 }
 
 function input(f, name, bytes = pdf(name)) { const path = join(f.inbox, name); writeFileSync(path, bytes); return path; }
-function run(f, files, answer = '1\n', succeeds = true) {
+function run(f, files, answer = '1\n', succeeds = true, commits = false) {
   const index = f.git('ls-files', '--stage', '-z');
   const result = spawnSync(join(f.root, 'upload-materials'), files, { cwd: f.root, input: answer,
     env: { ...process.env, TMPDIR: join(f.root, 'tmp') }, encoding: 'utf8', timeout: 20000, maxBuffer: 2 * 1024 * 1024 });
   assert.equal(result.status === 0, succeeds, result.stdout + '\n' + result.stderr);
-  assert.equal(f.git('ls-files', '--stage', '-z'), index, 'Uploader must not stage or commit changes');
+  if (!commits) assert.equal(f.git('ls-files', '--stage', '-z'), index, 'Uploader must preserve the index without a successful --commit');
   return result;
 }
 const catalog = (f) => JSON.parse(readFileSync(join(f.root, 'src/content/resource-categories.json')));
@@ -80,6 +81,81 @@ function sources(f) {
 function test(name, fn) { fn(); count++; console.log('PASS ' + name); }
 
 try {
+  test('--commit commits only this upload and leaves unrelated unstaged/untracked work untouched', () => {
+    const f = fixture(); const head = f.git('rev-parse', 'HEAD');
+    writeFileSync(join(f.root, 'assets/example.png'), 'unrelated edit');
+    writeFileSync(join(f.root, 'notes.txt'), 'unrelated untracked');
+    run(f, ['--commit', input(f, '自動提交.pdf'), input(f, '自動提交.pptx', office('pptx', 'auto'))], '1\n', true, true);
+    assert.notEqual(f.git('rev-parse', 'HEAD'), head);
+    assert.deepEqual(f.git('diff-tree', '--no-commit-id', '--name-only', '-r', '-z', 'HEAD').split('\0').filter(Boolean).sort(),
+      ['files/自動提交.pdf', 'files/自動提交.pptx', 'src/content/resource-categories.json', '學習策略slide.html'].sort());
+    assert.equal(f.git('diff', '--cached', '--name-only'), '');
+    assert.equal(f.git('show', 'HEAD:assets/example.png'), 'image');
+    assert.equal(readFileSync(join(f.root, 'assets/example.png'), 'utf8'), 'unrelated edit');
+    assert.ok(!f.git('ls-files', '--', 'notes.txt'));
+  });
+  test('--commit refuses pre-existing staged changes or dirty shared catalog without altering them', () => {
+    for (const stage of [true, false]) {
+      const f = fixture();
+      if (stage) { writeFileSync(join(f.root, 'notes.txt'), 'staged'); f.git('add', 'notes.txt'); }
+      else writeFileSync(join(f.root, 'src/content/resource-categories.json'), JSON.stringify(f.categories));
+      const before = sources(f); const head = f.git('rev-parse', 'HEAD');
+      const result = run(f, ['--commit', input(f, 'stop.pdf')], '', false);
+      assert.ok(!result.stdout.includes('請選擇教材分類')); assert.equal(sources(f), before); assert.equal(f.git('rev-parse', 'HEAD'), head);
+    }
+  });
+  test('Commit hook failure preserves successful upload/build and clears only uploader staging', () => {
+    const f = fixture(); const head = f.git('rev-parse', 'HEAD');
+    const hooks = join(f.root, 'hooks'); mkdirSync(hooks); f.git('config', 'core.hooksPath', hooks);
+    writeFileSync(join(hooks, 'pre-commit'), '#!/bin/sh\nexit 9\n', { mode: 0o755 });
+    const result = run(f, [input(f, 'hook.pdf'), '--commit'], '1\n', false);
+    assert.ok(result.stderr.includes('保留教材及 HTML')); assert.equal(f.git('rev-parse', 'HEAD'), head);
+    assert.equal(catalog(f)[0].files.length, 1); assert.ok(existsSync(join(f.root, 'files/hook.pdf')));
+    assert.ok(existsSync(join(f.root, 'dist/new.txt')));
+  });
+  test('--commit clean snapshot check sees staged upload; failed validation preserves upload without committing', () => {
+    for (const pass of [true, false]) {
+      const f = fixture(); const pkg = JSON.parse(readFileSync(join(f.root, 'package.json')));
+      pkg.scripts['check:clean'] = 'node fixture-clean.mjs';
+      writeFileSync(join(f.root, 'package.json'), JSON.stringify(pkg));
+      writeFileSync(join(f.root, 'fixture-clean.mjs'), `import {execFileSync} from 'node:child_process'; import {writeFileSync} from 'node:fs'; const paths=execFileSync('git',['diff','--cached','--name-only'],{encoding:'utf8'});if(!process.argv.includes('--staged')||!paths.includes('snapshot.pdf'))process.exit(8);writeFileSync('tmp/clean-ran','yes');process.exit(${pass ? 0 : 7});`);
+      const head = f.git('rev-parse', 'HEAD');
+      run(f, ['--commit', input(f, 'snapshot.pdf')], '1\n', pass, pass);
+      assert.ok(existsSync(join(f.root, 'tmp/clean-ran'))); assert.equal(f.git('rev-parse', 'HEAD') !== head, pass);
+      assert.ok(existsSync(join(f.root, 'files/snapshot.pdf')));
+      assert.equal(f.git('diff', '--cached', '--name-only'), '');
+    }
+  });
+  test('Build failure with --commit restores upload and leaves HEAD/index untouched', () => {
+    const f = fixture(); const before = sources(f); const head = f.git('rev-parse', 'HEAD');
+    writeFileSync(join(f.root, 'fixture-build.mjs'), 'process.exit(7);');
+    run(f, ['--commit', input(f, 'failed.pdf')], '1\n', false);
+    assert.equal(sources(f), before); assert.equal(f.git('rev-parse', 'HEAD'), head);
+  });
+  test('--commit preserves unrelated staging created during a build or failed clean validation', () => {
+    for (const duringBuild of [true, false]) {
+      const f = fixture(); const head = f.git('rev-parse', 'HEAD');
+      writeFileSync(join(f.root, 'notes.txt'), 'someone else staged this');
+      if (duringBuild) {
+        writeFileSync(join(f.root, 'fixture-build.mjs'), `import {execFileSync} from 'node:child_process';execFileSync('git',['add','notes.txt']);`);
+      } else {
+        const pkg = JSON.parse(readFileSync(join(f.root, 'package.json')));
+        pkg.scripts['check:clean'] = 'node fixture-clean.mjs';
+        writeFileSync(join(f.root, 'package.json'), JSON.stringify(pkg));
+        writeFileSync(join(f.root, 'fixture-clean.mjs'), `import {execFileSync} from 'node:child_process';execFileSync('git',['add','notes.txt']);process.exit(9);`);
+      }
+      run(f, ['--commit', input(f, 'concurrent-stage.pdf')], '1\n', false, true);
+      assert.equal(f.git('rev-parse', 'HEAD'), head);
+      assert.equal(f.git('diff', '--cached', '--name-only').trim(), 'notes.txt');
+      assert.ok(existsSync(join(f.root, 'files/concurrent-stage.pdf')));
+    }
+  });
+  test('Unknown options fail before menu; -- permits literal dash-prefixed filenames', () => {
+    const f = fixture(); const result = run(f, ['--typo', input(f, 'option.pdf')], '', false);
+    assert.ok(result.stderr.includes('未知選項')); assert.ok(!result.stdout.includes('請選擇教材分類'));
+    writeFileSync(join(f.root, '-教材.pdf'), pdf('literal'));
+    run(f, ['--', '-教材.pdf']); assert.ok(existsSync(join(f.root, 'files/-教材.pdf')));
+  });
   test('PDF + PPTX + DOCX group together; pending category activates; HTML and build generated; originals/index preserved', () => {
     const f = fixture(); const stem = '護牙 #1 & "好"';
     const paths = [input(f, stem + '.pdf'), input(f, stem + '_可編輯版.pptx', office('pptx', 'slides')),

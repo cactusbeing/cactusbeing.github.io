@@ -44,5 +44,22 @@ npm run test:materials
 多格式配對、複製、HTML 產生、建置、衝突與失敗還原；正式產物驗證另外檢查
 所有分類頁、圖片及 PDF／可編輯檔案確實存在。
 
-上架工具不會自動 stage、commit、push 或部署。檢閱變更後，只暫存本次需要的
-清單、分類 HTML 和教材檔案，再用 `npm run check:clean -- --staged` 驗證並提交。
+預設不會自動 stage 或 commit。檢閱變更後，只暫存本次需要的清單、分類 HTML
+和教材檔案，再用 `npm run check:clean -- --staged` 驗證並提交。
+
+要在上架成功後自動提交，可加上 `--commit`（分類選單照常顯示）：
+
+```sh
+./upload-materials --commit ~/Downloads/新教材.pdf ~/Downloads/新教材_可編輯版.pptx
+```
+
+自動提交前，暫存區必須為空，教材清單及目標分類 HTML 必須沒有未提交修改；
+工具不會把之前尚未提交的上架內容合併進這次 commit。其他未暫存修改和未追蹤
+檔案會保留，且不納入提交。
+
+工具先跑完整 build，再暫存本次教材、清單與 HTML；專案有 `check:clean` 時會
+自動跑 `npm run check:clean -- --staged`，驗證乾淨副本後才建立 commit。
+提交前也會檢查 HEAD、暫存區與來源檔案是否被其他程序修改。
+建置失敗仍會還原；乾淨副本檢查或 Git 提交失敗時，已成功上架的檔案會保留，
+本次暫存會清除，方便修正問題後手動提交。Git 身分、簽章和 hooks 使用原有設定。
+所有模式都不會 push 或部署。
