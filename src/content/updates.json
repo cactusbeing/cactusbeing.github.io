@@ -8,6 +8,18 @@
   },
   "entries": [
     {
+      "id": "material:生活管理:生活管理_食品健康大解密",
+      "date": "2026-11-09",
+      "category": "materials",
+      "title": "生活管理「食品健康大解密」上架",
+      "summary": "生活管理教材，提供 PDF、可編輯 PPTX 下載。",
+      "href": "/生活管理slide.html#material-%E7%94%9F%E6%B4%BB%E7%AE%A1%E7%90%86_%E9%A3%9F%E5%93%81%E5%81%A5%E5%BA%B7%E5%A4%A7%E8%A7%A3%E5%AF%86",
+      "material": {
+        "category": "生活管理",
+        "key": "生活管理_食品健康大解密"
+      }
+    },
+    {
       "id": "news-launch",
       "date": "2026-11-08",
       "category": "site",
@@ -22,7 +34,10 @@
       "title": "生活管理「身體保健大冒險」上架",
       "summary": "練習安全運動、正確坐姿與肩膀放鬆，提供 PDF 與可編輯 PPTX。",
       "href": "/生活管理slide.html#material-生活管理_身體保健大冒險",
-      "material": { "category": "生活管理", "key": "生活管理_身體保健大冒險" }
+      "material": {
+        "category": "生活管理",
+        "key": "生活管理_身體保健大冒險"
+      }
     },
     {
       "id": "life-dental",
@@ -31,7 +46,10 @@
       "title": "生活管理「護牙大冒險」上架",
       "summary": "從日常生活練習口腔保健與自我照顧，提供 PDF 與可編輯 PPTX。",
       "href": "/生活管理slide.html#material-生活管理-護牙大冒險",
-      "material": { "category": "生活管理", "key": "生活管理-護牙大冒險" }
+      "material": {
+        "category": "生活管理",
+        "key": "生活管理-護牙大冒險"
+      }
     },
     {
       "id": "exam-108-115",
@@ -56,7 +74,10 @@
       "title": "特教班數學「認識新台幣×魔法烘焙坊」上架",
       "summary": "搭配生活數學遊戲使用，提供認識新台幣與魔法烘焙坊的 PDF 教材。",
       "href": "/數學slide.html#material-特教班數學%7C認識新台幣×魔法烘焙坊",
-      "material": { "category": "特教班數學", "key": "特教班數學|認識新台幣×魔法烘焙坊" }
+      "material": {
+        "category": "特教班數學",
+        "key": "特教班數學|認識新台幣×魔法烘焙坊"
+      }
     },
     {
       "id": "money-launch",

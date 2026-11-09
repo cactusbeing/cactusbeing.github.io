@@ -19,7 +19,7 @@ defineEmits<{ choose: [mode: 'past' | 'random' | 'revenge'] }>();
     </button>
     <button type="button" class="practice-entry revenge-entry" @click="$emit('choose', 'revenge')">
       <span class="entry-picture"><img :src="siteUrl('/assets/decor/exam-revenge.webp')" alt="" width="1024" height="683" decoding="async" /></span>
-      <span class="entry-copy"><strong>錯題復仇戰</strong><span>{{ mistakes ? `${mistakes} 題待挑戰 · 每題 60 秒` : '挑戰自己的錯題 · 每題 60 秒' }}</span></span>
+      <span class="entry-copy"><strong>錯題復仇戰</strong><span>{{ mistakes ? `${mistakes} 題待挑戰 · 自選科目與題數` : '挑戰自己的錯題 · 自選科目與題數' }}</span></span>
       <SiteIcon class="entry-arrow" name="arrow" :size="20" />
     </button>
   </nav>

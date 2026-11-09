@@ -33,7 +33,8 @@
     "description": "從日常生活出發，練習口腔保健與自我照顧。",
     "files": [
       "/files/生活管理-護牙大冒險.pdf",
-      "/files/%E7%94%9F%E6%B4%BB%E7%AE%A1%E7%90%86_%E8%BA%AB%E9%AB%94%E4%BF%9D%E5%81%A5%E5%A4%A7%E5%86%92%E9%9A%AA.pdf"
+      "/files/%E7%94%9F%E6%B4%BB%E7%AE%A1%E7%90%86_%E8%BA%AB%E9%AB%94%E4%BF%9D%E5%81%A5%E5%A4%A7%E5%86%92%E9%9A%AA.pdf",
+      "/files/%E7%94%9F%E6%B4%BB%E7%AE%A1%E7%90%86_%E9%A3%9F%E5%93%81%E5%81%A5%E5%BA%B7%E5%A4%A7%E8%A7%A3%E5%AF%86.pdf"
     ],
     "editableFiles": {
       "/files/生活管理-護牙大冒險.pdf": [
@@ -41,6 +42,9 @@
       ],
       "/files/%E7%94%9F%E6%B4%BB%E7%AE%A1%E7%90%86_%E8%BA%AB%E9%AB%94%E4%BF%9D%E5%81%A5%E5%A4%A7%E5%86%92%E9%9A%AA.pdf": [
         "/files/%E7%94%9F%E6%B4%BB%E7%AE%A1%E7%90%86_%E8%BA%AB%E9%AB%94%E4%BF%9D%E5%81%A5%E5%A4%A7%E5%86%92%E9%9A%AA.pptx"
+      ],
+      "/files/%E7%94%9F%E6%B4%BB%E7%AE%A1%E7%90%86_%E9%A3%9F%E5%93%81%E5%81%A5%E5%BA%B7%E5%A4%A7%E8%A7%A3%E5%AF%86.pdf": [
+        "/files/%E7%94%9F%E6%B4%BB%E7%AE%A1%E7%90%86_%E9%A3%9F%E5%93%81%E5%81%A5%E5%BA%B7%E5%A4%A7%E8%A7%A3%E5%AF%86.pptx"
       ]
     }
   },

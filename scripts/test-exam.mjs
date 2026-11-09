@@ -82,7 +82,7 @@ assert.deepEqual(readResponses(115, 'chinese'), { 1: 'A' });
 console.log('Exam storage checks passed (legacy history, random metadata, corrupt optional fields, practice answers).');
 
 // Persistent mistakes preserve source identity, alternate answers and resolved markers.
-const { loadRevengePool, recordOutcome, practiceStats, sourceKey } = await import('../src/features/exam/training.ts');
+const { loadRevengePool, recordOutcome, readMistakeAnswers, mistakeAnswerLabel, groupWrongQuestions, subjectGroupKey, practiceStats, sourceKey } = await import('../src/features/exam/training.ts');
 store.clear();
 const fixtureSubject = { id: 'fixture', name: '測試科目', count: 3, data: '/fixture.json' };
 const fixtureYears = [{ year: 115, subjects: [fixtureSubject] }];
@@ -138,3 +138,46 @@ assert.equal(practiceStats([]).accuracy, null, 'Empty history has no fabricated 
 assert.ok(saveHistoryEntry({ ...oldEntry, mode: 'revenge', outcomes: statsHistory[2].outcomes }));
 assert.equal(readHistory()[0].mode, 'revenge');
 console.log('Exam training checks passed (legacy migration, alternate answers, resolved mistakes, concurrency, weighted subject statistics).');
+
+// A timeout replaces the latest submitted answer; missing legacy answers stay unknown.
+store.clear();
+const mistakeSource = revengePool[0].source;
+recordOutcome(mistakeSource, false, 'A');
+assert.equal(readMistakeAnswers()[sourceKey(mistakeSource)], 'A');
+recordOutcome(mistakeSource, false, null);
+assert.equal(readMistakeAnswers()[sourceKey(mistakeSource)], null);
+assert.equal(JSON.parse(store.get('cactusbeing-exam-mistakes-v1'))[sourceKey(mistakeSource)].userAnswer, null);
+recordOutcome(mistakeSource, false);
+assert.equal(readMistakeAnswers()[sourceKey(mistakeSource)], null, 'Omitted answer cannot revive an earlier option');
+store.set('cactusbeing-exam-mistakes-v1', JSON.stringify({ [sourceKey(mistakeSource)]: { ...mistakeSource, resolved: false } }));
+store.set(responseStorageKey(115, 'fixture'), JSON.stringify({ 1: 'D' }));
+const legacyPool = await loadRevengePool(fixtureYears, fixtureLoad);
+const legacyGroups = groupWrongQuestions(legacyPool, readMistakeAnswers());
+assert.equal(legacyGroups[0].questions[0].userAnswer, undefined, 'Other practice answers never fill a ledger answer');
+assert.equal(mistakeAnswerLabel(undefined), '無歷史作答紀錄');
+assert.equal(mistakeAnswerLabel(null), '未作答／未提交');
+assert.equal(mistakeAnswerLabel('B'), 'B');
+
+const groupCategories = new Map();
+for (const year of manifest.years) for (const subject of year.subjects) {
+  const id = subjectGroupKey({ subjectId: subject.id, subjectName: subject.name });
+  const categories = [...subject.categories].sort().join(',');
+  if (groupCategories.has(id)) assert.equal(groupCategories.get(id), categories, 'A subject group never mixes category definitions');
+  groupCategories.set(id, categories);
+}
+const groupFixture = [114, 115].map(year => {
+  const subject = manifest.years.find(item => item.year === year).subjects.find(item => item.id === 'education-primary');
+  return { ...fixtureExam.multiple_choice_questions[0], source: { year, subjectId: subject.id, subjectName: subject.name, questionId: 1 } };
+});
+assert.equal(groupWrongQuestions(groupFixture, {}).length, 2, 'Shared primary/secondary paper is separate from primary-only paper');
+
+// Aborted loaders may finish if their transport ignores abort; they must not migrate stale data.
+store.clear();
+store.set(responseStorageKey(115, 'fixture'), JSON.stringify({ 1: 'B' }));
+const aborted = new AbortController();
+await assert.rejects(() => loadRevengePool(fixtureYears, async () => {
+  aborted.abort();
+  return fixtureExam;
+}, aborted.signal), { name: 'AbortError' });
+assert.equal(store.has('cactusbeing-exam-mistakes-v1'), false);
+console.log('Wrong-book checks passed (latest timeout, legacy/unknown distinction, no answer fallback, category grouping, canceled migration).');

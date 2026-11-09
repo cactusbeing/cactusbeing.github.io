@@ -1,12 +1,40 @@
 import { readResponses } from './progress.ts';
+import type { Choice } from './progress';
 import type { ExamHistoryEntry, QuestionOutcome, Year } from './progress';
 import type { Exam, Question, QuestionSource } from './session';
 
 const mistakeKey = 'cactusbeing-exam-mistakes-v1';
-type Mistake = QuestionSource & { resolved: boolean };
+// Missing = legacy record; null = this attempt explicitly ended without an answer.
+export type MistakeAnswer = Choice | null;
+type Mistake = QuestionSource & { resolved: boolean; userAnswer?: MistakeAnswer };
+export type WrongBookGroup = { id: string; name: string; questions: { question: Question; userAnswer?: MistakeAnswer }[] };
 type Mistakes = Record<string, Mistake>;
 export function sourceKey(source: QuestionSource): string {
   return `${source.year}/${source.subjectId}/${source.questionId}`;
+}
+
+// Some manifest IDs cover different shared categories or renamed subjects across years.
+export function subjectGroupKey(source: Pick<QuestionSource, 'subjectId' | 'subjectName'>): string {
+  return JSON.stringify([source.subjectId, source.subjectName]);
+}
+
+export function mistakeAnswerLabel(answer: MistakeAnswer | undefined): string {
+  return answer === undefined ? '無歷史作答紀錄' : answer === null ? '未作答／未提交' : answer;
+}
+
+export function groupWrongQuestions(pool: Question[], answers: Record<string, MistakeAnswer>): WrongBookGroup[] {
+  const groups = new Map<string, WrongBookGroup>();
+  for (const question of pool) {
+    const source = question.source;
+    if (!source) continue;
+    const id = subjectGroupKey(source);
+    const group = groups.get(id) ?? { id, name: source.subjectName, questions: [] };
+    group.questions.push({ question, userAnswer: answers[sourceKey(source)] });
+    groups.set(id, group);
+  }
+  return [...groups.values()].map(group => ({ ...group,
+    questions: group.questions.sort((a, b) => (b.question.source?.year ?? 0) - (a.question.source?.year ?? 0) || a.question.id - b.question.id),
+  })).sort((a, b) => a.name.localeCompare(b.name, 'zh-TW'));
 }
 
 function readMistakes(): Mistakes {
@@ -16,22 +44,31 @@ function readMistakes(): Mistakes {
     const item = value as Partial<Mistake> | null;
     return item && Number.isInteger(item.year) && typeof item.subjectId === 'string' &&
       typeof item.subjectName === 'string' && Number.isInteger(item.questionId) &&
-      typeof item.resolved === 'boolean' && key === sourceKey(item as Mistake);
+      typeof item.resolved === 'boolean' && (item.userAnswer === undefined || item.userAnswer === null || ['A', 'B', 'C', 'D'].includes(item.userAnswer)) &&
+      key === sourceKey(item as Mistake);
   })) as Mistakes;
 }
 
+export function readMistakeAnswers(): Record<string, MistakeAnswer> {
+  try {
+    return Object.fromEntries(Object.entries(readMistakes()).flatMap(([key, item]) =>
+      item.userAnswer !== undefined ? [[key, item.userAnswer]] : []));
+  } catch { return {}; }
+}
+
 /** Keep resolved markers so old paper answers cannot resurrect defeated questions. */
-export function recordOutcome(source: QuestionSource, correct: boolean): boolean {
+export function recordOutcome(source: QuestionSource, correct: boolean, userAnswer: MistakeAnswer = null): boolean {
   try {
     const mistakes = readMistakes();
     const key = sourceKey(source);
-    mistakes[key] = { ...source, resolved: correct };
+    mistakes[key] = { ...source, resolved: correct, userAnswer };
     localStorage.setItem(mistakeKey, JSON.stringify(mistakes));
     return true;
   } catch { return false; }
 }
 
-export async function loadRevengePool(years: Year[], load: (path: string) => Promise<Exam>): Promise<Question[]> {
+export async function loadRevengePool(years: Year[], load: (path: string) => Promise<Exam>, signal?: AbortSignal): Promise<Question[]> {
+  signal?.throwIfAborted();
   const mistakes = readMistakes();
   // Only fetch papers with saved answers or outstanding mistakes, rather than the entire bank.
   const papers = years.flatMap(({ year, sitting, subjects }) => subjects.map(subject => ({
@@ -51,6 +88,7 @@ export async function loadRevengePool(years: Year[], load: (path: string) => Pro
     });
   }))).flat();
   // A response may be submitted while bank fetches are in flight. Newer ledger entries win.
+  signal?.throwIfAborted();
   const latest = { ...mistakes, ...readMistakes() };
   localStorage.setItem(mistakeKey, JSON.stringify(latest));
   return candidates.filter(question => latest[sourceKey(question.source)] && !latest[sourceKey(question.source)].resolved);

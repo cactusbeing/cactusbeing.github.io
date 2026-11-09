@@ -48,6 +48,14 @@ function startChinese() { click('.subject-row', '國語文能力測驗'); waitFo
 function currentId() { return evaluate(() => 'exam-question-' + document.querySelector('.question-grid [aria-current=step]')?.textContent); }
 function checkCanceledLoad(name, trigger, reject = false) {
   chooseMode(name); waitFor(trigger);
+  evaluate(async selector => {
+    for (let i = 0; i < 100; i++) {
+      const button = document.querySelector(selector);
+      if (button && !button.disabled) return;
+      await new Promise(resolve => setTimeout(resolve, 50));
+    }
+    throw new Error('Control never became ready: ' + selector);
+  }, trigger);
   const result = evaluate(async (trigger, reject) => {
     const original = window.fetch;
     let release;

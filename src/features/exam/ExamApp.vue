@@ -14,7 +14,9 @@ import type { Exam, Question } from './session';
 import RevengeGate from './RevengeGate.vue';
 import CountdownTrack from './CountdownTrack.vue';
 import ExamEntryMenu from './ExamEntryMenu.vue';
-import { loadRevengePool, recordOutcome } from './training';
+import { groupWrongQuestions, loadRevengePool, mistakeAnswerLabel, readMistakeAnswers, recordOutcome, subjectGroupKey } from './training';
+import type { MistakeAnswer, WrongBookGroup } from './training';
+import WrongBookBrowser from './WrongBookBrowser.vue';
 
 const manifest = ref<Year[]>([]);
 const selectedYear = ref<number | null>(null);
@@ -93,7 +95,38 @@ let battleObserver: ResizeObserver | undefined;
 const revengePool = ref<Question[]>([]);
 const revengeLoading = ref(true);
 const revengeError = ref('');
+const revengeCount = ref(5);
+const revengeSubjectIds = ref<string[]>([]);
+const revengeSubjectSelectionTouched = ref(false);
+const wrongBookOpen = ref(false);
+const wrongBookExporting = ref<string | null>(null);
+const wrongBookExportError = ref('');
+const wrongBookExportNotice = ref('');
 const mistakeSaveError = ref('');
+const revengeSubjects = computed(() => {
+  const subjects = new Map<string, { id: string; name: string; count: number }>();
+  for (const question of revengePool.value) {
+    const source = question.source;
+    if (!source) continue;
+    const id = subjectGroupKey(source);
+    const existing = subjects.get(id);
+    if (existing) existing.count++;
+    else subjects.set(id, { id, name: source.subjectName, count: 1 });
+  }
+  return [...subjects.values()].sort((a, b) => a.name.localeCompare(b.name, 'zh-TW'));
+});
+const availableRevengeQuestions = computed(() => revengePool.value.filter(question =>
+  question.source && revengeSubjectIds.value.includes(subjectGroupKey(question.source))));
+function setRevengePool(pool: Question[]) {
+  revengePool.value = pool;
+  const availableIds = [...new Set(pool.flatMap(question => question.source ? [subjectGroupKey(question.source)] : []))];
+  revengeSubjectIds.value = revengeSubjectSelectionTouched.value
+    ? revengeSubjectIds.value.filter(id => availableIds.includes(id))
+    : availableIds;
+}
+watch(() => availableRevengeQuestions.value.length, count => {
+  if (count > 0 && revengeCount.value > count) revengeCount.value = count;
+});
 let attemptStartedAt = 0;
 const attemptYears = ref<number[]>([]);
 const finished = ref(false);
@@ -153,6 +186,11 @@ const randomPapers = computed(() => manifest.value.filter((year) => randomYears.
   .flatMap((year) => year.subjects.filter((subject) => randomSubjects.value.includes(subject.id))
     .map((subject) => ({ year: year.year, sitting: year.sitting, subject }))));
 const poolCount = computed(() => randomPapers.value.reduce((sum, paper) => sum + paper.subject.count, 0));
+const revengeCountError = computed(() => !availableRevengeQuestions.value.length
+  ? '請至少選擇一個有錯題的科目。'
+  : !Number.isInteger(revengeCount.value) || revengeCount.value < 1 || revengeCount.value > availableRevengeQuestions.value.length
+    ? `請輸入 1 至 ${availableRevengeQuestions.value.length} 題。` : '');
+const wrongBookGroups = computed(() => groupWrongQuestions(revengePool.value, readMistakeAnswers()));
 const settingsError = computed(() => {
   if (perQuestionEnabled.value && (!Number.isInteger(perQuestionSeconds.value) || perQuestionSeconds.value < 1 || perQuestionSeconds.value > 3600))
     return '每題秒數請輸入 1 至 3600 的整數。';
@@ -235,39 +273,78 @@ function progressLabel(subject: Subject): string {
   return `作答中 ${count}/${subject.count}`;
 }
 
-async function refreshRevengePool(signal?: AbortSignal) {
+let revengePoolLoad: AbortController | undefined;
+function cancelRevengePoolLoad() {
+  revengePoolLoad?.abort();
+  revengePoolLoad = undefined;
+  revengeLoading.value = false;
+}
+
+async function refreshRevengePool(signal?: AbortSignal): Promise<boolean> {
+  cancelRevengePoolLoad();
+  const request = new AbortController();
+  revengePoolLoad = request;
+  const abort = () => request.abort();
+  if (signal?.aborted) abort();
+  else signal?.addEventListener('abort', abort, { once: true });
+  const isCurrent = () => revengePoolLoad === request && !request.signal.aborted;
   revengeLoading.value = true;
   revengeError.value = '';
   try {
-    revengePool.value = await loadRevengePool(manifest.value, async path => {
-      const response = await fetch(siteUrl(path), { signal });
+    const pool = await loadRevengePool(manifest.value, async path => {
+      const response = await fetch(siteUrl(path), { signal: request.signal });
       if (!response.ok) throw new Error('錯題讀取失敗');
       return await response.json() as Exam;
-    });
+    }, request.signal);
+    if (!isCurrent()) return false;
+    setRevengePool(pool);
+    return true;
   } catch {
-    if (!signal?.aborted) revengeError.value = '錯題暫時無法載入，請重新載入；也請確認瀏覽器允許儲存網站資料。';
-  } finally { revengeLoading.value = false; }
+    if (isCurrent()) revengeError.value = '錯題暫時無法載入，請重新載入；也請確認瀏覽器允許儲存網站資料。';
+    return false;
+  } finally {
+    signal?.removeEventListener('abort', abort);
+    if (revengePoolLoad === request) {
+      revengePoolLoad = undefined;
+      revengeLoading.value = false;
+    }
+  }
+}
+
+function updateRevengeSubjects(subjectIds: string[]) {
+  revengeSubjectSelectionTouched.value = true;
+  revengeSubjectIds.value = subjectIds;
 }
 
 async function startRevenge() {
-  if (loading.value || revengeLoading.value) return;
+  if (loading.value || revengeLoading.value || revengeCountError.value) return;
+  const requestedCount = revengeCount.value;
   const request = beginAttemptLoad();
   try {
-    await refreshRevengePool(request.signal);
-    if (!isCurrentLoad(request) || revengeError.value || !revengePool.value.length) return;
-    const sampled = sampleQuestions(revengePool.value, Math.min(5, revengePool.value.length));
+    const refreshed = await refreshRevengePool(request.signal);
+    const selectedPool = availableRevengeQuestions.value;
+    if (!refreshed || !isCurrentLoad(request) || !selectedPool.length) return;
+    const count = Math.min(requestedCount, selectedPool.length);
+    revengeCount.value = count;
+    const sampled = sampleQuestions(selectedPool, count);
     exam.value = { exam_metadata: { subject: '錯題復仇戰', source_page: '' }, multiple_choice_questions: sampled };
     selectedSubject.value = { id: 'revenge', name: '錯題復仇戰', count: sampled.length, data: '', points: 100 };
     randomAttempt.value = true;
     revengeAttempt.value = true;
     attemptYears.value = [...new Set(sampled.map(question => question.source!.year))].sort((a, b) => b - a);
     startAttempt();
+    if (count < requestedCount) notice.value = `待復仇錯題已更新，本輪改為挑戰 ${count} 題。`;
   } finally { finishAttemptLoad(request); }
 }
 
 function chooseMode(value: 'menu' | 'past' | 'random' | 'revenge') {
   cancelAttemptLoad();
+  cancelRevengePoolLoad();
   mode.value = value;
+  if (value === 'revenge') {
+    wrongBookOpen.value = false;
+    void refreshRevengePool();
+  }
   error.value = '';
   timingPanelOpen.value = false;
   const url = new URL(location.href);
@@ -336,8 +413,8 @@ function questionSource(question: Question) {
   };
 }
 
-function trackOutcome(question: Question, correct: boolean) {
-  if (!recordOutcome(questionSource(question), correct))
+function trackOutcome(question: Question, correct: boolean, userAnswer: MistakeAnswer) {
+  if (!recordOutcome(questionSource(question), correct, userAnswer))
     mistakeSaveError.value = '錯題狀態無法儲存，請確認瀏覽器允許儲存網站資料。';
 }
 
@@ -516,7 +593,6 @@ async function backToSubjects() {
   selectedSubject.value = null;
   exam.value = null;
   chooseMode(revengeAttempt.value ? 'revenge' : randomAttempt.value ? 'random' : 'past');
-  void refreshRevengePool();
   await nextTick();
   (subjectTitle.value ?? document.getElementById('settings-title'))?.focus();
 }
@@ -552,7 +628,7 @@ function finishAttempt(reason = '', pendingReason: 'paper' | 'submitted' = 'subm
   for (const question of questions.value) {
     if (!isSettled(question)) {
       expired.value[question.id] = pendingReason;
-      trackOutcome(question, false);
+      trackOutcome(question, false, null);
     }
   }
   finished.value = true;
@@ -591,7 +667,7 @@ function syncClock() {
     while (clockNow.value >= nextDeadline && !finished.value) {
       const question = questions.value[questionIndex.value];
       expired.value[question.id] = 'question';
-      trackOutcome(question, false);
+      trackOutcome(question, false, null);
       notice.value = `第 ${question.id} 題時間到，留待下次再戰。`;
       if (completedCount.value === questions.value.length) finishAttempt(notice.value);
       else { questionIndex.value++; nextDeadline += 60_000; }
@@ -603,7 +679,7 @@ function syncClock() {
   while (questionDeadline.value !== null && clockNow.value >= questionDeadline.value && !finished.value) {
     const question = questions.value[questionIndex.value];
     expired.value[question.id] = 'question';
-    trackOutcome(question, false);
+    trackOutcome(question, false, null);
     notice.value = `第 ${question.id} 題時間到，以 0 分計算。`;
     advanced = true;
     if (completedCount.value === questions.value.length) { finishAttempt(notice.value); break; }
@@ -626,7 +702,7 @@ function submitAnswer(question: Question) {
   const choice = drafts.value[question.id];
   if (finished.value || !choice || !selectedSubject.value || isSettled(question) || (sequential.value && questions.value[questionIndex.value]?.id !== question.id)) return;
   responses.value = { ...responses.value, [question.id]: choice };
-  trackOutcome(question, isCorrect(question, choice));
+  trackOutcome(question, isCorrect(question, choice), choice);
   if (!isolatedAttempt.value) {
     try { localStorage.setItem(responseStorageKey(selectedYear.value!, selectedSubject.value.id), JSON.stringify(responses.value)); }
     catch { /* 作答可在瀏覽器停用儲存時繼續。 */ }
@@ -664,6 +740,22 @@ function focusWrongList() {
   document.querySelector<HTMLElement>('.wrong-list > h3')?.focus();
 }
 
+async function openWrongBook() {
+  wrongBookExportError.value = '';
+  wrongBookExportNotice.value = '';
+  wrongBookOpen.value = true;
+  await nextTick();
+  const title = document.getElementById('wrong-book-title');
+  title?.focus({ preventScroll: true });
+  title?.scrollIntoView({ block: 'start' });
+}
+
+async function closeWrongBook() {
+  wrongBookOpen.value = false;
+  await nextTick();
+  document.querySelector<HTMLElement>('.revenge-gate .revenge-book-open')?.focus();
+}
+
 async function exportWrongBook() {
   if (!selectedYear.value || !selectedSubject.value || !wrongQuestions.value.length || exporting.value) return;
   exporting.value = true;
@@ -671,11 +763,29 @@ async function exportWrongBook() {
   try {
     const { downloadWrongBook } = await import('./wrong-book-pdf');
     await downloadWrongBook(selectedYear.value, selectedSubject.value.name, wrongQuestions.value, responses.value, correct.value, questions.value.length, totalPoints.value, randomAttempt.value ? `${attemptYearLabel.value} ${revengeAttempt.value ? '錯題復仇戰' : '隨機測驗'}` : `${yearLabel(selectedYear.value)}教師資格考試`,
-      Object.fromEntries(wrongQuestions.value.filter((question) => expired.value[question.id]).map((question) => [question.id, unansweredLabel(question)])));
+      Object.fromEntries(wrongQuestions.value.filter((question) => expired.value[question.id]).map((question) => [question.id, unansweredLabel(question)])), finished.value ? 'completed' : 'in-progress');
   } catch {
     exportError.value = 'PDF 產生失敗，請再試一次。';
   } finally {
     exporting.value = false;
+  }
+}
+
+async function exportSubjectWrongBook(group: WrongBookGroup) {
+  if (!group.questions.length || wrongBookExporting.value) return;
+  wrongBookExporting.value = group.id;
+  wrongBookExportError.value = '';
+  wrongBookExportNotice.value = '';
+  try {
+    const { downloadWrongBook } = await import('./wrong-book-pdf');
+    const questions = group.questions.map(({ question, userAnswer }) => ({ ...question, user_answer: mistakeAnswerLabel(userAnswer) }));
+    const year = questions[0]?.source?.year ?? selectedYear.value ?? manifest.value.at(0)?.year ?? 0;
+    await downloadWrongBook(year, group.name, questions, {}, 0, questions.length, questions.length * 2, '歷史錯題本', {}, 'collection');
+    wrongBookExportNotice.value = `${group.name}錯題本已產生（${questions.length} 題），下載已開始。`;
+  } catch {
+    wrongBookExportError.value = 'PDF 產生失敗，請再試一次。';
+  } finally {
+    wrongBookExporting.value = null;
   }
 }
 
@@ -735,6 +845,7 @@ onMounted(() => {
 });
 onBeforeUnmount(() => {
   cancelAttemptLoad();
+  cancelRevengePoolLoad();
   stopTimer();
   document.body.classList.remove('exam-revenge-scene');
   document.body.classList.remove('exam-revenge-playing', 'exam-practicing', 'exam-page-shell');
@@ -759,7 +870,7 @@ onBeforeUnmount(() => {
         <span v-if="mode === 'revenge'" class="fixed-timing"><SiteIcon name="clock" :size="18" />每題 60 秒</span>
         <a :href="siteUrl('/exam/history/')">個人練習紀錄 <SiteIcon name="arrow" :size="16" /></a>
       </nav>
-      <p class="heading-description">{{ mode === 'menu' ? `${availableYearRange} 年全類科考古題，選擇你的練習方式。` : mode === 'past' ? '選擇年度、類科與科目。' : mode === 'random' ? '自選範圍與題數。' : '從自己的錯題出發，一次拿下 5 題。' }}</p>
+      <p class="heading-description">{{ mode === 'menu' ? `${availableYearRange} 年全類科考古題，選擇你的練習方式。` : mode === 'past' ? '選擇年度、類科與科目。' : mode === 'random' ? '自選範圍與題數。' : '選擇科目與本輪題數，也可以瀏覽與下載錯題。' }}</p>
     </header>
 
     <p v-if="error" class="load-message" role="alert">{{ error }}</p>
@@ -767,7 +878,8 @@ onBeforeUnmount(() => {
 
     <template v-if="manifest.length">
       <ExamEntryMenu v-if="!selectedSubject && mode === 'menu'" :mistakes="revengePool.length" @choose="chooseMode" />
-      <RevengeGate v-if="!selectedSubject && mode === 'revenge'" :count="revengePool.length" :loading="revengeLoading" :error="revengeError" @start="startRevenge" @retry="refreshRevengePool" @practice="focusPracticeSettings" />
+      <RevengeGate v-if="!selectedSubject && mode === 'revenge'" :count="availableRevengeQuestions.length" :total-count="revengePool.length" :subjects="revengeSubjects" :selected-subjects="revengeSubjectIds" :loading="revengeLoading" :error="revengeError" :question-count="revengeCount" :question-count-error="revengeCountError" @update:subjects="updateRevengeSubjects" @update:question-count="revengeCount = $event" @start="startRevenge" @retry="refreshRevengePool" @practice="focusPracticeSettings" @browse="openWrongBook" />
+      <WrongBookBrowser v-if="!selectedSubject && mode === 'revenge' && wrongBookOpen" :groups="wrongBookGroups" :loading="revengeLoading" :error="revengeError" :exporting="wrongBookExporting" :export-error="wrongBookExportError" :export-notice="wrongBookExportNotice" @close="closeWrongBook" @retry="refreshRevengePool" @download="exportSubjectWrongBook" />
       <section v-if="!selectedSubject && (mode === 'past' || mode === 'random')" v-show="timingPanelOpen" id="timing-settings" class="shared-timing-panel" aria-labelledby="timing-title">
         <h2 id="timing-title">限時設定</h2>
         <div class="timing-settings">
@@ -969,9 +1081,12 @@ onBeforeUnmount(() => {
 
           <button v-if="!resultView && finished" type="button" class="back-link result-return" @click="showResults">← 返回測驗結果</button>
 
-          <div v-if="!resultView && !sequential && wrong > 0" class="view-switch" aria-label="題目範圍">
-            <button type="button" :aria-pressed="!wrongOnly" :class="{ active: !wrongOnly }" @click="showWrongOnly(false)">全部題目</button>
-            <button type="button" :aria-pressed="wrongOnly" :class="{ active: wrongOnly }" @click="showWrongOnly(true)">只看錯題（{{ wrong }}）</button>
+          <div v-if="!resultView && wrong > 0 && !revengeAttempt" class="view-switch" aria-label="題目範圍與錯題下載">
+            <template v-if="!sequential">
+              <button type="button" :aria-pressed="!wrongOnly" :class="{ active: !wrongOnly }" @click="showWrongOnly(false)">全部題目</button>
+              <button type="button" :aria-pressed="wrongOnly" :class="{ active: wrongOnly }" @click="showWrongOnly(true)">只看錯題（{{ wrong }}）</button>
+            </template>
+            <button type="button" class="wrong-book-download" :disabled="exporting" @click="exportWrongBook">{{ exporting ? '正在產生 PDF…' : `下載錯題本（${wrong}）` }}</button>
           </div>
 
           <section v-if="!resultView && currentGroup" class="question-set" aria-label="本頁題目">
@@ -1253,9 +1368,12 @@ onBeforeUnmount(() => {
 .result-options li.is-wrong strong { color: var(--color-danger); }
 .all-correct { padding: 18px 0; color: var(--color-primary); font-weight: 700; }
 .result-return { margin: 0 0 18px; }
-.view-switch { display: flex; gap: 6px; margin-bottom: 18px; }
+.view-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 18px; }
 .view-switch button { min-height: 44px; border: 1px solid var(--color-border); border-radius: 10px; background: var(--color-surface); color: var(--color-text); padding: 8px 16px; }
 .view-switch button.active { border-color: var(--color-primary); background: var(--color-primary-soft); color: var(--color-primary); font-weight: 700; }
+.view-switch .wrong-book-download { border-color: var(--color-primary); background: var(--color-primary); color: var(--color-surface); font-weight: 700; }
+.view-switch .wrong-book-download:hover { background: var(--color-primary-hover); }
+.view-switch .wrong-book-download:disabled { cursor: wait; opacity: .7; }
 .set-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; margin: 0 0 16px; }
 .set-heading h3 { margin: 0; color: var(--color-primary); }
 .set-heading span { color: var(--color-text-muted); font-size: .84rem; }
