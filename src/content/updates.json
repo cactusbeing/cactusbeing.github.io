@@ -8,6 +8,14 @@
   },
   "entries": [
     {
+      "id": "exam-wrong-book-upgrade",
+      "date": "2026-11-10",
+      "category": "exam",
+      "title": "錯題復仇戰升級，錯題本隨時下載",
+      "summary": "復仇戰支援搜尋與複選科目，可快速選擇 5、10、20 題或自訂題數。錯題本可依科目瀏覽與下載，作答中也能下載本輪錯題，不必完成整份試卷。",
+      "href": "/exam/?mode=revenge"
+    },
+    {
       "id": "material:生活管理:生活管理_食品健康大解密",
       "date": "2026-11-09",
       "category": "materials",
