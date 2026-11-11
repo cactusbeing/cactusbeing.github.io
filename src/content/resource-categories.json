@@ -18,10 +18,18 @@
     "comingSoon": true
   },
   {
-    "title": "特教班數學",
+    "title": "數學",
     "href": "/數學slide.html",
     "image": "/assets/img/math.jpg",
-    "description": "搭配「認識新台幣」與「魔法烘焙坊」遊戲，練習錢幣、湊錢、找零、形狀與數量。",
+    "description": "依特教班、國中資源班與高中資源班，尋找適合的數學教材。",
+    "groups": [
+      { "id": "special", "title": "特教班" },
+      { "id": "junior", "title": "國中資源班" },
+      { "id": "senior", "title": "高中資源班" }
+    ],
+    "fileGroups": {
+      "/files/特教班數學｜認識新台幣×魔法烘焙坊.pdf": "special"
+    },
     "files": [
       "/files/特教班數學｜認識新台幣×魔法烘焙坊.pdf"
     ]

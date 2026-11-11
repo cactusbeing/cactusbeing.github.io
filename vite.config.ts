@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { defineConfig } from 'vite';
+import { defineConfig, type HtmlTagDescriptor } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { readdirSync, cpSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
@@ -9,6 +9,9 @@ const inputs = readdirSync('.').filter((file) => file.endsWith('.html'));
 let siteBase = '/';
 let buildOutput = 'dist';
 const googleAnalyticsId = 'G-Q9P1010PSJ';
+const homeScreen = JSON.parse(readFileSync('manifest.webmanifest', 'utf8')) as {
+  name: string; theme_color: string;
+};
 const siteOrigin = 'https://cactusbeing.github.io';
 const excludedFromSearch = new Set(['404.html', 'coming.html']);
 const canonicalFile = (file: string) => (file === 'post-old.html' ? 'post.html' : file);
@@ -39,6 +42,29 @@ export default defineConfig({
   base: process.env.VITE_BASE_PATH || '/',
   plugins: [
     vue(),
+    {
+      name: 'site-home-screen',
+      transformIndexHtml: {
+        order: 'post',
+        handler(html) {
+          // Share install metadata across every entry, including generated material pages.
+          const tags: HtmlTagDescriptor[] = [
+            { tag: 'link', attrs: { rel: 'manifest', href: siteBase + 'manifest.webmanifest' }, injectTo: 'head' },
+            { tag: 'link', attrs: { rel: 'apple-touch-icon', sizes: '180x180', href: siteBase + 'assets/icons/apple-touch-icon.png' }, injectTo: 'head' },
+            ...[
+              ['application-name', homeScreen.name],
+              ['apple-mobile-web-app-title', homeScreen.name],
+              ['mobile-web-app-capable', 'yes'],
+              ['apple-mobile-web-app-capable', 'yes'],
+              ['apple-mobile-web-app-status-bar-style', 'default'],
+            ].map(([name, content]) => ({ tag: 'meta', attrs: { name, content }, injectTo: 'head' as const })),
+          ];
+          if (!/<meta\b(?=[^>]*\bname=["']theme-color["'])[^>]*>/i.test(html))
+            tags.push({ tag: 'meta', attrs: { name: 'theme-color', content: homeScreen.theme_color }, injectTo: 'head' });
+          return tags;
+        },
+      },
+    },
     {
       name: 'site-banner-preload',
       transformIndexHtml: {
@@ -198,7 +224,7 @@ self.addEventListener('fetch',e=>{const u=new URL(e.request.url);if(e.request.me
         buildOutput = config.build.outDir;
       },
       closeBundle() {
-        for (const path of ['assets', 'files', 'css', 'js', 'CNAME']) {
+        for (const path of ['assets', 'files', 'css', 'js', 'CNAME', 'manifest.webmanifest']) {
           if (existsSync(path)) cpSync(path, resolve(buildOutput, path), { recursive: true });
         }
       },

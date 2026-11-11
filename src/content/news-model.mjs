@@ -18,6 +18,9 @@ export const materialAnchor = (name) => 'material-' + materialKey(name);
 export function materialNewsTitle(category, filename) {
   let name = filename.split('/').pop().normalize('NFC').replace(/\.(pdf|pptx|docx)$/i, '')
     .replace(/[\s_-]*(?:[（(]\s*)?(?:可編輯(?:版)?|editable)(?:\s*[）)])?$/iu, '').trim();
+  // Preserve a more specific subject label already present in a material's filename.
+  const subject = name.split(/[\s_｜|：:–—-]+/)[0];
+  if (subject !== name && subject.endsWith(category)) category = subject;
   if (name.startsWith(category) && /^[\s_｜|：:–—-]+/.test(name.slice(category.length)))
     name = name.slice(category.length).replace(/^[\s_｜|：:–—-]+/, '');
   return `${category}「${name}」上架`;

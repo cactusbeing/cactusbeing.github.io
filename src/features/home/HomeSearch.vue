@@ -19,7 +19,7 @@ const { query, results } = useSiteSearch();
 label { display: block; font-size: 1rem; font-weight: 650; margin-bottom: 10px; }
 .search-field { position: relative; }
 .search-field > svg { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--color-primary); pointer-events: none; }
-.search-field input { width: 100%; min-height: 50px; padding-inline: 46px 14px; font-size: .9375rem; background: var(--color-surface); border-radius: var(--radius-control); }
+.home-search .search-field input { width: 100%; min-height: 50px; padding-inline: 46px 14px; font-size: .9375rem; background: var(--color-surface); border-radius: var(--radius-control); }
 p { margin: 12px 0 0; font-size: .9375rem; color: var(--color-text-muted); }
 ul { list-style: none; margin: 10px 0 0; padding: 0; }
 li a { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; min-height: 44px; padding-block: 9px; border-bottom: 1px solid var(--color-border); }

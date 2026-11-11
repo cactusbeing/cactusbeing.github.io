@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import BlogLayout from '../../shared/components/BlogLayout.vue';
 import ArticleFeed from '../articles/ArticleFeed.vue';
 import BaseCard from '../../shared/components/BaseCard.vue';
@@ -11,6 +12,45 @@ const path = sitePathname();
 const category = resources.find((resource) => resource.href === path);
 const posts = path === '/post.html' || path === '/post-old.html';
 const tools = path === '/tool.html';
+const groups = category?.groups || [];
+function groupFiles(id: string) {
+  return category?.files.filter((file) => (category.fileGroups?.[file] || groups[0]?.id) === id) || [];
+}
+const selectedGroup = ref(groups[0]?.id || '');
+const activeGroup = computed(() => groups.find((group) => group.id === selectedGroup.value));
+const visibleFiles = computed(() => groups.length ? groupFiles(selectedGroup.value) : category?.files || []);
+const openPreviews = ref(new Set<string>());
+function togglePreview(file: string) {
+  if (openPreviews.value.has(file)) openPreviews.value.delete(file);
+  else openPreviews.value.add(file);
+}
+function previewId(file: string) {
+  return `${materialAnchor(decodeURIComponent(file.split('/').pop()!))}-preview`;
+}
+function readGroupFromUrl() {
+  if (!groups.length) return;
+  const url = new URL(window.location.href);
+  const linkedFile = category?.files.find((file) => `#${materialAnchor(decodeURIComponent(file.split('/').pop()!))}` === decodeURIComponent(url.hash));
+  const id = linkedFile ? category?.fileGroups?.[linkedFile] || groups[0]?.id : url.searchParams.get('group');
+  selectedGroup.value = groups.find((group) => group.id === id)?.id || groups[0]?.id || '';
+}
+function selectGroup(id: string) {
+  if (selectedGroup.value === id) return;
+  selectedGroup.value = id;
+  const url = new URL(window.location.href);
+  url.searchParams.set('group', id);
+  url.hash = '';
+  window.history.pushState({}, '', url);
+}
+readGroupFromUrl();
+onMounted(() => {
+  window.addEventListener('popstate', readGroupFromUrl);
+  window.addEventListener('hashchange', readGroupFromUrl);
+});
+onUnmounted(() => {
+  window.removeEventListener('popstate', readGroupFromUrl);
+  window.removeEventListener('hashchange', readGroupFromUrl);
+});
 function filename(path: string) {
   return (
     path
@@ -42,15 +82,31 @@ function filename(path: string) {
     <p class="muted section">PBS-正向行為支持計畫：建置中，敬請期待！</p></template
   >
   <template v-else-if="category"
-    ><a href="/教材.html">← 所有教學資源</a>
+    ><div :class="{ 'grouped-catalog': groups.length }"><a href="/教材.html">← 所有教學資源</a>
     <h1 class="section">{{ category.title }}</h1>
     <p class="muted">{{ category.description }}</p>
+    <div v-if="groups.length" class="class-picker" role="group" aria-label="選擇班別">
+      <button v-for="group in groups" :key="group.id" type="button"
+        :aria-pressed="selectedGroup === group.id" aria-controls="class-materials" @click="selectGroup(group.id)">
+        <span class="class-picker-title">{{ group.title }}</span>
+        <span class="class-picker-count">{{ groupFiles(group.id).length ? `${groupFiles(group.id).length} 份教材` : '教材準備中' }}</span>
+      </button>
+    </div>
+    <section id="class-materials" :aria-labelledby="activeGroup ? 'class-materials-heading' : undefined">
+    <h2 v-if="activeGroup" id="class-materials-heading" class="class-heading">{{ activeGroup.title }}</h2>
+    <p v-if="activeGroup && !visibleFiles.length" class="class-empty muted" role="status">{{ activeGroup.title }}數學教材準備中，上架後會顯示在這裡。</p>
     <div v-if="!category.comingSoon" class="stack section">
-      <BaseCard v-for="file in category.files" :key="file" :id="materialAnchor(decodeURIComponent(file.split('/').pop()!))"
-        ><span class="tag">{{ materialFiles(category, file).map(materialFormatLabel).join('・') }}</span>
-        <h2>{{ decodeURIComponent(filename(file)) }}</h2>
-        <div class="actions">
-          <BaseButton v-if="materialFormat(file) === 'PDF'" :href="file" target="_blank" rel="noopener"
+      <BaseCard v-for="file in visibleFiles" :key="file" :id="materialAnchor(decodeURIComponent(file.split('/').pop()!))"
+        ><div class="material-row"><div class="material-info">
+        <span class="tag">{{ materialFiles(category, file).map(materialFormatLabel).join('・') }}</span>
+        <component :is="activeGroup ? 'h3' : 'h2'" class="material-title">{{ decodeURIComponent(filename(file)) }}</component>
+        </div><div class="actions material-actions">
+          <BaseButton v-if="materialFormat(file) === 'PDF'"
+            :aria-expanded="openPreviews.has(file)" :aria-controls="previewId(file)" @click="togglePreview(file)">
+            {{ openPreviews.has(file) ? '收合預覽' : '預覽' }}
+            <span class="visually-hidden">{{ decodeURIComponent(filename(file)) }}</span>
+          </BaseButton>
+          <BaseButton v-if="materialFormat(file) === 'PDF'" :href="file" variant="secondary" target="_blank" rel="noopener"
             >開啟 PDF
             <span class="visually-hidden">{{ decodeURIComponent(filename(file)) }}（新分頁）</span></BaseButton
           ><BaseButton
@@ -62,13 +118,18 @@ function filename(path: string) {
             >下載{{ materialFormat(downloadFile) === 'PDF' ? ' PDF' : `可編輯 ${materialFormat(downloadFile)}` }}
             <span class="visually-hidden">{{ decodeURIComponent(filename(file)) }}</span></BaseButton
           >
+        </div></div>
+        <div v-if="materialFormat(file) === 'PDF'" v-show="openPreviews.has(file)"
+          :id="previewId(file)" class="material-preview" role="region" :aria-label="`${decodeURIComponent(filename(file))} 預覽`">
+          <iframe v-if="openPreviews.has(file)" :src="file" :title="`${decodeURIComponent(filename(file))} PDF 教材預覽`">
+            您的瀏覽器不支援 PDF 預覽，請使用上方連結下載後閱讀。
+          </iframe>
         </div></BaseCard
       >
-    </div></template
+    </div></section></div></template
   >
   <template v-else
-    ><span class="eyebrow">THE RESOURCE SHELF</span>
-    <h1>教材資源分享</h1>
+    ><h1>教材資源分享</h1>
     <p class="muted">選一個主題，為下一堂課找點靈感。</p>
     <div class="grid">
       <BaseCard
@@ -108,11 +169,113 @@ function filename(path: string) {
   border-radius: 12px;
   margin-bottom: 1rem;
 }
-h2 {
+h2, .material-title {
   font-size: 1.3rem;
   margin-top: 0.8rem;
 }
 .stack {
   margin-top: 1.5rem;
+}
+.grouped-catalog {
+  max-width: 960px;
+  margin-inline: auto;
+}
+.class-picker {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-block: 2rem 3rem;
+}
+.class-picker button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  padding: 1rem 1.5rem;
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-text);
+  text-align: left;
+}
+.class-picker button:hover {
+  background: var(--color-surface-muted);
+}
+.class-picker button[aria-pressed='true'] {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-surface);
+}
+.class-picker-title {
+  font-weight: 650;
+  font-size: 1.125rem;
+}
+.class-picker-count {
+  font-size: 0.875rem;
+}
+.grouped-catalog .class-heading {
+  margin: 0 0 1rem;
+  font-size: 1.5rem;
+}
+.class-empty {
+  padding: 1.5rem;
+  background: var(--color-surface-muted);
+  border-radius: var(--radius-control);
+}
+.grouped-catalog .stack {
+  margin-top: 0;
+}
+.material-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+.material-info {
+  flex: 1;
+  min-width: 0;
+}
+.material-title {
+  margin-bottom: 0;
+}
+.material-actions {
+  flex-shrink: 0;
+  max-width: 32rem;
+}
+.material-preview {
+  margin-top: 1.5rem;
+}
+.material-preview iframe {
+  display: block;
+  width: 100%;
+  height: 600px;
+  border: 1px solid var(--color-border);
+}
+@media (max-width: 1000px) {
+  .material-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  .material-actions {
+    max-width: none;
+  }
+}
+@media (max-width: 600px) {
+  .material-preview iframe {
+    height: 440px;
+  }
+  .class-picker {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    margin-block: 1.5rem 2rem;
+  }
+  .class-picker button {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+  }
 }
 </style>

@@ -82,6 +82,53 @@ for (const privatePath of ['src', 'docs', 'node_modules', 'REFACTOR_PLAN.md', '.
 }
 console.log('Pages: deep entries, local HTML references, 404 and artifact boundaries verified.');
 
+// Installation metadata must resolve within both user-site and project-site deployments.
+const manifestUrl = new URL(deploymentBase + 'manifest.webmanifest', 'https://local.test');
+const homeScreen = JSON.parse(readFileSync(built('manifest.webmanifest'), 'utf8'));
+if (homeScreen.name !== '特教百寶袋' || homeScreen.short_name !== homeScreen.name || homeScreen.display !== 'standalone')
+  throw new Error('Home-screen app name or standalone display is incorrect');
+for (const field of ['id', 'start_url', 'scope']) {
+  if (new URL(homeScreen[field], manifestUrl).pathname !== deploymentBase)
+    throw new Error(`Home-screen ${field} must resolve to the deployment root`);
+}
+function verifyIcon(file, size) {
+  const png = readFileSync(built(file));
+  if (!png.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])) ||
+      png.readUInt32BE(16) !== size || png.readUInt32BE(20) !== size)
+    throw new Error(`Home-screen icon must be a ${size}×${size} PNG: ${file}`);
+}
+for (const size of [192, 512]) {
+  const icon = homeScreen.icons.find(icon => icon.sizes === `${size}x${size}` && icon.type === 'image/png');
+  if (!icon) throw new Error(`Missing Android ${size}×${size} icon`);
+  const url = new URL(icon.src, manifestUrl);
+  if (url.origin !== manifestUrl.origin || !url.pathname.startsWith(deploymentBase))
+    throw new Error('Home-screen icon escapes the deployment path');
+  verifyIcon(url.pathname.slice(deploymentBase.length), size);
+}
+verifyIcon('assets/icons/apple-touch-icon.png', 180);
+const homeScreenPages = readdirSync(outputDirectory, { recursive: true, encoding: 'utf8' }).filter(file => file.endsWith('.html'));
+for (const file of homeScreenPages) {
+  const head = readFileSync(built(file), 'utf8').match(/<head\b[^>]*>([\s\S]*?)<\/head>/i)?.[1] ?? '';
+  for (const [rel, href] of [
+    ['manifest', deploymentBase + 'manifest.webmanifest'],
+    ['apple-touch-icon', deploymentBase + 'assets/icons/apple-touch-icon.png'],
+  ]) {
+    const tags = [...head.matchAll(new RegExp(`<link\\b[^>]*\\brel=["']${rel}["'][^>]*>`, 'gi'))];
+    if (tags.length !== 1 || !tags[0][0].includes(`href="${href}"`))
+      throw new Error(`Missing or incorrect ${rel} in ${file}`);
+  }
+  for (const [name, content] of [
+    ['application-name', homeScreen.name], ['apple-mobile-web-app-title', homeScreen.name],
+    ['mobile-web-app-capable', 'yes'], ['apple-mobile-web-app-capable', 'yes'],
+    ['apple-mobile-web-app-status-bar-style', 'default'], ['theme-color', null],
+  ]) {
+    const tags = [...head.matchAll(new RegExp(`<meta\\b[^>]*\\bname=["']${name}["'][^>]*>`, 'gi'))];
+    if (tags.length !== 1 || (content && !tags[0][0].includes(`content="${content}"`)))
+      throw new Error(`Missing or duplicate home-screen ${name} in ${file}`);
+  }
+}
+console.log(`Home screen: app identity, standalone display, three PNG sizes and ${homeScreenPages.length} HTML entries verified (base ${deploymentBase}).`);
+
 const examIndex = JSON.parse(readFileSync(built('assets/exams/index.json'), 'utf8'));
 for (const file of readdirSync(built('assets/exams'), { recursive: true, encoding: 'utf8' })) {
   if (/\.pdf$/i.test(file) || file.split(/[\\/]/).some((part) => ['source', 'originals'].includes(part)))

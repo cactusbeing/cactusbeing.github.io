@@ -6,6 +6,8 @@ export interface ResourceCategory {
   image: string;
   description: string;
   files: string[];
+  groups?: { id: string; title: string }[];
+  fileGroups?: Record<string, string>;
   editableFiles?: Record<string, string | string[] | undefined>;
   comingSoon?: boolean;
 }

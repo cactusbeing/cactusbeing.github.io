@@ -193,7 +193,9 @@ try {
     assert.ok(news.entries[0].href.includes('#material-'));
     assert.deepEqual(other, f.categories[1]);
     const html = readFileSync(join(f.root, '學習策略slide.html'), 'utf8');
-    assert.ok(html.includes('&quot;好&quot;')); assert.ok(html.includes('%23')); assert.ok(html.includes('%26'));
+    assert.equal(decodeURIComponent(category.files[0]), '/files/' + stem + '.pdf');
+    assert.ok(category.files[0].includes('%23')); assert.ok(category.files[0].includes('%26'));
+    assert.ok(html.includes('id="catalog-app"')); assert.ok(!html.includes('<iframe'), 'PDF previews are loaded on demand by the catalog');
     assert.ok(existsSync(join(f.root, 'dist/new.txt')));
     paths.forEach((path, i) => assert.deepEqual(readFileSync(path), original[i]));
     validateCatalog(catalog(f), f.root, true);
