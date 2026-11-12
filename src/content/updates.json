@@ -8,6 +8,79 @@
   },
   "entries": [
     {
+      "id": "math-grade7-sem1-2-1-to-3-2-launch",
+      "date": "2026-11-12",
+      "category": "materials",
+      "title": "國一上資源班數學 2-1～3-2 五單元教材上架",
+      "summary": "包含代數式化簡、一元一次方程式的列式與求解及應用問題、線對稱圖形、立體圖形的三視圖，共 5 份 PDF，可預覽與下載。",
+      "href": "/數學slide.html?group=junior"
+    },
+    {
+      "id": "material:數學:國一上:3-2 立體圖形的三視圖",
+      "date": "2026-11-12",
+      "category": "materials",
+      "title": "數學「國一上：3-2 立體圖形的三視圖」上架",
+      "summary": "數學教材，提供 PDF 下載。",
+      "href": "/數學slide.html#material-%E5%9C%8B%E4%B8%80%E4%B8%8A%3A3-2%20%E7%AB%8B%E9%AB%94%E5%9C%96%E5%BD%A2%E7%9A%84%E4%B8%89%E8%A6%96%E5%9C%96",
+      "material": {
+        "category": "數學",
+        "key": "國一上:3-2 立體圖形的三視圖"
+      },
+      "hidden": true
+    },
+    {
+      "id": "material:數學:國一上:3-1 線對稱圖形",
+      "date": "2026-11-12",
+      "category": "materials",
+      "title": "數學「國一上：3-1 線對稱圖形」上架",
+      "summary": "數學教材，提供 PDF 下載。",
+      "href": "/數學slide.html#material-%E5%9C%8B%E4%B8%80%E4%B8%8A%3A3-1%20%E7%B7%9A%E5%B0%8D%E7%A8%B1%E5%9C%96%E5%BD%A2",
+      "material": {
+        "category": "數學",
+        "key": "國一上:3-1 線對稱圖形"
+      },
+      "hidden": true
+    },
+    {
+      "id": "material:數學:國一上:2-3 一元一次方程式的應用問題",
+      "date": "2026-11-12",
+      "category": "materials",
+      "title": "數學「國一上：2-3 一元一次方程式的應用問題」上架",
+      "summary": "數學教材，提供 PDF 下載。",
+      "href": "/數學slide.html#material-%E5%9C%8B%E4%B8%80%E4%B8%8A%3A2-3%20%E4%B8%80%E5%85%83%E4%B8%80%E6%AC%A1%E6%96%B9%E7%A8%8B%E5%BC%8F%E7%9A%84%E6%87%89%E7%94%A8%E5%95%8F%E9%A1%8C",
+      "material": {
+        "category": "數學",
+        "key": "國一上:2-3 一元一次方程式的應用問題"
+      },
+      "hidden": true
+    },
+    {
+      "id": "material:數學:國一上:2-2 一元一次方程式的列式與求解",
+      "date": "2026-11-12",
+      "category": "materials",
+      "title": "數學「國一上：2-2 一元一次方程式的列式與求解」上架",
+      "summary": "數學教材，提供 PDF 下載。",
+      "href": "/數學slide.html#material-%E5%9C%8B%E4%B8%80%E4%B8%8A%3A2-2%20%E4%B8%80%E5%85%83%E4%B8%80%E6%AC%A1%E6%96%B9%E7%A8%8B%E5%BC%8F%E7%9A%84%E5%88%97%E5%BC%8F%E8%88%87%E6%B1%82%E8%A7%A3",
+      "material": {
+        "category": "數學",
+        "key": "國一上:2-2 一元一次方程式的列式與求解"
+      },
+      "hidden": true
+    },
+    {
+      "id": "material:數學:國一上:2-1 代數式的化簡",
+      "date": "2026-11-12",
+      "category": "materials",
+      "title": "數學「國一上：2-1 代數式的化簡」上架",
+      "summary": "數學教材，提供 PDF 下載。",
+      "href": "/數學slide.html#material-%E5%9C%8B%E4%B8%80%E4%B8%8A%3A2-1%20%E4%BB%A3%E6%95%B8%E5%BC%8F%E7%9A%84%E5%8C%96%E7%B0%A1",
+      "material": {
+        "category": "數學",
+        "key": "國一上:2-1 代數式的化簡"
+      },
+      "hidden": true
+    },
+    {
       "id": "math-grade7-integers-fractions-launch",
       "date": "2026-11-11",
       "category": "materials",
