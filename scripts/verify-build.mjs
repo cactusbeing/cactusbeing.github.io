@@ -9,7 +9,7 @@ const outputDirectory = process.argv[2] || 'dist';
 const built = (file) => resolve(outputDirectory, file);
 const resourceCategories = JSON.parse(readFileSync('src/content/resource-categories.json', 'utf8'));
 validateCatalog(resourceCategories, resolve(outputDirectory), true);
-console.log('Materials: category pages, images, primary files and editable downloads verified.');
+console.log('Materials: category pages, images, primary files, editable downloads and teacher answer PDFs verified.');
 const news = JSON.parse(readFileSync('src/content/updates.json', 'utf8'));
 validateNewsData(news);
 for (const entry of liveNews(news.entries, resourceCategories).filter((entry) => !entry.hidden)) {

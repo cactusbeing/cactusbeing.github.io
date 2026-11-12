@@ -124,6 +124,52 @@ try {
     assert.equal(JSON.parse(readFileSync(join(f.root, 'src/content/updates.json'))).entries.length, 2);
     validateCatalog(catalog(f), f.root, true);
   });
+  test('Teacher PDFs pair with originals, preserve hidden news and reject orphan, duplicate and classroom conflicts', () => {
+    const f = fixture({ math: true });
+    run(f, [input(f, '方程式.docx', office('docx', 'student'))], '3\n2\n');
+    const newsPath = join(f.root, 'src/content/updates.json');
+    const news = JSON.parse(readFileSync(newsPath)); news.entries[0].hidden = true;
+    writeFileSync(newsPath, JSON.stringify(news));
+    const teacher = input(f, '方程式_教師版.pdf', pdf('complete teacher answers'));
+    const before = sources(f);
+    const rejected = run(f, [teacher], '3\n3\n', false);
+    assert.ok(rejected.stderr.includes('原教材班別'), rejected.stderr);
+    assert.equal(sources(f), before);
+    run(f, [teacher], '3\n2\n');
+    let category = catalog(f)[2]; const oldPrimary = category.files[0];
+    assert.equal(category.files.length, 1);
+    assert.equal(decodeURIComponent(category.teacherFiles[oldPrimary]), '/files/方程式_教師版.pdf');
+    assert.equal(category.fileGroups[oldPrimary], 'junior');
+    const afterNews = JSON.parse(readFileSync(newsPath));
+    assert.equal(afterNews.entries.length, 1); assert.equal(afterNews.entries[0].hidden, true);
+    assert.ok(afterNews.entries[0].summary.includes('教師版 PDF'));
+    run(f, [input(f, '方程式.pdf', pdf('student PDF'))], '3\n2\n');
+    category = catalog(f)[2]; const primary = category.files[0];
+    assert.ok(primary.endsWith('.pdf')); assert.equal(category.teacherFiles[oldPrimary], undefined);
+    assert.ok(category.teacherFiles[primary].endsWith('.pdf'));
+    assert.equal(category.editableFiles[primary].length, 1);
+    validateCatalog(catalog(f), f.root, true);
+    for (const [name, message] of [['不存在_教師版.pdf', '對應學生教材'], ['方程式-teacher.pdf', '已有教師版']]) {
+      const snapshot = sources(f);
+      assert.ok(run(f, [input(f, name, pdf(name))], '3\n2\n', false).stderr.includes(message));
+      assert.equal(sources(f), snapshot);
+    }
+    const bad = catalog(f); bad[2].teacherFiles[primary] = primary;
+    assert.throws(() => validateCatalog(bad, f.root, true), /重複/);
+    const missing = catalog(f); rmSync(join(f.root, decodeURIComponent(missing[2].teacherFiles[primary].slice(1))));
+    assert.throws(() => validateCatalog(missing, f.root, true), /不存在/);
+  });
+  test('Student and teacher PDFs in one upload pair regardless of input order', () => {
+    const f = fixture();
+    run(f, [input(f, '新講義_教師版.pdf', pdf('answers')), input(f, '新講義.pdf', pdf('questions'))]);
+    const category = catalog(f)[0]; assert.equal(category.files.length, 1);
+    assert.equal(category.teacherFiles[category.files[0]], '/files/' + encodeURIComponent('新講義_教師版.pdf'));
+    assert.equal(category.editableFiles, undefined);
+    assert.equal(JSON.parse(readFileSync(join(f.root, 'src/content/updates.json'))).entries.length, 1);
+    assert.equal(materialKey('新講義_教師版.pdf'), materialKey('新講義.pdf'));
+    assert.equal(materialKey('teacher.pdf'), 'teacher');
+    validateCatalog(catalog(f), f.root, true);
+  });
   test('Classroom menu retries invalid input; cancellation and EOF leave files unchanged and release the lock', () => {
     const f = fixture({ math: true }); const path = input(f, '班別取消.pdf'); const before = sources(f);
     for (const answer of ['3\nq\n', '3\n']) {

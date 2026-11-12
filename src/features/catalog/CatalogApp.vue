@@ -4,6 +4,7 @@ import BlogLayout from '../../shared/components/BlogLayout.vue';
 import ArticleFeed from '../articles/ArticleFeed.vue';
 import BaseCard from '../../shared/components/BaseCard.vue';
 import BaseButton from '../../shared/components/BaseButton.vue';
+import MaterialFileIcon from './MaterialFileIcon.vue';
 import { materialFiles, materialFormat, materialFormatLabel, materialTitle, resourceCountLabel, resources } from '../../content/resources';
 import { sitePathname } from '../../shared/site-path';
 import { imageSource, imageSrcset } from '../../shared/responsive-images';
@@ -19,6 +20,12 @@ function groupFiles(id: string) {
 const selectedGroup = ref(groups[0]?.id || '');
 const activeGroup = computed(() => groups.find((group) => group.id === selectedGroup.value));
 const visibleFiles = computed(() => groups.length ? groupFiles(selectedGroup.value) : category?.files || []);
+const hasTeacherAnswers = computed(() => visibleFiles.value.some((file) => category?.teacherFiles?.[file]));
+function downloadLabel(primary: string, downloadFile: string) {
+  if (!category) return '';
+  const edition = category.teacherFiles?.[primary] && materialFormat(downloadFile) === 'PDF' ? '學生版 ' : '';
+  return `下載${edition}${materialFormatLabel(downloadFile)}｜${materialTitle(category, primary)}`;
+}
 const openPreviews = ref(new Set<string>());
 function togglePreview(file: string) {
   if (openPreviews.value.has(file)) openPreviews.value.delete(file);
@@ -86,33 +93,38 @@ onUnmounted(() => {
     </div>
     <section id="class-materials" :aria-labelledby="activeGroup ? 'class-materials-heading' : undefined">
     <h2 v-if="activeGroup" id="class-materials-heading" class="class-heading">{{ activeGroup.title }}</h2>
+    <p v-if="visibleFiles.length" class="download-hint muted">點選檔案圖示下載{{ hasTeacherAnswers ? '；教師版僅含解答。' : '，PDF 可先預覽。' }}</p>
     <p v-if="activeGroup && !visibleFiles.length" class="class-empty muted" role="status">{{ activeGroup.title }}數學教材準備中，上架後會顯示在這裡。</p>
     <div v-if="!category.comingSoon" class="stack section">
       <BaseCard v-for="file in visibleFiles" :key="file" :id="materialAnchor(decodeURIComponent(file.split('/').pop()!))"
         ><div class="material-row"><div class="material-info">
-        <span class="tag">{{ materialFiles(category, file).map(materialFormatLabel).join('・') }}</span>
         <component :is="activeGroup ? 'h3' : 'h2'" class="material-title">{{ materialTitle(category, file) }}</component>
-        </div><div class="actions material-actions">
-          <BaseButton v-if="materialFormat(file) === 'PDF'"
+        </div><div class="actions material-actions" role="group" :aria-label="`${materialTitle(category, file)} 預覽與下載`">
+          <BaseButton v-if="materialFormat(file) === 'PDF'" class="material-preview-toggle"
             :aria-expanded="openPreviews.has(file)" :aria-controls="previewId(file)" @click="togglePreview(file)">
-            {{ openPreviews.has(file) ? '收合預覽' : '預覽' }}
+            {{ openPreviews.has(file) ? '收合' : '預覽' }}
             <span class="visually-hidden">{{ materialTitle(category, file) }}</span>
           </BaseButton>
-          <BaseButton v-if="materialFormat(file) === 'PDF'" :href="file" variant="secondary" target="_blank" rel="noopener"
-            >開啟 PDF
-            <span class="visually-hidden">{{ materialTitle(category, file) }}（新分頁）</span></BaseButton
-          ><BaseButton
+          <a
             v-for="downloadFile in materialFiles(category, file)"
             :key="downloadFile"
             :href="downloadFile"
-            variant="secondary"
+            class="material-file-download"
+            :aria-label="downloadLabel(file, downloadFile)" :title="downloadLabel(file, downloadFile)"
             :download="category.materialTitles?.[file] ? `${materialTitle(category, file)}.${materialFormat(downloadFile).toLowerCase()}` : ''"
-            >下載{{ materialFormat(downloadFile) === 'PDF' ? ' PDF' : `可編輯 ${materialFormat(downloadFile)}` }}
-            <span class="visually-hidden">{{ materialTitle(category, file) }}</span></BaseButton
+            ><MaterialFileIcon :format="materialFormat(downloadFile)" /></a
           >
+          <a v-if="category.teacherFiles?.[file]"
+            :href="category.teacherFiles[file]" class="material-file-download material-teacher-download"
+            :aria-label="`下載教師版 PDF（僅解答）｜${materialTitle(category, file)}`"
+            :title="`下載教師版 PDF（僅解答）｜${materialTitle(category, file)}`"
+            :download="`${materialTitle(category, file)}_教師版.pdf`">
+            <MaterialFileIcon format="PDF" /><span>教師版</span>
+          </a>
         </div></div>
         <div v-if="materialFormat(file) === 'PDF'" v-show="openPreviews.has(file)"
           :id="previewId(file)" class="material-preview" role="region" :aria-label="`${materialTitle(category, file)} 預覽`">
+          <a class="preview-open-link" :href="file" target="_blank" rel="noopener">在新分頁開啟 PDF<span class="visually-hidden">｜{{ materialTitle(category, file) }}</span></a>
           <iframe v-if="openPreviews.has(file)" :src="file" :title="`${materialTitle(category, file)} PDF 教材預覽`">
             您的瀏覽器不支援 PDF 預覽，請使用上方連結下載後閱讀。
           </iframe>
@@ -228,11 +240,36 @@ h2, .material-title {
   min-width: 0;
 }
 .material-title {
-  margin-bottom: 0;
+  margin: 0;
 }
 .material-actions {
   flex-shrink: 0;
-  max-width: 32rem;
+  max-width: 100%;
+  gap: 6px;
+}
+.download-hint { margin: 0 0 1.25rem; font-size: .875rem; }
+.material-preview-toggle { min-width: 56px; padding: 6px 8px; font-size: .875rem; white-space: nowrap; }
+.material-file-download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 5px 7px;
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-primary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.material-file-download:hover { background: var(--color-primary-soft); color: var(--color-primary); }
+.material-file-download:active { background: var(--color-primary-soft); }
+.material-teacher-download { font-size: .875rem; font-weight: 600; }
+.preview-open-link { display: inline-flex; align-items: center; min-height: 44px; font-size: .875rem; }
+@media (prefers-reduced-motion: no-preference) {
+  .material-file-download { transition: background-color .15s ease-out; }
 }
 .material-preview {
   margin-top: 1.5rem;

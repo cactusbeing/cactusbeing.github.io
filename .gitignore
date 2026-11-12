@@ -86,3 +86,12 @@ test-results/
 # Bakery validation is required by the production build.
 !/scripts/test-bakery.mjs
 !/docs/bakery-validation.md
+
+# Reviewed teacher answer sources accompany the generated teaching PDFs.
+!/scripts/materials/
+/scripts/materials/*
+!/scripts/materials/build-grade7-teacher.py
+!/scripts/materials/grade7-math-answers.json
+!/scripts/materials/requirements.txt
+!/scripts/materials/verify-grade7-math.py
+!/docs/grade7-math-teacher-editions.md

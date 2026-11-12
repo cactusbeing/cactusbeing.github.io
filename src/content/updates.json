@@ -8,6 +8,14 @@
   },
   "entries": [
     {
+      "id": "math-grade7-sem1-teacher-editions",
+      "date": "2026-11-12",
+      "category": "materials",
+      "title": "國一上資源班數學 1-1～3-2 教師版上架",
+      "summary": "共 11 份教師版 PDF，僅收錄按學生講義頁碼對照的解答、計算過程與線對稱及三視圖作答示範，可從各教材旁下載。",
+      "href": "/數學slide.html?group=junior"
+    },
+    {
       "id": "math-grade7-sem1-2-1-to-3-2-launch",
       "date": "2026-11-12",
       "category": "materials",
@@ -20,7 +28,7 @@
       "date": "2026-11-12",
       "category": "materials",
       "title": "數學「國一上：3-2 立體圖形的三視圖」上架",
-      "summary": "數學教材，提供 PDF 下載。",
+      "summary": "數學教材，提供 PDF、教師版 PDF 下載。",
       "href": "/數學slide.html#material-%E5%9C%8B%E4%B8%80%E4%B8%8A%3A3-2%20%E7%AB%8B%E9%AB%94%E5%9C%96%E5%BD%A2%E7%9A%84%E4%B8%89%E8%A6%96%E5%9C%96",
       "material": {
         "category": "數學",
@@ -33,7 +41,7 @@
       "date": "2026-11-12",
       "category": "materials",
       "title": "數學「國一上：3-1 線對稱圖形」上架",
-      "summary": "數學教材，提供 PDF 下載。",
+      "summary": "數學教材，提供 PDF、教師版 PDF 下載。",
       "href": "/數學slide.html#material-%E5%9C%8B%E4%B8%80%E4%B8%8A%3A3-1%20%E7%B7%9A%E5%B0%8D%E7%A8%B1%E5%9C%96%E5%BD%A2",
       "material": {
         "category": "數學",
@@ -46,7 +54,7 @@
       "date": "2026-11-12",
       "category": "materials",
       "title": "數學「國一上：2-3 一元一次方程式的應用問題」上架",
-      "summary": "數學教材，提供 PDF 下載。",
+      "summary": "數學教材，提供 PDF、教師版 PDF 下載。",
       "href": "/數學slide.html#material-%E5%9C%8B%E4%B8%80%E4%B8%8A%3A2-3%20%E4%B8%80%E5%85%83%E4%B8%80%E6%AC%A1%E6%96%B9%E7%A8%8B%E5%BC%8F%E7%9A%84%E6%87%89%E7%94%A8%E5%95%8F%E9%A1%8C",
       "material": {
         "category": "數學",
@@ -59,7 +67,7 @@
       "date": "2026-11-12",
       "category": "materials",
       "title": "數學「國一上：2-2 一元一次方程式的列式與求解」上架",
-      "summary": "數學教材，提供 PDF 下載。",
+      "summary": "數學教材，提供 PDF、教師版 PDF 下載。",
       "href": "/數學slide.html#material-%E5%9C%8B%E4%B8%80%E4%B8%8A%3A2-2%20%E4%B8%80%E5%85%83%E4%B8%80%E6%AC%A1%E6%96%B9%E7%A8%8B%E5%BC%8F%E7%9A%84%E5%88%97%E5%BC%8F%E8%88%87%E6%B1%82%E8%A7%A3",
       "material": {
         "category": "數學",
@@ -72,7 +80,7 @@
       "date": "2026-11-12",
       "category": "materials",
       "title": "數學「國一上：2-1 代數式的化簡」上架",
-      "summary": "數學教材，提供 PDF 下載。",
+      "summary": "數學教材，提供 PDF、教師版 PDF 下載。",
       "href": "/數學slide.html#material-%E5%9C%8B%E4%B8%80%E4%B8%8A%3A2-1%20%E4%BB%A3%E6%95%B8%E5%BC%8F%E7%9A%84%E5%8C%96%E7%B0%A1",
       "material": {
         "category": "數學",
@@ -93,7 +101,7 @@
       "date": "2026-11-11",
       "category": "materials",
       "title": "國一資源班數學「1-6 整數與分數的混合運算」上架",
-      "summary": "數學教材，提供 PDF 下載。",
+      "summary": "數學教材，提供 PDF、教師版 PDF 下載。",
       "href": "/數學slide.html#material-%E5%9C%8B%E4%B8%80%E8%B3%87%E6%BA%90%E7%8F%AD%E6%95%B8%E5%AD%B8_1-6%20%E6%95%B4%E6%95%B8%E8%88%87%E5%88%86%E6%95%B8%E7%9A%84%E6%B7%B7%E5%90%88%E9%81%8B%E7%AE%97",
       "material": {
         "category": "數學",
@@ -106,7 +114,7 @@
       "date": "2026-11-11",
       "category": "materials",
       "title": "國一資源班數學「1-5 分數的四則運算」上架",
-      "summary": "數學教材，提供 PDF 下載。",
+      "summary": "數學教材，提供 PDF、教師版 PDF 下載。",
       "href": "/數學slide.html#material-%E5%9C%8B%E4%B8%80%E8%B3%87%E6%BA%90%E7%8F%AD%E6%95%B8%E5%AD%B8_1-5%20%E5%88%86%E6%95%B8%E7%9A%84%E5%9B%9B%E5%89%87%E9%81%8B%E7%AE%97",
       "material": {
         "category": "數學",
@@ -119,7 +127,7 @@
       "date": "2026-11-11",
       "category": "materials",
       "title": "國一資源班數學「1-4 因數與倍數、最大公因數與最小公倍數」上架",
-      "summary": "數學教材，提供 PDF 下載。",
+      "summary": "數學教材，提供 PDF、教師版 PDF 下載。",
       "href": "/數學slide.html#material-%E5%9C%8B%E4%B8%80%E8%B3%87%E6%BA%90%E7%8F%AD%E6%95%B8%E5%AD%B8_1-4%20%E5%9B%A0%E6%95%B8%E8%88%87%E5%80%8D%E6%95%B8%E3%80%81%E6%9C%80%E5%A4%A7%E5%85%AC%E5%9B%A0%E6%95%B8%E8%88%87%E6%9C%80%E5%B0%8F%E5%85%AC%E5%80%8D%E6%95%B8",
       "material": {
         "category": "數學",
@@ -132,7 +140,7 @@
       "date": "2026-11-11",
       "category": "materials",
       "title": "國一資源班數學「1-3 指數記法與科學記號」上架",
-      "summary": "數學教材，提供 PDF 下載。",
+      "summary": "數學教材，提供 PDF、教師版 PDF 下載。",
       "href": "/數學slide.html#material-%E5%9C%8B%E4%B8%80%E8%B3%87%E6%BA%90%E7%8F%AD%E6%95%B8%E5%AD%B8_1-3%20%E6%8C%87%E6%95%B8%E8%A8%98%E6%B3%95%E8%88%87%E7%A7%91%E5%AD%B8%E8%A8%98%E8%99%9F",
       "material": {
         "category": "數學",
@@ -145,7 +153,7 @@
       "date": "2026-11-11",
       "category": "materials",
       "title": "國一資源班數學「1-2 整數的四則運算」上架",
-      "summary": "數學教材，提供 PDF 下載。",
+      "summary": "數學教材，提供 PDF、教師版 PDF 下載。",
       "href": "/數學slide.html#material-%E5%9C%8B%E4%B8%80%E8%B3%87%E6%BA%90%E7%8F%AD%E6%95%B8%E5%AD%B8_1-2%20%E6%95%B4%E6%95%B8%E7%9A%84%E5%9B%9B%E5%89%87%E9%81%8B%E7%AE%97",
       "material": {
         "category": "數學",
@@ -158,7 +166,7 @@
       "date": "2026-11-11",
       "category": "materials",
       "title": "國一資源班數學「1-1 負數與數線」上架",
-      "summary": "數學教材，提供 PDF 下載。",
+      "summary": "數學教材，提供 PDF、教師版 PDF 下載。",
       "href": "/數學slide.html#material-%E5%9C%8B%E4%B8%80%E8%B3%87%E6%BA%90%E7%8F%AD%E6%95%B8%E5%AD%B8_1-1%20%E8%B2%A0%E6%95%B8%E8%88%87%E6%95%B8%E7%B7%9A",
       "material": {
         "category": "數學",

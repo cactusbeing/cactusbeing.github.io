@@ -9,7 +9,7 @@ import { tmpdir } from 'node:os';
 import { basename, dirname, extname, join, relative, resolve } from 'node:path';
 import { createInterface } from 'node:readline';
 import { fileURLToPath } from 'node:url';
-import { addMaterialNews, materialKey, validateNewsData } from '../src/content/news-model.mjs';
+import { addMaterialNews, isTeacherMaterial, materialKey, validateNewsData } from '../src/content/news-model.mjs';
 export { materialKey } from '../src/content/news-model.mjs';
 
 const catalogPath = 'src/content/resource-categories.json';
@@ -85,9 +85,17 @@ export function validateCatalog(categories, root, requirePages = false) {
           throw Error(`教材顯示名稱沒有對應主檔或名稱為空：${primary}`);
       }
     }
+    if (category.teacherFiles !== undefined) {
+      if (!category.teacherFiles || typeof category.teacherFiles !== 'object' || Array.isArray(category.teacherFiles))
+        throw Error(`教師版對照格式不正確：${category.title}`);
+      for (const [primary, teacher] of Object.entries(category.teacherFiles)) {
+        if (!category.files.includes(primary) || typeof teacher !== 'string' || extension(teacher) !== 'pdf')
+          throw Error(`教師版必須是 PDF，且須對應既有主檔：${primary}`);
+      }
+    }
     const seen = new Set();
     for (const primary of category.files) {
-      for (const url of [primary, ...companions(category, primary)]) {
+      for (const url of [primary, ...companions(category, primary), ...(category.teacherFiles?.[primary] ? [category.teacherFiles[primary]] : [])]) {
         if (!url.startsWith('/files/') || !formats.includes(extension(url)) || seen.has(fold(url)))
           throw Error(`教材檔案重複或格式不支援：${url}`);
         seen.add(fold(url));
@@ -147,21 +155,28 @@ export function addMaterials(category, inputs, groupId) {
   for (const primary of category.files) {
     const key = materialKey(fileName(primary));
     if (groups.has(key)) throw Error(`現有教材名稱無法明確配對：${fileName(primary)}`);
-    groups.set(key, { previous: primary, urls: [primary, ...companions(category, primary)] });
+    groups.set(key, { previous: primary, urls: [primary, ...companions(category, primary)], teacher: category.teacherFiles?.[primary] });
   }
-  for (const input of inputs) {
+  const orderedInputs = [...inputs.filter(input => !isTeacherMaterial(input.name)), ...inputs.filter(input => isTeacherMaterial(input.name))];
+  for (const input of orderedInputs) {
     const key = materialKey(input.name);
     if (!key) throw Error(`教材名稱不可只有「可編輯版」：${input.name}`);
     const group = groups.get(key) || { urls: [] };
-    if (group.urls.some((url) => extension(url) === input.format))
+    if (!isTeacherMaterial(input.name) && group.urls.some((url) => extension(url) === input.format))
       throw Error(`同一教材已有 ${input.format.toUpperCase()}，無法自動決定版本：${input.name}`);
     if (classroomGroups.length && group.previous &&
         (category.fileGroups?.[group.previous] || classroomGroups[0].id) !== groupId)
       throw Error(`補交版本必須沿用原教材班別：${input.name}。請選擇原班別；不同班別請分次上架。`);
+    if (isTeacherMaterial(input.name)) {
+      if (!group.urls.length) throw Error(`教師版必須先有對應學生教材：${input.name}`);
+      if (group.teacher) throw Error(`此教材已有教師版，未覆蓋任何檔案：${input.name}`);
+      group.teacher = input.url; group.touched = true; groups.set(key, group); continue;
+    }
     group.touched = true;
     group.urls.push(input.url); groups.set(key, group);
   }
   result.editableFiles = { ...result.editableFiles };
+  result.teacherFiles = { ...result.teacherFiles };
   if (classroomGroups.length) result.fileGroups = { ...result.fileGroups };
   for (const group of groups.values()) {
     group.urls.sort((a, b) => formats.indexOf(extension(a)) - formats.indexOf(extension(b)));
@@ -169,6 +184,7 @@ export function addMaterials(category, inputs, groupId) {
     if (group.previous) {
       result.files[result.files.indexOf(group.previous)] = primary;
       delete result.editableFiles[group.previous];
+      delete result.teacherFiles[group.previous];
       if (group.previous !== primary && result.materialTitles?.[group.previous]) {
         result.materialTitles[primary] = result.materialTitles[group.previous];
         delete result.materialTitles[group.previous];
@@ -179,7 +195,9 @@ export function addMaterials(category, inputs, groupId) {
       result.fileGroups[primary] = groupId;
     }
     if (editable.length) result.editableFiles[primary] = editable;
+    if (group.teacher) result.teacherFiles[primary] = group.teacher;
   }
+  if (!Object.keys(result.teacherFiles).length) delete result.teacherFiles;
   if (!Object.keys(result.editableFiles).length) delete result.editableFiles;
   if (result.comingSoon) {
     const availableFormats = [...new Set(inputs.map((input) => input.format.toUpperCase()))];
@@ -300,6 +318,7 @@ export async function main(args = process.argv.slice(2), root = fileURLToPath(ne
     console.log(`用法：./upload-materials [--commit] <教材.pdf> [教材_可編輯版.pptx] [教材.docx] ...
 支援 PDF、PPTX、DOCX。先檢查衝突，再選擇分類，最後自動更新檔案、HTML 與最新消息並執行 npm run build。
 選擇數學後，再選特教班、國中資源班或高中資源班；本次所有教材歸入同一班別。補交版本須選原班別。
+教師版 PDF 請使用原教材檔名加上 _教師版.pdf，會與學生版配在同一卡片。
 同名檔案（忽略 _可編輯版、-editable 後綴）合併為一份教材；不同名稱分開顯示。
 可只上架 PPTX／DOCX；它們會標示「可編輯」。未開放分類會自動建立頁面並啟用。
 不覆蓋同名或同內容檔案；建置失敗會還原本次來源變更與原 dist。原始教材檔案保留。
@@ -350,7 +369,13 @@ export async function main(args = process.argv.slice(2), root = fileURLToPath(ne
   console.log('檔案檢查通過：');
   inputs.forEach((input) => console.log(`  ${input.name}${input.format === 'pdf' ? '' : '（可編輯）'}`));
   // Resolve same-format ambiguity before asking for a category or writing anything.
-  addMaterials({ title: '檢查', description: '', files: [] }, inputs);
+  addMaterials({ title: '檢查', description: '', files: [] }, inputs.filter((input) => !isTeacherMaterial(input.name)));
+  const teacherKeys = new Set();
+  for (const input of inputs.filter((input) => isTeacherMaterial(input.name))) {
+    const key = materialKey(input.name);
+    if (teacherKeys.has(key)) throw Error(`同一教材有多份教師版，無法自動決定版本：${input.name}`);
+    teacherKeys.add(key);
+  }
   const lock = join(tmpdir(), 'cactus-material-upload-' + hash(root).slice(0, 20) + '.lock');
   try { mkdirSync(lock); }
   catch (error) {

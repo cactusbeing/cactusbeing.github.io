@@ -9,6 +9,7 @@ export interface ResourceCategory {
   groups?: { id: string; title: string }[];
   fileGroups?: Record<string, string>;
   materialTitles?: Record<string, string | undefined>;
+  teacherFiles?: Record<string, string | undefined>;
   editableFiles?: Record<string, string | string[] | undefined>;
   comingSoon?: boolean;
 }

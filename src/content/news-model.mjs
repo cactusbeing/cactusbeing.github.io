@@ -9,15 +9,20 @@ export function taipeiDate(date = new Date()) {
   return ['year', 'month', 'day'].map((type) => parts.find((part) => part.type === type).value).join('-');
 }
 
+const teacherSuffix = /(?:[\s_-]+|[（(]\s*)(?:教師版|teacher)(?:\s*[）)])?$/iu;
+export const isTeacherMaterial = (name) => /\.pdf$/iu.test(name) && teacherSuffix.test(name.replace(/\.pdf$/iu, '').normalize('NFKC'));
+
 export function materialKey(name) {
   return name.split('/').pop().replace(/\.[^.]*$/, '').normalize('NFKC')
     .replace(/[\s_-]*(?:[（(]\s*)?(?:可編輯(?:版)?|editable)(?:\s*[）)])?$/iu, '')
+    .replace(teacherSuffix, '')
     .trim().toLowerCase();
 }
 export const materialAnchor = (name) => 'material-' + materialKey(name);
 export function materialNewsTitle(category, filename) {
   let name = filename.split('/').pop().normalize('NFC').replace(/\.(pdf|pptx|docx)$/i, '')
-    .replace(/[\s_-]*(?:[（(]\s*)?(?:可編輯(?:版)?|editable)(?:\s*[）)])?$/iu, '').trim();
+    .replace(/[\s_-]*(?:[（(]\s*)?(?:可編輯(?:版)?|editable)(?:\s*[）)])?$/iu, '')
+    .replace(teacherSuffix, '').trim();
   // Preserve a more specific subject label already present in a material's filename.
   const subject = name.split(/[\s_｜|：:–—-]+/)[0];
   if (subject !== name && subject.endsWith(category)) category = subject;
@@ -78,6 +83,7 @@ export function addMaterialNews(data, category, inputs, date = taipeiDate()) {
     const editable = category.editableFiles?.[primary];
     const urls = [primary, ...(Array.isArray(editable) ? editable : editable ? [editable] : [])];
     const formats = urls.map((url) => url.split('.').pop().toUpperCase()).map((format) => format === 'PDF' ? format : `可編輯 ${format}`);
+    if (category.teacherFiles?.[primary]) formats.push('教師版 PDF');
     const title = materialNewsTitle(category.title, decodeURIComponent(primary.split('/').pop()));
     const id = `material:${category.title}:${key}`;
     if (existing) {
