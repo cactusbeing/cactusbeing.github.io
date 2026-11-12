@@ -57,6 +57,34 @@ export function validateCatalog(categories, root, requirePages = false) {
     if (!category.comingSoon && (!category.href || !category.files.length))
       throw Error(`已開放分類必須有網址及教材：${category.title}`);
     if (category.comingSoon && category.files.length) throw Error(`未開放分類仍含教材：${category.title}`);
+    const groupIds = new Set();
+    const groupTitles = new Set();
+    if (category.groups !== undefined) {
+      if (!Array.isArray(category.groups) || !category.groups.length)
+        throw Error(`班別清單格式不正確：${category.title}`);
+      for (const group of category.groups) {
+        if (!group || typeof group.id !== 'string' || !/^[a-z][a-z0-9-]*$/.test(group.id) ||
+            groupIds.has(group.id) || typeof group.title !== 'string' || !group.title.trim() || groupTitles.has(fold(group.title)))
+          throw Error(`班別名稱或代碼重複或不合法：${category.title}`);
+        groupIds.add(group.id); groupTitles.add(fold(group.title));
+      }
+    }
+    if (category.fileGroups !== undefined) {
+      if (!groupIds.size || !category.fileGroups || typeof category.fileGroups !== 'object' || Array.isArray(category.fileGroups))
+        throw Error(`教材班別對照格式不正確：${category.title}`);
+      for (const [primary, groupId] of Object.entries(category.fileGroups)) {
+        if (!category.files.includes(primary) || !groupIds.has(groupId))
+          throw Error(`教材班別沒有對應主檔或班別：${primary}`);
+      }
+    }
+    if (category.materialTitles !== undefined) {
+      if (!category.materialTitles || typeof category.materialTitles !== 'object' || Array.isArray(category.materialTitles))
+        throw Error(`教材顯示名稱格式不正確：${category.title}`);
+      for (const [primary, title] of Object.entries(category.materialTitles)) {
+        if (!category.files.includes(primary) || typeof title !== 'string' || !title.trim())
+          throw Error(`教材顯示名稱沒有對應主檔或名稱為空：${primary}`);
+      }
+    }
     const seen = new Set();
     for (const primary of category.files) {
       for (const url of [primary, ...companions(category, primary)]) {
@@ -110,7 +138,10 @@ function inspectInputs(root, args) {
   return results;
 }
 
-export function addMaterials(category, inputs) {
+export function addMaterials(category, inputs, groupId) {
+  const classroomGroups = category.groups || [];
+  if (classroomGroups.length ? !classroomGroups.some((group) => group.id === groupId) : groupId !== undefined)
+    throw Error(`請選擇有效班別：${category.title}`);
   const result = structuredClone(category);
   const groups = new Map();
   for (const primary of category.files) {
@@ -124,16 +155,29 @@ export function addMaterials(category, inputs) {
     const group = groups.get(key) || { urls: [] };
     if (group.urls.some((url) => extension(url) === input.format))
       throw Error(`同一教材已有 ${input.format.toUpperCase()}，無法自動決定版本：${input.name}`);
+    if (classroomGroups.length && group.previous &&
+        (category.fileGroups?.[group.previous] || classroomGroups[0].id) !== groupId)
+      throw Error(`補交版本必須沿用原教材班別：${input.name}。請選擇原班別；不同班別請分次上架。`);
+    group.touched = true;
     group.urls.push(input.url); groups.set(key, group);
   }
   result.editableFiles = { ...result.editableFiles };
+  if (classroomGroups.length) result.fileGroups = { ...result.fileGroups };
   for (const group of groups.values()) {
     group.urls.sort((a, b) => formats.indexOf(extension(a)) - formats.indexOf(extension(b)));
     const [primary, ...editable] = group.urls;
     if (group.previous) {
       result.files[result.files.indexOf(group.previous)] = primary;
       delete result.editableFiles[group.previous];
+      if (group.previous !== primary && result.materialTitles?.[group.previous]) {
+        result.materialTitles[primary] = result.materialTitles[group.previous];
+        delete result.materialTitles[group.previous];
+      }
     } else result.files.push(primary);
+    if (classroomGroups.length && group.touched) {
+      if (group.previous) delete result.fileGroups[group.previous];
+      result.fileGroups[primary] = groupId;
+    }
     if (editable.length) result.editableFiles[primary] = editable;
   }
   if (!Object.keys(result.editableFiles).length) delete result.editableFiles;
@@ -197,22 +241,34 @@ function checkPage(root, before, after) {
 }
 
 async function selectCategory(categories, controller) {
-  console.log('\n請選擇教材分類：');
-  categories.forEach((category, i) => console.log(`  ${i + 1}. ${category.title}${category.comingSoon ? '（選擇後將開放）' : ''}`));
   const rl = createInterface({ input: process.stdin, output: process.stdout,
     terminal: Boolean(process.stdin.isTTY), signal: controller.signal });
   rl.once('SIGINT', () => controller.abort());
-  process.stdout.write(`分類編號 1–${categories.length}（q 取消）：`);
-  try {
-    for await (const line of rl) {
+  // Both menus share one iterator so piped answers remain available for the second menu.
+  const lines = rl[Symbol.asyncIterator]();
+  async function choose(options, heading, label) {
+    console.log(`\n${heading}`);
+    options.forEach((option, i) => console.log(`  ${i + 1}. ${option.title}${option.comingSoon ? '（選擇後將開放）' : ''}`));
+    process.stdout.write(`${label}編號 1–${options.length}（q 取消）：`);
+    while (true) {
+      const { value: line, done } = await lines.next();
+      if (done) break;
       const value = line.trim();
       if (/^q$/i.test(value)) break;
-      if (/^\d+$/.test(value) && Number(value) >= 1 && Number(value) <= categories.length)
+      if (/^\d+$/.test(value) && Number(value) >= 1 && Number(value) <= options.length)
         return Number(value) - 1;
-      process.stdout.write('請輸入有效分類編號（q 取消）：');
+      process.stdout.write(`請輸入有效${label}編號（q 取消）：`);
     }
+    throw Object.assign(Error('已取消，未更動檔案。'), { exitCode: 130 });
+  }
+  try {
+    const index = await choose(categories, '請選擇教材分類：', '分類');
+    const category = categories[index];
+    const groupId = category.groups?.length
+      ? category.groups[await choose(category.groups, `請選擇「${category.title}」教材班別（本次教材使用同一班別）：`, '班別')].id
+      : undefined;
+    return { index, groupId };
   } finally { rl.close(); }
-  throw Object.assign(Error('已取消，未更動檔案。'), { exitCode: 130 });
 }
 
 function atomicWrite(path, bytes) {
@@ -243,6 +299,7 @@ export async function main(args = process.argv.slice(2), root = fileURLToPath(ne
   if (args.length === 1 && ['--help', '-h'].includes(args[0])) {
     console.log(`用法：./upload-materials [--commit] <教材.pdf> [教材_可編輯版.pptx] [教材.docx] ...
 支援 PDF、PPTX、DOCX。先檢查衝突，再選擇分類，最後自動更新檔案、HTML 與最新消息並執行 npm run build。
+選擇數學後，再選特教班、國中資源班或高中資源班；本次所有教材歸入同一班別。補交版本須選原班別。
 同名檔案（忽略 _可編輯版、-editable 後綴）合併為一份教材；不同名稱分開顯示。
 可只上架 PPTX／DOCX；它們會標示「可編輯」。未開放分類會自動建立頁面並啟用。
 不覆蓋同名或同內容檔案；建置失敗會還原本次來源變更與原 dist。原始教材檔案保留。
@@ -313,14 +370,17 @@ export async function main(args = process.argv.slice(2), root = fileURLToPath(ne
   let hadDist = false;
   let uploadCompleted = false;
   try {
-    const index = await selectCategory(categories, controller);
+    const { index, groupId } = await selectCategory(categories, controller);
     if (controller.signal.aborted) throw Error('已取消。');
     if (!readFileSync(registry).equals(original)) throw Error('選單開啟期間教材清單已變更，請重新執行。');
     if (!readFileSync(newsRegistry).equals(originalNews)) throw Error('選單開啟期間消息清單已變更，請重新執行。');
     const checked = inspectInputs(root, args);
     if (checked.some((input, i) => input.digest !== inputs[i].digest)) throw Error('教材檔案已變更，請重新執行。');
     if (git(root, 'ls-files', '--unmerged', '-z')) throw Error('Repository 出現 merge conflict，請先處理。');
-    const selected = addMaterials(categories[index], inputs);
+    const selected = addMaterials(categories[index], inputs, groupId);
+    const classroom = selected.groups?.find((group) => group.id === groupId);
+    const destinationLabel = classroom ? `${selected.title}／${classroom.title}` : selected.title;
+    const destinationHref = selected.href + (classroom ? `?group=${encodeURIComponent(classroom.id)}` : '');
     const page = checkPage(root, categories[index], selected);
     if (autoCommit) {
       assertCommitReady();
@@ -339,9 +399,9 @@ export async function main(args = process.argv.slice(2), root = fileURLToPath(ne
     writeFileSync(join(work, 'catalog.before.json'), original);
     writeFileSync(join(work, 'updates.before.json'), originalNews);
     if (beforePage) writeFileSync(join(work, 'page.before.html'), beforePage);
-    writeFileSync(join(work, 'plan.json'), JSON.stringify({ category: selected.title, page,
+    writeFileSync(join(work, 'plan.json'), JSON.stringify({ category: selected.title, group: groupId, page,
       inputs, registry, newsRegistry, hadPage: Boolean(beforePage) }, null, 2));
-    console.log(`\n上架至「${selected.title}」，建置紀錄：${join(work, 'build.log')}`);
+    console.log(`\n上架至「${destinationLabel}」，建置紀錄：${join(work, 'build.log')}`);
     for (const input of inputs) {
       const destination = siteFile(root, input.url);
       copyFileSync(input.source, destination, constants.COPYFILE_EXCL);
@@ -383,7 +443,7 @@ export async function main(args = process.argv.slice(2), root = fileURLToPath(ne
             writes.some((write) => !existsSync(write.path) || !readFileSync(write.path).equals(write.after)) ||
             copied.some((file) => !existsSync(file.path) || hash(readFileSync(file.path)) !== file.digest))
           throw Error('提交前來源、HEAD 或暫存區已變更，停止自動提交。');
-        console.log(git(root, 'commit', '-m', `Add ${selected.title} teaching materials`, '--only', '--', ...commitPaths).trim());
+        console.log(git(root, 'commit', '-m', `Add ${destinationLabel} teaching materials`, '--only', '--', ...commitPaths).trim());
         commit = git(root, 'rev-parse', 'HEAD').trim();
       } catch (error) {
         // Git failures must not roll back an upload that has already built successfully.
@@ -392,8 +452,8 @@ export async function main(args = process.argv.slice(2), root = fileURLToPath(ne
         throw error;
       }
     }
-    writeFileSync(join(work, 'result.json'), JSON.stringify({ status: 'passed', category: selected.title, href: selected.href, files: inputs.map((input) => input.url), commit }, null, 2));
-    console.log(`\n上架完成：${selected.title} → ${selected.href}\n建置通過。${commit ? `已 commit：${commit}，尚未 push。` : '尚未 commit／push。'}`);
+    writeFileSync(join(work, 'result.json'), JSON.stringify({ status: 'passed', category: selected.title, group: groupId, href: destinationHref, files: inputs.map((input) => input.url), commit }, null, 2));
+    console.log(`\n上架完成：${destinationLabel} → ${destinationHref}\n建置通過。${commit ? `已 commit：${commit}，尚未 push。` : '尚未 commit／push。'}`);
   } catch (error) {
     if (uploadCompleted) {
       console.error(`上架與建置已完成；後續提交或紀錄失敗，保留教材及 HTML，請檢查 Git 狀態。診斷紀錄：${work}`);

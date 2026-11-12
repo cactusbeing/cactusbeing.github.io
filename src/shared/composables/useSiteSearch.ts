@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue';
 import { articleEntries } from '../../content/article-details';
-import { resources } from '../../content/resources';
+import { materialTitle, resources } from '../../content/resources';
 import { materialAnchor } from '../../content/news-model.mjs';
 
 export function matchesSearch(item: { title: string; keywords?: string }, query: string): boolean {
@@ -16,7 +16,7 @@ export function useSiteSearch() {
       ...resources.filter((resource) => !resource.comingSoon && resource.href),
       ...resources.filter((resource) => !resource.comingSoon && resource.href).flatMap((resource) => resource.files.map((file) => {
         const name = decodeURIComponent(file.split('/').pop()!);
-        return { title: name.replace(/\.(pdf|pptx|docx)$/i, ''), href: `${resource.href}#${encodeURIComponent(materialAnchor(name))}`, keywords: `${resource.title} 教材` };
+        return { title: materialTitle(resource, file), href: `${resource.href}#${encodeURIComponent(materialAnchor(name))}`, keywords: `${resource.title} 教材 ${name}` };
       })),
       { title: '最新消息', href: '/news.html', keywords: '小站公告 更新 新上架' },
       { title: '遊戲百寶箱', href: '/game/' },

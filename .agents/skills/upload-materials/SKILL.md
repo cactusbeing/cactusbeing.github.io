@@ -24,6 +24,14 @@ script's category choices instead of guessing from a filename. A PTY execution
 can receive the selected number through stdin. Selecting a pending category
 activates it and generates its missing HTML.
 
+Categories with `groups` (including 數學) require a second classroom selection.
+Read those live groups as well: 特教班、國中資源班、高中資源班 are configured in
+the current math category. All materials in one invocation use the same group;
+split uploads for different groups. Use the user's named classroom or ask for it,
+rather than guessing from filenames. Later companion formats must use their
+existing classroom; the CLI preserves `fileGroups` when a PDF becomes primary.
+For piped answers, provide the category number followed by the classroom number.
+
 Same-stem files are grouped into one material, ignoring editable suffixes such as
 `_可編輯版` and `-editable`; different names become separate materials. The script
 also supports editable-only uploads and later companions/PDFs. PPTX and DOCX are

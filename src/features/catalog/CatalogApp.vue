@@ -4,7 +4,7 @@ import BlogLayout from '../../shared/components/BlogLayout.vue';
 import ArticleFeed from '../articles/ArticleFeed.vue';
 import BaseCard from '../../shared/components/BaseCard.vue';
 import BaseButton from '../../shared/components/BaseButton.vue';
-import { materialFiles, materialFormat, materialFormatLabel, resourceCountLabel, resources } from '../../content/resources';
+import { materialFiles, materialFormat, materialFormatLabel, materialTitle, resourceCountLabel, resources } from '../../content/resources';
 import { sitePathname } from '../../shared/site-path';
 import { imageSource, imageSrcset } from '../../shared/responsive-images';
 import { materialAnchor } from '../../content/news-model.mjs';
@@ -51,14 +51,6 @@ onUnmounted(() => {
   window.removeEventListener('popstate', readGroupFromUrl);
   window.removeEventListener('hashchange', readGroupFromUrl);
 });
-function filename(path: string) {
-  return (
-    path
-      .split('/')
-      .pop()
-      ?.replace(/\.(pdf|pptx|docx)$/i, '') || path
-  );
-}
 </script>
 <template>
   <BlogLayout v-if="posts"><ArticleFeed /></BlogLayout>
@@ -99,29 +91,29 @@ function filename(path: string) {
       <BaseCard v-for="file in visibleFiles" :key="file" :id="materialAnchor(decodeURIComponent(file.split('/').pop()!))"
         ><div class="material-row"><div class="material-info">
         <span class="tag">{{ materialFiles(category, file).map(materialFormatLabel).join('・') }}</span>
-        <component :is="activeGroup ? 'h3' : 'h2'" class="material-title">{{ decodeURIComponent(filename(file)) }}</component>
+        <component :is="activeGroup ? 'h3' : 'h2'" class="material-title">{{ materialTitle(category, file) }}</component>
         </div><div class="actions material-actions">
           <BaseButton v-if="materialFormat(file) === 'PDF'"
             :aria-expanded="openPreviews.has(file)" :aria-controls="previewId(file)" @click="togglePreview(file)">
             {{ openPreviews.has(file) ? '收合預覽' : '預覽' }}
-            <span class="visually-hidden">{{ decodeURIComponent(filename(file)) }}</span>
+            <span class="visually-hidden">{{ materialTitle(category, file) }}</span>
           </BaseButton>
           <BaseButton v-if="materialFormat(file) === 'PDF'" :href="file" variant="secondary" target="_blank" rel="noopener"
             >開啟 PDF
-            <span class="visually-hidden">{{ decodeURIComponent(filename(file)) }}（新分頁）</span></BaseButton
+            <span class="visually-hidden">{{ materialTitle(category, file) }}（新分頁）</span></BaseButton
           ><BaseButton
             v-for="downloadFile in materialFiles(category, file)"
             :key="downloadFile"
             :href="downloadFile"
             variant="secondary"
-            download
+            :download="category.materialTitles?.[file] ? `${materialTitle(category, file)}.${materialFormat(downloadFile).toLowerCase()}` : ''"
             >下載{{ materialFormat(downloadFile) === 'PDF' ? ' PDF' : `可編輯 ${materialFormat(downloadFile)}` }}
-            <span class="visually-hidden">{{ decodeURIComponent(filename(file)) }}</span></BaseButton
+            <span class="visually-hidden">{{ materialTitle(category, file) }}</span></BaseButton
           >
         </div></div>
         <div v-if="materialFormat(file) === 'PDF'" v-show="openPreviews.has(file)"
-          :id="previewId(file)" class="material-preview" role="region" :aria-label="`${decodeURIComponent(filename(file))} 預覽`">
-          <iframe v-if="openPreviews.has(file)" :src="file" :title="`${decodeURIComponent(filename(file))} PDF 教材預覽`">
+          :id="previewId(file)" class="material-preview" role="region" :aria-label="`${materialTitle(category, file)} 預覽`">
+          <iframe v-if="openPreviews.has(file)" :src="file" :title="`${materialTitle(category, file)} PDF 教材預覽`">
             您的瀏覽器不支援 PDF 預覽，請使用上方連結下載後閱讀。
           </iframe>
         </div></BaseCard

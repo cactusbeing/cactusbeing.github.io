@@ -38,7 +38,7 @@ function zip(entries) {
 const office = (format, text) => zip({ '[Content_Types].xml': '<Types/>',
   [format === 'pptx' ? 'ppt/presentation.xml' : 'word/document.xml']: `<document>${text}</document>` });
 
-function fixture() {
+function fixture({ math = false } = {}) {
   const base = mkdtempSync(join(temporary, 'case-')); const root = join(base, 'repo'); const inbox = join(base, 'inbox');
   for (const path of ['scripts', 'src/content', 'assets', 'files', 'node_modules', 'dist', 'tmp']) mkdirSync(join(root, path), { recursive: true });
   mkdirSync(inbox);
@@ -46,6 +46,8 @@ function fixture() {
     { title: '學習策略', image: '/assets/example.png', description: '教材準備中。', files: [], comingSoon: true },
     { title: '生活管理', image: '/assets/example.png', description: '既有分類。', href: '/生活管理slide.html', files: ['/files/既有教材.pdf'] },
   ];
+  if (math) categories.push({ title: '數學', image: '/assets/example.png', description: '依班別選擇數學教材。', files: [], comingSoon: true,
+    groups: [{ id: 'special', title: '特教班' }, { id: 'junior', title: '國中資源班' }, { id: 'senior', title: '高中資源班' }] });
   writeFileSync(join(root, 'src/content/resource-categories.json'), JSON.stringify(categories, null, 2) + '\n');
   writeFileSync(join(root, 'src/content/updates.json'), JSON.stringify({ notice: { enabled: false, heading: '小站公告', message: '' }, entries: [] }, null, 2) + '\n');
   cpSync(join(project, 'src/content/news-model.mjs'), join(root, 'src/content/news-model.mjs'));
@@ -83,6 +85,102 @@ function sources(f) {
 function test(name, fn) { fn(); count++; console.log('PASS ' + name); }
 
 try {
+  test('Math uploads select each classroom and assign all primary materials without mapping companion files', () => {
+    for (const [number, id, title] of [[1, 'special', '特教班'], [2, 'junior', '國中資源班'], [3, 'senior', '高中資源班']]) {
+      const f = fixture({ math: true });
+      const result = run(f, [input(f, '練習.pdf'), input(f, '練習_可編輯版.pptx', office('pptx', 'math')), input(f, '另一份.docx', office('docx', 'other'))], `3\n${number}\n`);
+      const category = catalog(f)[2];
+      assert.ok(result.stdout.includes('請選擇「數學」教材班別'));
+      assert.ok(result.stdout.includes(`上架完成：數學／${title} → /數學slide.html?group=${id}`));
+      assert.deepEqual(category.fileGroups, Object.fromEntries(category.files.map((file) => [file, id])));
+      assert.equal(category.files.length, 2); assert.equal(category.comingSoon, undefined);
+      assert.equal(category.editableFiles[category.files[0]].length, 1);
+      assert.deepEqual(catalog(f).slice(0, 2), f.categories.slice(0, 2));
+      const news = JSON.parse(readFileSync(join(f.root, 'src/content/updates.json')));
+      assert.equal(news.entries.length, 2); assert.ok(news.entries.every((entry) => entry.href.startsWith('/數學slide.html#material-')));
+      validateCatalog(catalog(f), f.root, true);
+    }
+  });
+  test('Later PDF promotion and editable companions preserve the classroom; another classroom is rejected before copying', () => {
+    const f = fixture({ math: true });
+    run(f, [input(f, '方程式.docx', office('docx', 'equation'))], '3\n3\n');
+    const named = catalog(f);
+    const originalPrimary = named[2].files[0];
+    named[2].materialTitles = { [originalPrimary]: '七年級數學：1-1 方程式' };
+    writeFileSync(join(f.root, 'src/content/resource-categories.json'), JSON.stringify(named, null, 2) + '\n');
+    run(f, [input(f, '數線.pdf')], '3\n2\n');
+    const previous = catalog(f)[2].files[0];
+    const path = input(f, '方程式.pdf'); const before = sources(f);
+    const rejected = run(f, [path], '3\n1\n', false);
+    assert.ok(rejected.stderr.includes('沿用原教材班別')); assert.equal(sources(f), before);
+    run(f, [path], '3\n3\n');
+    run(f, [input(f, '方程式_可編輯版.pptx', office('pptx', 'equation editable'))], '3\n3\n');
+    const category = catalog(f)[2];
+    assert.equal(category.files.length, 2); assert.ok(category.files[0].endsWith('.pdf'));
+    assert.equal(category.fileGroups[previous], undefined);
+    assert.deepEqual(category.fileGroups, { [category.files[0]]: 'senior', [category.files[1]]: 'junior' });
+    assert.deepEqual(category.materialTitles, { [category.files[0]]: '七年級數學：1-1 方程式' });
+    assert.equal(category.editableFiles[category.files[0]].length, 2);
+    assert.equal(JSON.parse(readFileSync(join(f.root, 'src/content/updates.json'))).entries.length, 2);
+    validateCatalog(catalog(f), f.root, true);
+  });
+  test('Classroom menu retries invalid input; cancellation and EOF leave files unchanged and release the lock', () => {
+    const f = fixture({ math: true }); const path = input(f, '班別取消.pdf'); const before = sources(f);
+    for (const answer of ['3\nq\n', '3\n']) {
+      const result = run(f, [path], answer, false);
+      assert.ok(result.stderr.includes('已取消')); assert.equal(sources(f), before);
+    }
+    const result = run(f, [path], '3\nabc\n99\n2\n');
+    assert.ok(result.stdout.includes('請輸入有效班別編號'));
+    assert.equal(Object.values(catalog(f)[2].fileGroups)[0], 'junior');
+  });
+  test('Failed math builds roll back classroom mappings, news, files and generated HTML', () => {
+    const f = fixture({ math: true });
+    run(f, [input(f, '原始.docx', office('docx', 'original'))], '3\n2\n');
+    const before = sources(f);
+    writeFileSync(join(f.root, 'fixture-build.mjs'), 'process.exit(7);');
+    const result = run(f, [input(f, '原始.pdf')], '3\n2\n', false);
+    assert.ok(result.stderr.includes('已還原本次上架變更')); assert.equal(sources(f), before);
+  });
+  test('Math auto-commit records the selected classroom and leaves unrelated files unstaged', () => {
+    const f = fixture({ math: true });
+    writeFileSync(join(f.root, 'notes.txt'), 'unrelated');
+    const result = run(f, ['--commit', input(f, '整數.pdf')], '3\n2\n', true, true);
+    assert.ok(result.stdout.includes('上架完成：數學／國中資源班'));
+    assert.ok(f.git('log', '-1', '--format=%s').includes('數學／國中資源班'));
+    assert.equal(f.git('diff', '--cached', '--name-only'), '');
+    assert.equal(f.git('ls-files', '--', 'notes.txt'), '');
+    const saved = JSON.parse(f.git('show', 'HEAD:src/content/resource-categories.json'));
+    assert.equal(Object.values(saved[2].fileGroups)[0], 'junior');
+    const work = result.stdout.match(/建置紀錄：(.+)\/build\.log/)[1];
+    assert.equal(JSON.parse(readFileSync(join(work, 'plan.json'))).group, 'junior');
+    const outcome = JSON.parse(readFileSync(join(work, 'result.json')));
+    assert.equal(outcome.group, 'junior'); assert.equal(outcome.href, '/數學slide.html?group=junior');
+  });
+  test('Classroom validation rejects invalid, duplicate and orphaned mappings while accepting legacy unassigned files', () => {
+    const f = fixture({ math: true });
+    run(f, [input(f, '班別檢查.pdf')], '3\n2\n');
+    const valid = catalog(f);
+    for (const mutate of [
+      (c) => c.groups = [],
+      (c) => c.groups.push({ ...c.groups[0] }),
+      (c) => c.groups[0].id = 'bad?id',
+      (c) => c.groups[0].title = '',
+      (c) => c.fileGroups = [],
+      (c) => c.fileGroups[c.files[0]] = 'missing',
+      (c) => c.fileGroups['/files/missing.pdf'] = 'junior',
+      (c) => delete c.groups,
+      (c) => c.materialTitles = [],
+      (c) => c.materialTitles = { [c.files[0]]: '' },
+      (c) => c.materialTitles = { '/files/missing.pdf': '缺少主檔' },
+    ]) {
+      const categories = structuredClone(valid); mutate(categories[2]);
+      assert.throws(() => validateCatalog(categories, f.root), /班別|顯示名稱/);
+    }
+    const legacy = structuredClone(valid); delete legacy[2].fileGroups;
+    validateCatalog(legacy, f.root);
+    assert.throws(() => addMaterials(valid[2], [{ name: '新教材.pdf', format: 'pdf', url: '/files/新教材.pdf' }]), /有效班別/);
+  });
   test('Dirty news blocks auto-commit; invalid announcements stop all uploads before the menu', () => {
     for (const invalid of [true, false]) {
       const f = fixture(); const path = join(f.root, 'src/content/updates.json');
@@ -283,9 +381,10 @@ try {
     assert.equal(category.files.length, 2);
   });
   test('Multiple categories with distinct editable mappings still pass the actual resource TypeScript schema', () => {
-    const f = fixture();
+    const f = fixture({ math: true });
     run(f, [input(f, '新教材.pdf'), input(f, '新教材.docx', office('docx', 'new'))]);
     run(f, [input(f, '既有教材.pptx', office('pptx', 'existing editable'))], '2\n');
+    run(f, [input(f, '數學教材.pdf')], '3\n2\n');
     const entry = join(f.root, 'src/content/resources.ts');
     cpSync(join(project, 'src/content/resources.ts'), entry);
     const program = ts.createProgram([entry], { strict: true, noEmit: true, skipLibCheck: true,

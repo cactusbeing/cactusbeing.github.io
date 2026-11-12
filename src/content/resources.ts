@@ -8,12 +8,17 @@ export interface ResourceCategory {
   files: string[];
   groups?: { id: string; title: string }[];
   fileGroups?: Record<string, string>;
+  materialTitles?: Record<string, string | undefined>;
   editableFiles?: Record<string, string | string[] | undefined>;
   comingSoon?: boolean;
 }
 export const mathGameMaterialPdf = '/files/特教班數學｜認識新台幣×魔法烘焙坊.pdf';
 
 export const resources: ResourceCategory[] = categories;
+
+export function materialTitle(category: ResourceCategory, file: string): string {
+  return category.materialTitles?.[file] || decodeURIComponent(file.split('/').pop() || file).replace(/\.(pdf|pptx|docx)$/i, '');
+}
 
 export function materialFiles(category: ResourceCategory, primary: string): string[] {
   const editable = category.editableFiles?.[primary];
