@@ -1,0 +1,6 @@
+const PREFIX='cactus-chat-relay-'+encodeURIComponent(self.registration.scope)+'-';
+const CACHE=PREFIX+'4d542289e83ce5a3';
+const URLS=["/game/chat-relay/index.html","/bundles/index-MajEU8Xr.js","/bundles/base-DIouvAcZ.js","/bundles/base-EmoSO5eb.css","/bundles/icon-D9ekjfAU.png","/bundles/shell-ySjpXJU2.js","/bundles/SiteFooter-D9sgQf5f.js","/bundles/SiteFooter-BTb6gMN-.css","/bundles/shell-D6lzEO3u.css","/bundles/useGameFullscreen-DIxOoQoh.js","/bundles/SceneArt-DlhuNhdu.js","/bundles/SceneArt-CJny5-8p.css","/bundles/index-BD1TN50K.css","/game/chat-relay/"];
+self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(URLS)).then(()=>self.skipWaiting())));
+self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith(PREFIX)&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
+self.addEventListener('fetch',e=>{const u=new URL(e.request.url);if(e.request.method!=='GET'||u.origin!==self.location.origin||!URLS.includes(u.pathname))return;e.respondWith(caches.open(CACHE).then(async c=>{const old=await c.match(u.pathname);if(e.request.mode==='navigate'){try{return await fetch(e.request);}catch{return old||Response.error();}}return old||fetch(e.request);}));});

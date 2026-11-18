@@ -1,43 +1,15 @@
-name: Build website and deploy Pages
+name: Deploy built website to Pages
 on:
   push:
     branches: [main]
-  pull_request:
   workflow_dispatch:
-    inputs:
-      deploy:
-        description: Deploy this build to GitHub Pages
-        type: boolean
-        default: false
-      base_path:
-        description: Site base path, including leading and trailing slashes
-        type: string
-        default: /
 permissions:
   contents: read
 concurrency:
-  group: pages-${{ github.ref }}
+  group: public-pages
   cancel-in-progress: true
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    env:
-      VITE_BASE_PATH: ${{ inputs.base_path || '/' }}
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 24
-          cache: npm
-      - run: npm ci
-      - run: npm run build
-      - uses: actions/upload-pages-artifact@v4
-        if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.deploy)
-        with:
-          path: dist
   deploy:
-    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.deploy))
-    needs: build
     runs-on: ubuntu-latest
     permissions:
       pages: write
@@ -46,6 +18,10 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy
+      - uses: actions/checkout@v6
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: .
+      - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

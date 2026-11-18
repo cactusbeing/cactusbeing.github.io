@@ -1,0 +1,4 @@
+{
+  "prompt": "Origin: original procedural Three.js game rendered locally in Chromium at /game/organize/, 1000x700, afternoon, all eighteen initial movable belongings including three existing bookshelf books, scattered shirt, used tissue and empty 50嵐 cup. Preserved Japanese tatami room, desk on left, right-back bookshelf, small domed cloth backpack with curved bottle sleeve, one desk-side woven garbage bin and a real rear-wall clothes hook, right-wall embedded closet with one full-height shared sliding pair and full lower storage. Captured same RoomWorld renderer in temporary full-frame canvas, without HUD. Source: src/features/organize/room-world.ts, world-assets.ts, room-layout.ts. No downloaded raster or image-generation model. Screenshot encoded cwebp -q 85 -m 6.",
+  "createdAt": "2026-11-16T08:33:53.594Z"
+}
