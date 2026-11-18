@@ -1,1 +1,0 @@
-const e=[{id:"organize",available:!0},{id:"bakery",available:!0},{id:"money",available:!0},{id:"campus",available:!0},{id:"chat-relay",available:!1}],l=new Set(e.filter(a=>a.available).map(a=>a.id));export{l as a};
