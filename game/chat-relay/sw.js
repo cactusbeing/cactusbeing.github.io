@@ -1,6 +1,6 @@
 const PREFIX='cactus-chat-relay-'+encodeURIComponent(self.registration.scope)+'-';
-const CACHE=PREFIX+'4c838308e1fc3638';
-const URLS=["/game/chat-relay/index.html","/bundles/index-BS3h7ynK.js","/bundles/base-DA6qbUWh.js","/bundles/base-DgZuK9Wb.css","/bundles/icon-D9ekjfAU.png","/bundles/shell-DQcqwJwX.js","/bundles/SiteFooter-cBkAV5le.js","/bundles/SiteFooter-BTb6gMN-.css","/bundles/shell-D6lzEO3u.css","/bundles/useGameFullscreen-Dtw-5vEC.js","/bundles/SceneArt-Do_djTdP.js","/bundles/SceneArt-CJny5-8p.css","/bundles/index-BD1TN50K.css","/game/chat-relay/"];
+const CACHE=PREFIX+'5bf9273570fdecfc';
+const URLS=["/game/chat-relay/index.html","/bundles/index-CKLaOOzW.js","/bundles/base-DA6qbUWh.js","/bundles/base-DgZuK9Wb.css","/bundles/icon-D9ekjfAU.png","/bundles/shell-B-w62A9B.js","/bundles/SiteFooter-m-OMpVci.js","/bundles/SiteFooter-BTb6gMN-.css","/bundles/shell-D6lzEO3u.css","/bundles/useGameFullscreen-Dtw-5vEC.js","/bundles/SceneArt-1pbVh7ZI.js","/bundles/SceneArt-CJny5-8p.css","/bundles/index-BD1TN50K.css","/game/chat-relay/"];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(URLS)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith(PREFIX)&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',e=>{const u=new URL(e.request.url);if(e.request.method!=='GET'||u.origin!==self.location.origin||!URLS.includes(u.pathname))return;e.respondWith(caches.open(CACHE).then(async c=>{const old=await c.match(u.pathname);if(e.request.mode==='navigate'){try{return await fetch(e.request);}catch{return old||Response.error();}}return old||fetch(e.request);}));});

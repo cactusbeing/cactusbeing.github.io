@@ -1,1 +1,0 @@
-import{d as e,o,i as t,w as a,b as s,l as p}from"./base-DA6qbUWh.js";import"./shell-DQcqwJwX.js";import{B as r}from"./BlogLayout-CoK1NXBj.js";import{N as m}from"./NewsFeed-CGK3YQpe.js";import"./SiteFooter-cBkAV5le.js";const n=e({__name:"NewsApp",setup(c){return(i,_)=>(o(),t(r,{"show-notice":!1},{default:a(()=>[s(m)]),_:1}))}});p(n).mount("#news-app");
