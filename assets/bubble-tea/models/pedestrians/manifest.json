@@ -1,0 +1,10 @@
+{
+  "models": [
+    { "id": "casual-woman", "file": "casual-woman.glb", "strideSpeed": 1.02, "seatHeight": 0.438, "seatOffset": -0.063 },
+    { "id": "street-man", "file": "street-man.glb", "strideSpeed": 1.12, "seatHeight": 0.434, "seatOffset": -0.012 },
+    { "id": "city-woman", "file": "city-woman.glb", "strideSpeed": 1.02, "seatHeight": 0.438, "seatOffset": -0.047 },
+    { "id": "daywear-woman", "file": "daywear-woman.glb", "strideSpeed": 1.02, "seatHeight": 0.437, "seatOffset": -0.047 },
+    { "id": "trail-man", "file": "trail-man.glb", "strideSpeed": 1.12, "seatHeight": 0.437, "seatOffset": -0.031 },
+    { "id": "denim-man", "file": "denim-man.glb", "strideSpeed": 1.12, "seatHeight": 0.438, "seatOffset": -0.009 }
+  ]
+}

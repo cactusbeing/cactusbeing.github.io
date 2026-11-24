@@ -1,0 +1,1243 @@
+{
+  "brand": "50音",
+  "coordinate_system_blender": "right-handed Z up, storefront -Y",
+  "coordinate_system_glb": "right-handed Y up, storefront +Z",
+  "unit": "metres",
+  "employee_aisle_clear_m": 1.6,
+  "entry_clear_m": 1.01,
+  "player": {
+    "capsule_radius_m": 0.3,
+    "eye_height_m": 1.68,
+    "height_m": 2.05
+  },
+  "runtime_logic": "Interaction hooks and pivots only; game logic and physics are implemented by the game.",
+  "stations": [
+    {
+      "name": "EQ_StaffDoor_01",
+      "type": "door",
+      "action": "open_close",
+      "position_blender": [
+        2.88,
+        0.4,
+        0.0
+      ],
+      "position_glb": [
+        2.88,
+        0.0,
+        -0.4
+      ],
+      "anchors": [
+        {
+          "name": "EQ_StaffDoor_01__Hinge",
+          "type": "Hinge",
+          "world_blender": [
+            2.88,
+            0.4,
+            0.0
+          ],
+          "world_glb": [
+            2.88,
+            0.0,
+            -0.4
+          ]
+        },
+        {
+          "name": "EQ_StaffDoor_01__UsePoint",
+          "type": "UsePoint",
+          "world_blender": [
+            2.23,
+            0.95,
+            0.0
+          ],
+          "world_glb": [
+            2.23,
+            0.0,
+            -0.95
+          ]
+        }
+      ],
+      "movable_parts": []
+    },
+    {
+      "name": "EQ_Sink_01",
+      "type": "sink",
+      "action": "wash_tools",
+      "position_blender": [
+        1.53,
+        3.85,
+        0.975
+      ],
+      "position_glb": [
+        1.53,
+        0.975,
+        -3.85
+      ],
+      "anchors": [
+        {
+          "name": "EQ_Sink_01__UsePoint",
+          "type": "UsePoint",
+          "world_blender": [
+            1.53,
+            3.0,
+            0.0
+          ],
+          "world_glb": [
+            1.53,
+            0.0,
+            -3.0
+          ]
+        },
+        {
+          "name": "EQ_Sink_01__WaterPoint",
+          "type": "WaterPoint",
+          "world_blender": [
+            1.53,
+            3.9,
+            1.265
+          ],
+          "world_glb": [
+            1.53,
+            1.265,
+            -3.9
+          ]
+        }
+      ],
+      "movable_parts": []
+    },
+    {
+      "name": "EQ_PrepBoard_01",
+      "type": "prep_station",
+      "action": "mix_drink",
+      "position_blender": [
+        0.45,
+        3.83,
+        0.98
+      ],
+      "position_glb": [
+        0.45,
+        0.98,
+        -3.83
+      ],
+      "anchors": [
+        {
+          "name": "EQ_PrepBoard_01__MixPoint",
+          "type": "MixPoint",
+          "world_blender": [
+            0.45,
+            3.68,
+            1.13
+          ],
+          "world_glb": [
+            0.45,
+            1.13,
+            -3.68
+          ]
+        },
+        {
+          "name": "EQ_PrepBoard_01__UsePoint",
+          "type": "UsePoint",
+          "world_blender": [
+            0.45,
+            2.98,
+            0.0
+          ],
+          "world_glb": [
+            0.45,
+            0.0,
+            -2.98
+          ]
+        }
+      ],
+      "movable_parts": []
+    },
+    {
+      "name": "EQ_SyrupPump_01",
+      "type": "syrup_pump",
+      "action": "add_syrup",
+      "position_blender": [
+        -0.16,
+        4.12,
+        0.98
+      ],
+      "position_glb": [
+        -0.16,
+        0.98,
+        -4.12
+      ],
+      "anchors": [
+        {
+          "name": "EQ_SyrupPump_01__DispensePoint",
+          "type": "DispensePoint",
+          "world_blender": [
+            -0.16,
+            4.04,
+            1.37
+          ],
+          "world_glb": [
+            -0.16,
+            1.37,
+            -4.04
+          ]
+        }
+      ],
+      "movable_parts": []
+    },
+    {
+      "name": "EQ_SyrupPump_02",
+      "type": "syrup_pump",
+      "action": "add_syrup",
+      "position_blender": [
+        0.09,
+        4.12,
+        0.98
+      ],
+      "position_glb": [
+        0.09,
+        0.98,
+        -4.12
+      ],
+      "anchors": [
+        {
+          "name": "EQ_SyrupPump_02__DispensePoint",
+          "type": "DispensePoint",
+          "world_blender": [
+            0.09,
+            4.04,
+            1.37
+          ],
+          "world_glb": [
+            0.09,
+            1.37,
+            -4.04
+          ]
+        }
+      ],
+      "movable_parts": []
+    },
+    {
+      "name": "EQ_SyrupPump_03",
+      "type": "syrup_pump",
+      "action": "add_syrup",
+      "position_blender": [
+        0.34,
+        4.12,
+        0.98
+      ],
+      "position_glb": [
+        0.34,
+        0.98,
+        -4.12
+      ],
+      "anchors": [
+        {
+          "name": "EQ_SyrupPump_03__DispensePoint",
+          "type": "DispensePoint",
+          "world_blender": [
+            0.34,
+            4.04,
+            1.37
+          ],
+          "world_glb": [
+            0.34,
+            1.37,
+            -4.04
+          ]
+        }
+      ],
+      "movable_parts": []
+    },
+    {
+      "name": "EQ_UndercounterFridge_01",
+      "type": "fridge",
+      "action": "take_milk",
+      "position_blender": [
+        -1.8,
+        3.46,
+        0.05
+      ],
+      "position_glb": [
+        -1.8,
+        0.05,
+        -3.46
+      ],
+      "anchors": [
+        {
+          "name": "EQ_UndercounterFridge_01__UsePoint",
+          "type": "UsePoint",
+          "world_blender": [
+            -1.8,
+            2.81,
+            0.0
+          ],
+          "world_glb": [
+            -1.8,
+            0.0,
+            -2.81
+          ]
+        }
+      ],
+      "movable_parts": []
+    },
+    {
+      "name": "EQ_TeaDispenser_01__紅茶",
+      "type": "tea_dispenser",
+      "action": "dispense_tea",
+      "position_blender": [
+        -2.29,
+        3.87,
+        0.976
+      ],
+      "position_glb": [
+        -2.29,
+        0.976,
+        -3.87
+      ],
+      "anchors": [
+        {
+          "name": "EQ_TeaDispenser_01__紅茶__DispensePoint",
+          "type": "DispensePoint",
+          "world_blender": [
+            -2.29,
+            3.625,
+            1.081
+          ],
+          "world_glb": [
+            -2.29,
+            1.081,
+            -3.625
+          ]
+        },
+        {
+          "name": "EQ_TeaDispenser_01__紅茶__UsePoint",
+          "type": "UsePoint",
+          "world_blender": [
+            -2.29,
+            3.02,
+            0.0
+          ],
+          "world_glb": [
+            -2.29,
+            0.0,
+            -3.02
+          ]
+        }
+      ],
+      "movable_parts": [
+        {
+          "name": "EQ_TeaDispenser_01__紅茶 / movable tap lever",
+          "action": "rotate local X 25 degrees to pour",
+          "local_origin": [
+            0.0,
+            -0.245,
+            0.202
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EQ_TeaDispenser_02__綠茶",
+      "type": "tea_dispenser",
+      "action": "dispense_tea",
+      "position_blender": [
+        -1.84,
+        3.87,
+        0.976
+      ],
+      "position_glb": [
+        -1.84,
+        0.976,
+        -3.87
+      ],
+      "anchors": [
+        {
+          "name": "EQ_TeaDispenser_02__綠茶__DispensePoint",
+          "type": "DispensePoint",
+          "world_blender": [
+            -1.84,
+            3.625,
+            1.081
+          ],
+          "world_glb": [
+            -1.84,
+            1.081,
+            -3.625
+          ]
+        },
+        {
+          "name": "EQ_TeaDispenser_02__綠茶__UsePoint",
+          "type": "UsePoint",
+          "world_blender": [
+            -1.84,
+            3.02,
+            0.0
+          ],
+          "world_glb": [
+            -1.84,
+            0.0,
+            -3.02
+          ]
+        }
+      ],
+      "movable_parts": [
+        {
+          "name": "EQ_TeaDispenser_02__綠茶 / movable tap lever",
+          "action": "rotate local X 25 degrees to pour",
+          "local_origin": [
+            0.0,
+            -0.245,
+            0.202
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EQ_TeaDispenser_03__烏龍",
+      "type": "tea_dispenser",
+      "action": "dispense_tea",
+      "position_blender": [
+        -1.39,
+        3.87,
+        0.976
+      ],
+      "position_glb": [
+        -1.39,
+        0.976,
+        -3.87
+      ],
+      "anchors": [
+        {
+          "name": "EQ_TeaDispenser_03__烏龍__DispensePoint",
+          "type": "DispensePoint",
+          "world_blender": [
+            -1.39,
+            3.625,
+            1.081
+          ],
+          "world_glb": [
+            -1.39,
+            1.081,
+            -3.625
+          ]
+        },
+        {
+          "name": "EQ_TeaDispenser_03__烏龍__UsePoint",
+          "type": "UsePoint",
+          "world_blender": [
+            -1.39,
+            3.02,
+            0.0
+          ],
+          "world_glb": [
+            -1.39,
+            0.0,
+            -3.02
+          ]
+        }
+      ],
+      "movable_parts": [
+        {
+          "name": "EQ_TeaDispenser_03__烏龍 / movable tap lever",
+          "action": "rotate local X 25 degrees to pour",
+          "local_origin": [
+            0.0,
+            -0.245,
+            0.202
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EQ_TeaDispenser_04__四季春",
+      "type": "tea_dispenser",
+      "action": "dispense_tea",
+      "position_blender": [
+        -0.94,
+        3.87,
+        0.976
+      ],
+      "position_glb": [
+        -0.94,
+        0.976,
+        -3.87
+      ],
+      "anchors": [
+        {
+          "name": "EQ_TeaDispenser_04__四季春__DispensePoint",
+          "type": "DispensePoint",
+          "world_blender": [
+            -0.94,
+            3.625,
+            1.081
+          ],
+          "world_glb": [
+            -0.94,
+            1.081,
+            -3.625
+          ]
+        },
+        {
+          "name": "EQ_TeaDispenser_04__四季春__UsePoint",
+          "type": "UsePoint",
+          "world_blender": [
+            -0.94,
+            3.02,
+            0.0
+          ],
+          "world_glb": [
+            -0.94,
+            0.0,
+            -3.02
+          ]
+        }
+      ],
+      "movable_parts": [
+        {
+          "name": "EQ_TeaDispenser_04__四季春 / movable tap lever",
+          "action": "rotate local X 25 degrees to pour",
+          "local_origin": [
+            0.0,
+            -0.245,
+            0.202
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EQ_ToppingBin_01__珍珠",
+      "type": "topping_bin",
+      "action": "scoop_topping",
+      "position_blender": [
+        -2.31,
+        0.97,
+        0.988
+      ],
+      "position_glb": [
+        -2.31,
+        0.988,
+        -0.97
+      ],
+      "anchors": [
+        {
+          "name": "EQ_ToppingBin_01__珍珠__ScoopPoint",
+          "type": "ScoopPoint",
+          "world_blender": [
+            -2.31,
+            0.97,
+            1.218
+          ],
+          "world_glb": [
+            -2.31,
+            1.218,
+            -0.97
+          ]
+        },
+        {
+          "name": "EQ_ToppingBin_01__珍珠__UsePoint",
+          "type": "UsePoint",
+          "world_blender": [
+            -2.31,
+            1.87,
+            0.0
+          ],
+          "world_glb": [
+            -2.31,
+            0.0,
+            -1.87
+          ]
+        }
+      ],
+      "movable_parts": [
+        {
+          "name": "EQ_ToppingBin_01__珍珠 / sliding clear lid",
+          "action": "slide local Y +0.19m",
+          "local_origin": [
+            0.0,
+            -0.095,
+            0.215
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EQ_ToppingBin_02__椰果",
+      "type": "topping_bin",
+      "action": "scoop_topping",
+      "position_blender": [
+        -1.83,
+        0.97,
+        0.988
+      ],
+      "position_glb": [
+        -1.83,
+        0.988,
+        -0.97
+      ],
+      "anchors": [
+        {
+          "name": "EQ_ToppingBin_02__椰果__ScoopPoint",
+          "type": "ScoopPoint",
+          "world_blender": [
+            -1.83,
+            0.97,
+            1.218
+          ],
+          "world_glb": [
+            -1.83,
+            1.218,
+            -0.97
+          ]
+        },
+        {
+          "name": "EQ_ToppingBin_02__椰果__UsePoint",
+          "type": "UsePoint",
+          "world_blender": [
+            -1.83,
+            1.87,
+            0.0
+          ],
+          "world_glb": [
+            -1.83,
+            0.0,
+            -1.87
+          ]
+        }
+      ],
+      "movable_parts": [
+        {
+          "name": "EQ_ToppingBin_02__椰果 / sliding clear lid",
+          "action": "slide local Y +0.19m",
+          "local_origin": [
+            0.0,
+            -0.095,
+            0.215
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EQ_ToppingBin_03__仙草",
+      "type": "topping_bin",
+      "action": "scoop_topping",
+      "position_blender": [
+        -1.35,
+        0.97,
+        0.988
+      ],
+      "position_glb": [
+        -1.35,
+        0.988,
+        -0.97
+      ],
+      "anchors": [
+        {
+          "name": "EQ_ToppingBin_03__仙草__ScoopPoint",
+          "type": "ScoopPoint",
+          "world_blender": [
+            -1.35,
+            0.97,
+            1.218
+          ],
+          "world_glb": [
+            -1.35,
+            1.218,
+            -0.97
+          ]
+        },
+        {
+          "name": "EQ_ToppingBin_03__仙草__UsePoint",
+          "type": "UsePoint",
+          "world_blender": [
+            -1.35,
+            1.87,
+            0.0
+          ],
+          "world_glb": [
+            -1.35,
+            0.0,
+            -1.87
+          ]
+        }
+      ],
+      "movable_parts": [
+        {
+          "name": "EQ_ToppingBin_03__仙草 / sliding clear lid",
+          "action": "slide local Y +0.19m",
+          "local_origin": [
+            0.0,
+            -0.095,
+            0.215
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EQ_ToppingBin_04__布丁",
+      "type": "topping_bin",
+      "action": "scoop_topping",
+      "position_blender": [
+        -0.87,
+        0.97,
+        0.988
+      ],
+      "position_glb": [
+        -0.87,
+        0.988,
+        -0.97
+      ],
+      "anchors": [
+        {
+          "name": "EQ_ToppingBin_04__布丁__ScoopPoint",
+          "type": "ScoopPoint",
+          "world_blender": [
+            -0.87,
+            0.97,
+            1.218
+          ],
+          "world_glb": [
+            -0.87,
+            1.218,
+            -0.97
+          ]
+        },
+        {
+          "name": "EQ_ToppingBin_04__布丁__UsePoint",
+          "type": "UsePoint",
+          "world_blender": [
+            -0.87,
+            1.87,
+            0.0
+          ],
+          "world_glb": [
+            -0.87,
+            0.0,
+            -1.87
+          ]
+        }
+      ],
+      "movable_parts": [
+        {
+          "name": "EQ_ToppingBin_04__布丁 / sliding clear lid",
+          "action": "slide local Y +0.19m",
+          "local_origin": [
+            0.0,
+            -0.095,
+            0.215
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EQ_CupSealer_01",
+      "type": "cup_sealer",
+      "action": "insert_cup_then_seal",
+      "position_blender": [
+        0.23,
+        1.015,
+        0.984
+      ],
+      "position_glb": [
+        0.23,
+        0.984,
+        -1.015
+      ],
+      "anchors": [
+        {
+          "name": "EQ_CupSealer_01__CupSocket",
+          "type": "CupSocket",
+          "world_blender": [
+            0.23,
+            1.175,
+            1.134
+          ],
+          "world_glb": [
+            0.23,
+            1.134,
+            -1.175
+          ]
+        },
+        {
+          "name": "EQ_CupSealer_01__OutputPoint",
+          "type": "OutputPoint",
+          "world_blender": [
+            0.23,
+            1.375,
+            1.084
+          ],
+          "world_glb": [
+            0.23,
+            1.084,
+            -1.375
+          ]
+        },
+        {
+          "name": "EQ_CupSealer_01__UsePoint",
+          "type": "UsePoint",
+          "world_blender": [
+            0.23,
+            1.885,
+            0.0
+          ],
+          "world_glb": [
+            0.23,
+            0.0,
+            -1.885
+          ]
+        }
+      ],
+      "movable_parts": [
+        {
+          "name": "Sealer / movable cup tray",
+          "action": "translate local Y +0.14m to insert",
+          "local_origin": [
+            0.0,
+            -0.16,
+            0.09
+          ]
+        },
+        {
+          "name": "Sealer / movable film roll",
+          "action": "spin local Z during seal",
+          "local_origin": [
+            0.0,
+            0.18,
+            0.665
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EQ_POS_01",
+      "type": "pos",
+      "action": "take_order_and_payment",
+      "position_blender": [
+        1.08,
+        0.94,
+        0.986
+      ],
+      "position_glb": [
+        1.08,
+        0.986,
+        -0.94
+      ],
+      "anchors": [
+        {
+          "name": "EQ_POS_01__PaymentPoint",
+          "type": "PaymentPoint",
+          "world_blender": [
+            1.33,
+            0.79,
+            1.076
+          ],
+          "world_glb": [
+            1.33,
+            1.076,
+            -0.79
+          ]
+        },
+        {
+          "name": "EQ_POS_01__UsePoint",
+          "type": "UsePoint",
+          "world_blender": [
+            1.08,
+            1.89,
+            0.0
+          ],
+          "world_glb": [
+            1.08,
+            0.0,
+            -1.89
+          ]
+        }
+      ],
+      "movable_parts": []
+    },
+    {
+      "name": "EQ_CupRack_01",
+      "type": "cup_rack",
+      "action": "take_empty_cup",
+      "position_blender": [
+        2.53,
+        3.38,
+        0.0
+      ],
+      "position_glb": [
+        2.53,
+        0.0,
+        -3.38
+      ],
+      "anchors": [
+        {
+          "name": "EQ_CupRack_01__CupSpawn",
+          "type": "CupSpawn",
+          "world_blender": [
+            2.38,
+            3.16,
+            1.94
+          ],
+          "world_glb": [
+            2.38,
+            1.94,
+            -3.16
+          ]
+        },
+        {
+          "name": "EQ_CupRack_01__UsePoint",
+          "type": "UsePoint",
+          "world_blender": [
+            2.53,
+            2.6,
+            0.0
+          ],
+          "world_glb": [
+            2.53,
+            0.0,
+            -2.6
+          ]
+        }
+      ],
+      "movable_parts": []
+    },
+    {
+      "name": "EQ_CounterCupStack_01",
+      "type": "cup_rack",
+      "action": "take_empty_cup",
+      "position_blender": [
+        -2.31,
+        1.05,
+        1.49
+      ],
+      "position_glb": [
+        -2.31,
+        1.49,
+        -1.05
+      ],
+      "anchors": [
+        {
+          "name": "EQ_CounterCupStack_01__CupSpawn",
+          "type": "CupSpawn",
+          "world_blender": [
+            -2.31,
+            1.05,
+            1.83
+          ],
+          "world_glb": [
+            -2.31,
+            1.83,
+            -1.05
+          ]
+        },
+        {
+          "name": "EQ_CounterCupStack_01__UsePoint",
+          "type": "UsePoint",
+          "world_blender": [
+            -2.31,
+            1.88,
+            0.0
+          ],
+          "world_glb": [
+            -2.31,
+            0.0,
+            -1.88
+          ]
+        }
+      ],
+      "movable_parts": []
+    },
+    {
+      "name": "EQ_CounterCupStack_02",
+      "type": "cup_rack",
+      "action": "take_empty_cup",
+      "position_blender": [
+        -2.08,
+        1.05,
+        1.49
+      ],
+      "position_glb": [
+        -2.08,
+        1.49,
+        -1.05
+      ],
+      "anchors": [
+        {
+          "name": "EQ_CounterCupStack_02__CupSpawn",
+          "type": "CupSpawn",
+          "world_blender": [
+            -2.08,
+            1.05,
+            1.83
+          ],
+          "world_glb": [
+            -2.08,
+            1.83,
+            -1.05
+          ]
+        },
+        {
+          "name": "EQ_CounterCupStack_02__UsePoint",
+          "type": "UsePoint",
+          "world_blender": [
+            -2.08,
+            1.88,
+            0.0
+          ],
+          "world_glb": [
+            -2.08,
+            0.0,
+            -1.88
+          ]
+        }
+      ],
+      "movable_parts": []
+    },
+    {
+      "name": "EQ_StrawCaddy_01",
+      "type": "straw_caddy",
+      "action": "take_straw",
+      "position_blender": [
+        -1.65,
+        1.15,
+        1.49
+      ],
+      "position_glb": [
+        -1.65,
+        1.49,
+        -1.15
+      ],
+      "anchors": [
+        {
+          "name": "EQ_StrawCaddy_01__StrawSpawn",
+          "type": "StrawSpawn",
+          "world_blender": [
+            -1.65,
+            1.15,
+            1.78
+          ],
+          "world_glb": [
+            -1.65,
+            1.78,
+            -1.15
+          ]
+        }
+      ],
+      "movable_parts": []
+    },
+    {
+      "name": "EQ_WasteBin_01",
+      "type": "waste_bin",
+      "action": "discard_item",
+      "position_blender": [
+        -2.57,
+        2.45,
+        0.02
+      ],
+      "position_glb": [
+        -2.57,
+        0.02,
+        -2.45
+      ],
+      "anchors": [
+        {
+          "name": "EQ_WasteBin_01__DiscardPoint",
+          "type": "DiscardPoint",
+          "world_blender": [
+            -2.57,
+            2.35,
+            0.54
+          ],
+          "world_glb": [
+            -2.57,
+            0.54,
+            -2.35
+          ]
+        }
+      ],
+      "movable_parts": []
+    },
+    {
+      "name": "EQ_IceBin_01",
+      "type": "ice_bin",
+      "action": "scoop_ice",
+      "position_blender": [
+        -0.4,
+        3.84,
+        0.976
+      ],
+      "position_glb": [
+        -0.4,
+        0.976,
+        -3.84
+      ],
+      "anchors": [
+        {
+          "name": "EQ_IceBin_01__ScoopPoint",
+          "type": "ScoopPoint",
+          "world_blender": [
+            -0.4,
+            3.79,
+            1.156
+          ],
+          "world_glb": [
+            -0.4,
+            1.156,
+            -3.79
+          ]
+        },
+        {
+          "name": "EQ_IceBin_01__UsePoint",
+          "type": "UsePoint",
+          "world_blender": [
+            -0.4,
+            2.99,
+            0.0
+          ],
+          "world_glb": [
+            -0.4,
+            0.0,
+            -2.99
+          ]
+        }
+      ],
+      "movable_parts": [
+        {
+          "name": "Ice bin / sliding lid",
+          "action": "slide local Y +0.20m",
+          "local_origin": [
+            0.0,
+            0.13,
+            0.205
+          ]
+        }
+      ]
+    }
+  ],
+  "items": [
+    {
+      "name": "PROP_ReadyDrink_01",
+      "type": "drink_cup",
+      "action": "pick_up",
+      "position_blender": [
+        -1.05,
+        0.9,
+        1.49
+      ],
+      "position_glb": [
+        -1.05,
+        1.49,
+        -0.9
+      ],
+      "anchors": [
+        {
+          "name": "PROP_ReadyDrink_01__Grip",
+          "type": "Grip",
+          "world_blender": [
+            -1.05,
+            0.9,
+            1.57
+          ],
+          "world_glb": [
+            -1.05,
+            1.57,
+            -0.9
+          ]
+        }
+      ],
+      "movable_parts": []
+    },
+    {
+      "name": "PROP_ReadyDrink_02",
+      "type": "drink_cup",
+      "action": "pick_up",
+      "position_blender": [
+        -0.86,
+        0.9,
+        1.49
+      ],
+      "position_glb": [
+        -0.86,
+        1.49,
+        -0.9
+      ],
+      "anchors": [
+        {
+          "name": "PROP_ReadyDrink_02__Grip",
+          "type": "Grip",
+          "world_blender": [
+            -0.86,
+            0.9,
+            1.57
+          ],
+          "world_glb": [
+            -0.86,
+            1.57,
+            -0.9
+          ]
+        }
+      ],
+      "movable_parts": []
+    },
+    {
+      "name": "PROP_ReadyDrink_03",
+      "type": "drink_cup",
+      "action": "pick_up",
+      "position_blender": [
+        -0.67,
+        0.9,
+        1.49
+      ],
+      "position_glb": [
+        -0.67,
+        1.49,
+        -0.9
+      ],
+      "anchors": [
+        {
+          "name": "PROP_ReadyDrink_03__Grip",
+          "type": "Grip",
+          "world_blender": [
+            -0.67,
+            0.9,
+            1.57
+          ],
+          "world_glb": [
+            -0.67,
+            1.57,
+            -0.9
+          ]
+        }
+      ],
+      "movable_parts": []
+    },
+    {
+      "name": "PROP_ClearMilkTeaSample",
+      "type": "drink_cup",
+      "action": "pick_up",
+      "position_blender": [
+        -1.3,
+        0.88,
+        1.49
+      ],
+      "position_glb": [
+        -1.3,
+        1.49,
+        -0.88
+      ],
+      "anchors": [
+        {
+          "name": "PROP_ClearMilkTeaSample__Grip",
+          "type": "Grip",
+          "world_blender": [
+            -1.3,
+            0.88,
+            1.57
+          ],
+          "world_glb": [
+            -1.3,
+            1.57,
+            -0.88
+          ]
+        }
+      ],
+      "movable_parts": []
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+Game sound effects
+
+Foley edited, filtered, time-fitted and mixed by scripts/audio/build_sounds.py.
+Original recordings: Creative Commons CC0 1.0. Locally synthesized machine effects: CC0 1.0.
+License: https://creativecommons.org/publicdomain/zero/1.0/
+
+shaker — KenRT
+https://freesound.org/people/KenRT/sounds/319995/
+https://cdn.freesound.org/previews/319/319995_5440319-hq.mp3
+
+ice — kyles
+https://freesound.org/people/kyles/sounds/452643/
+https://cdn.freesound.org/previews/452/452643_612689-hq.mp3
+
+pour — Grubzyy
+https://freesound.org/people/Grubzyy/sounds/422728/
+https://cdn.freesound.org/previews/422/422728_4253642-hq.mp3
+
+fill — DSPena
+https://freesound.org/people/DSPena/sounds/168869/
+https://cdn.freesound.org/previews/168/168869_2931583-hq.mp3
+
+Outputs: ice-scoop / ice-drop use ice; drink-shake uses shaker;
+drink-pour uses pour; tea-fill uses fill;
+fructose-button / fructose-pump / cup-seal are original procedural synthesis.
+Source provenance and reusable recordings: assets/audio/source/.
+No external service is contacted by the game.
